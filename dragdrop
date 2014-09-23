@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<style>
+#transitions{ background-color: red; float: left; width: 350px; height: 350px; padding: 10px; margin: 12px;}
+#states{ background-color: yellow; float: left; width: 350px; height: 350px; padding: 10px; margin: 12px;}
+#stateSelec1{ background-color: green; float: left; width: 150px; height: 25px; padding: 10px; margin: 12px;}
+#stateSelec2{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
+#stateSelec3{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
+#transitionSelec1{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
+#transitionSelec2{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
+#transitionSelec3{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
+</style>
+
+<body>
+<h1> Teste </h1>
+<div id= "transitions">
+	Transitions
+    <div id = "transition1" draggable="true" ondragstart="return dragStart(event)"> LeftKey</div>
+    <div id = "transition2" draggable="true" ondragstart="return dragStart(event)"> RightKey</div>
+    <div id = "transition3" draggable="true" ondragstart="return dragStart(event)"> UpKey</div>
+    <div id = "transition4" draggable="true" ondragstart="return dragStart(event)"> DownKey</div>
+    <div id = "transition5" draggable="true" ondragstart="return dragStart(event)"> CtrlKey</div>
+    <div id = "transition6" draggable="true" ondragstart="return dragStart(event)"> AltKey</div>
+    <div id = "transition7" draggable="true" ondragstart="return dragStart(event)"> ShiftKey</div>
+</div>
+
+<div id= "states">
+	States
+    <div id = "state1" draggable="true" ondragstart="return dragStart(event)"> Stand</div>
+    <div id = "state2" draggable="true" ondragstart="return dragStart(event)"> Run</div>
+    <div id = "state3" draggable="true" ondragstart="return dragStart(event)"> Jump</div>
+    <div id = "state4" draggable="true" ondragstart="return dragStart(event)"> DoubleJump</div>
+    <div id = "state5" draggable="true" ondragstart="return dragStart(event)"> Attack</div>
+    <div id = "state6" draggable="true" ondragstart="return dragStart(event)"> Crouch</div>
+    <div id = "state7" draggable="true" ondragstart="return dragStart(event)"> Slide</div>
+</div> 
+
+<div id= "stateSelec1" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 1</div> 
+<div id= "transitionSelec1" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 1</div> 
+<div id= "stateSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 2</div> 
+<div id= "transitionSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 2</div> 
+<div id= "stateSelec3" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 3</div> 
+<div id= "transitionSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 3</div>
+
+<script>
+function dragStart(ev){
+	ev.dataTransfer.setData("ID", ev.target.getAttribute('id'));	
+}
+
+function dragOver(ev){
+	return false;
+}
+
+function dragDrop(ev){
+	var selected = ev.dataTransfer.getData("ID");
+	ev.target.appendChild(document.getElementById(selected));
+	
+}
+
+</script>
+</body>
+</html>
