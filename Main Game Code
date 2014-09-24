@@ -1,2 +1,117 @@
-//The Start
-Jeremy is the greatest coder of all time!!!!
+<canvas id="ctx" width="1000" height="800" style="z-index:2"></canvas>
+
+<script>
+var ctx = document.getElementById("ctx").getContext("2d");
+
+var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
+var transitionList = ["Space Bar", "W", "S", "A", "D"];
+
+var key = [];
+var yCoord = 10;
+var xCoord = 10;
+var length = 220; 
+var width = 50;
+
+window.addEventListener("keydown", keyDown, false);
+window.addEventListener("keyup", keyUp, false);
+window.addEventListener("click", onClickFunction, false);
+
+
+var change = 500;
+var bucket = 10;
+
+
+function game()
+{
+	update();
+	render();
+}
+function update()
+{
+
+}
+function render()
+{
+	//Clickable Actions and Transitions
+	ctx.font = "40px algerian"
+	for(i = 0; i < actionList.length; i++)
+	{
+		//boxes
+		ctx.fillStyle = 'red';
+		ctx.fillRect(xCoord, yCoord, length, width);
+		//names
+		ctx.fillStyle = 'black';
+		ctx.fillText(actionList[i], xCoord, yCoord + width);
+		yCoord += 60;
+	}	
+	for(i = 0; i < transitionList.length; i++)
+	{
+		//boxes
+		ctx.fillStyle = 'blue';
+		ctx.fillRect(xCoord, yCoord, length, width);
+		//names
+		ctx.fillStyle = 'black';
+		ctx.fillText(transitionList[i], xCoord, yCoord + width);
+		yCoord += 60;
+	}
+	//This keeps it from going on endlessly because of the amount of times render() is called
+	yCoord = 10;
+	
+	//Empty tree
+	xCoord = 240;
+	for(i = 0; i < 11; i++)
+	{
+		ctx.fillStyle = 'green';
+		ctx.fillRect(xCoord, yCoord, length, width);
+		yCoord += 60;
+	}
+	yCoord = 10;
+	xCoord = 470;
+	for(i = 0; i < 11; i++)
+	{
+		ctx.fillStyle = 'purple';
+		ctx.fillRect(xCoord, yCoord, length, width);
+		yCoord += 60;
+	}
+	yCoord = 10;
+	xCoord = 700;
+	for(i = 0; i < 11; i++)
+	{
+		ctx.fillStyle = 'green';
+		ctx.fillRect(xCoord, yCoord, length, width);
+		yCoord += 60;
+	}
+	yCoord = 10;
+	xCoord = 10;
+}
+
+function setKey()
+{
+	
+}
+
+function getX()
+{
+
+}
+
+function getY()
+{
+
+}
+
+function onClickFunction()
+{
+	
+}
+
+function keyDown(e)
+{
+		key[e.keyCode] = true;
+}
+function keyUp(e)
+{
+		delete key[e.keyCode];
+}
+setInterval(game, 1000/50);
+</script>
