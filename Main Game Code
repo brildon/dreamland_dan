@@ -66,108 +66,158 @@ function loadHandler()
 
 
 var ctx = document.getElementById("ctx").getContext("2d");
-
+// Names of actions/transitions
 var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
 var transitionList = ["Space Bar", "W", "S", "A", "D"];
 
+// objects of actions
+// Willan is workin summin out
+ 
+// objects of transitions
+var spacebarTrans = {x: 10, y: 10};
+var wTrans = {x: 10, y: 10};
+var aTrans = {x: 10, y: 10};
+var sTrans = {x: 10, y:10};
+var dTrans = {x: 10, y: 10};
+// When you can or can't choose object/transition
 var canChoseAction = true;
 var canChoseTransition = false;
-
+// Organizer array
 var stateArray = [];
-
+// abstract variables for actions or objects
 var key = [];
 var yCoord = 10;
 var xCoord = 10;
 var length = 220; 
 var width = 50;
-
+// action boolean statements
 var isStand = true;
 var isJump = false;
 var isMoveLeft = false;
 var isMoveRight = false;
 var isDucking = false;
 var isAttack = false;
-
+// action Array
 var action = [isStand, isJump, isMoveLeft, isMoveRight, isDucking, isAttack];
-
+// transition boolean statements
 var spacebarPressed = false;
 var wPressed = false;
 var aPressed = false;
 var sPressed = false;
 var dPressed = false;
-
+// transition and key correspondent arrays
 var transition = [spacebarPressed, wPressed, aPressed, sPressed, dPressed];
 var keyNumber = [32, 87, 65, 83, 68];
-
+// event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
 window.addEventListener("click", onClickFunction, false);
-
-
-var change = 500;
-var bucket = 10;
+// Bucket Variables
+var spot = 0;
+var numSpot = 0;
+var n = 0;
 
 //TODO
 function stateMachineScreen()
 {
 
 }
-
+function gameScreenMachine()
+{
+	renderMachineScreen();
+	createStateMachine();
+}
+//TODO???
 function game()
 {
+	renderGameScreen();
 	update();
-	render();
 }
 
 //TODO
 function update()
 {
-	//if(key[??])
+	//SpaceBar
+	if(key[32])
 	{
 		
 		for(i = 0; i < keyNumber.length; i++)
 		{
-			//if(?? == keyNumber[i])
+			if(32 == keyNumber[i])
+			{
+				transition[i] = true;
+			}
+		}
+	}
+	//W
+	if(key[87])
+	{
+		
+		for(i = 0; i < keyNumber.length; i++)
+		{
+			if(87 == keyNumber[i])
+			{
+				transition[i] = true;
+			}
+		}
+	}
+	//A
+	if(key[65])
+	{
+		
+		for(i = 0; i < keyNumber.length; i++)
+		{
+			if(65 == keyNumber[i])
+			{
+				transition[i] = true;
+			}
+		}
+	}
+	//S
+	if(key[83])
+	{
+		
+		for(i = 0; i < keyNumber.length; i++)
+		{
+			if(83 == keyNumber[i])
+			{
+				transition[i] = true;
+			}
+		}
+	}
+	//D
+	if(key[68])
+	{
+		
+		for(i = 0; i < keyNumber.length; i++)
+		{
+			if(68 == keyNumber[i])
 			{
 				transition[i] = true;
 			}
 		}
 	}
 	
-	//Same for all other possibilities
-	if(transition[0])
+	//Transition corresponding to actions check
+	for(i  = 0; i < transition.length)
 	{
-		action[0] = false;
-	}
-	if(!action[0] && transition[0])
-	{
-		action[1] = true;
-	}
-	if(!transition[0])
-	{
-		action[1] = false;
-		action[0] = true;
-	}
-	
-	if(transition[1])
-	{
-		action[2] = false;
-	}
-	if(!action[2] && transition[1])
-	{
-		action[3] = true;
-	}
-	if(!transition[1])
-	{
-		action[3] = false;
-		action[2] = true;
+		if(transition[i])
+		{
+			action[i + 1(n)] = false;
+		}
+		if(!action[i + 1(n)] && transition[i])
+		{
+			n += 1;
+			action[i + 1(n)] = true;
+		}
+		if(!transition[i])
+		{
+			action[i + 1(n)] = false;
+			action[i + 1(n - 1)] = true;
+		}
 	}
 	
-	//CODE ABOVE TO BE CONTINUED...
-	
-	
-	
-	
+	// Preform actions
 	if(isJump)
 	{
 		
@@ -200,7 +250,8 @@ function update()
 }
 
 //TODO
-function render()
+// Willian is workin on summin
+function renderMachineScreen()
 {
 	//Clickable Actions and Transitions
 	ctx.font = "40px algerian"
@@ -226,33 +277,15 @@ function render()
 	}
 	//This keeps it from going on endlessly because of the amount of times render() is called
 	yCoord = 10;
-	
-	//Empty tree
-	xCoord = 240;
-	for(i = 0; i < 11; i++)
-	{
-		ctx.fillStyle = 'green';
-		ctx.fillRect(xCoord, yCoord, length, width);
-		yCoord += 60;
-	}
-	yCoord = 10;
-	xCoord = 470;
-	for(i = 0; i < 11; i++)
-	{
-		ctx.fillStyle = 'purple';
-		ctx.fillRect(xCoord, yCoord, length, width);
-		yCoord += 60;
-	}
-	yCoord = 10;
-	xCoord = 700;
-	for(i = 0; i < 11; i++)
-	{
-		ctx.fillStyle = 'green';
-		ctx.fillRect(xCoord, yCoord, length, width);
-		yCoord += 60;
-	}
-	yCoord = 10;
-	xCoord = 10;
+}
+//TODO
+function renderGameScreen()
+{
+	//if(level 1)
+	//if(level 2)
+	//if(level 3)
+	//if(level 4)
+	//if(level 5)
 }
 
 //TODO
@@ -262,6 +295,7 @@ function setKey()
 }
 
 //TODO
+// Willian is workin on summin
 function onClickFunction()
 {
 	
@@ -292,7 +326,7 @@ function finalizeStateMachine(finiteArray)
 				action[i] = finiteArray[i];
 			}
 			
-			action[i - 1] = finiteArray[i]
+			action[i - 1] = finiteArray[i];
 		}
 		else
 		{
@@ -315,13 +349,11 @@ function startMainGame()
 //Puts actions and Transitions in workable ordered array
 function createStateMachine()
 {
-	var spot = 0;
-	var numSpot = 0;
 	//if(isStand is clicked)
 	{
 		stateArray[spot] = action[0];
 		spot++;
-		canChoseAction  = false;
+		canChoseAction = false;
 		canChoseTransition = true;
 	}
 	//if(isJump is clicked)
@@ -405,4 +437,9 @@ function createStateMachine()
 		canChoseTransition = false;
 	}
 }
+/*if(!gameStarted)
+{
+	setInterval(gameScreenMachine, 1000/50)
+}*/
+setInterval(game, 1000/50);
 </script>
