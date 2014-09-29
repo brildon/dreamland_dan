@@ -203,17 +203,17 @@ function update()
 	{
 		if(transition[i])
 		{
-			action[i + 1(n)] = false;
+			action[i + 1*(n)] = false;
 		}
-		if(!action[i + 1(n)] && transition[i])
+		if(!action[i + 1*(n)] && transition[i])
 		{
 			n += 1;
-			action[i + 1(n)] = true;
+			action[i + 1*(n)] = true;
 		}
 		if(!transition[i])
 		{
-			action[i + 1(n)] = false;
-			action[i + 1(n - 1)] = true;
+			action[i + 1*(n)] = false;
+			action[i + 1*(n - 1)] = true;
 		}
 	}
 	
