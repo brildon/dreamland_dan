@@ -4,6 +4,67 @@
 /* Author Notes: Make actions re-clickable after being placed
 */
 
+
+loadHandler();
+var canvas = document.querySelector("canvas");
+var menuCheck = true;
+var drawingSurface = canvas.getContext("2d");
+var buildCheck = false;
+
+var mouse = {x:0,y:0};
+
+var image = new Image();	
+image.addEventListener("load", loadHandler, false);
+image.src = "menu.png";
+
+
+function menu(e)
+{
+	var tempStartH;
+	var tempStartW;
+	
+	if(e.layerX || e.layerY == 0){
+		mouse.x = e.pageX - canvas.offsetLeft;
+		mouse.y = e.pageY - canvas.offsetTop;	
+	}
+	
+	if(mouse.x < 930 && mouse.y < 650 && mouse.x > 540 && mouse.y > 440)
+	{
+		buildCheck=false;
+		menuCheck=false;
+		loadHandler();
+	}
+}
+function loadHandler()
+{
+
+	
+	if(menuCheck == true)
+	{
+		if(buildCheck == false)
+		{
+			image.src = "menu.png";
+			drawingSurface.drawImage(image,0,0,1600,900);
+			buildCheck=true;
+			
+			
+		}
+		document.onmousedown = menu;
+	}
+	else
+	{
+		
+		if(buildCheck == false)
+		{
+			drawingSurface.clearRect(0,0,1600,900);
+			buildCheck = true;
+			setInterval(game, 1000/50);
+
+		}
+	}
+}
+
+
 var ctx = document.getElementById("ctx").getContext("2d");
 
 var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
@@ -344,6 +405,4 @@ function createStateMachine()
 		canChoseTransition = false;
 	}
 }
-
-setInterval(game, 1000/50);
 </script>
