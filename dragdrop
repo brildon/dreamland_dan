@@ -4,62 +4,162 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 </head>
-
-<style>
-#transitions{ background-color: red; float: left; width: 350px; height: 350px; padding: 10px; margin: 12px;}
-#states{ background-color: yellow; float: left; width: 350px; height: 350px; padding: 10px; margin: 12px;}
-#stateSelec1{ background-color: green; float: left; width: 150px; height: 25px; padding: 10px; margin: 12px;}
-#stateSelec2{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
-#stateSelec3{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
-#transitionSelec1{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
-#transitionSelec2{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
-#transitionSelec3{ background-color: green; float: left; width: 150px; height: 30px; padding: 10px; margin: 12px;}
-</style>
-
 <body>
-<h1> Teste </h1>
-<div id= "transitions">
-	Transitions
-    <div id = "transition1" draggable="true" ondragstart="return dragStart(event)"> LeftKey</div>
-    <div id = "transition2" draggable="true" ondragstart="return dragStart(event)"> RightKey</div>
-    <div id = "transition3" draggable="true" ondragstart="return dragStart(event)"> UpKey</div>
-    <div id = "transition4" draggable="true" ondragstart="return dragStart(event)"> DownKey</div>
-    <div id = "transition5" draggable="true" ondragstart="return dragStart(event)"> CtrlKey</div>
-    <div id = "transition6" draggable="true" ondragstart="return dragStart(event)"> AltKey</div>
-    <div id = "transition7" draggable="true" ondragstart="return dragStart(event)"> ShiftKey</div>
-</div>
-
-<div id= "states">
-	States
-    <div id = "state1" draggable="true" ondragstart="return dragStart(event)"> Stand</div>
-    <div id = "state2" draggable="true" ondragstart="return dragStart(event)"> Run</div>
-    <div id = "state3" draggable="true" ondragstart="return dragStart(event)"> Jump</div>
-    <div id = "state4" draggable="true" ondragstart="return dragStart(event)"> DoubleJump</div>
-    <div id = "state5" draggable="true" ondragstart="return dragStart(event)"> Attack</div>
-    <div id = "state6" draggable="true" ondragstart="return dragStart(event)"> Crouch</div>
-    <div id = "state7" draggable="true" ondragstart="return dragStart(event)"> Slide</div>
-</div> 
-
-<div id= "stateSelec1" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 1</div> 
-<div id= "transitionSelec1" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 1</div> 
-<div id= "stateSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 2</div> 
-<div id= "transitionSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 2</div> 
-<div id= "stateSelec3" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">State 3</div> 
-<div id= "transitionSelec2" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Transition 3</div>
-
+<canvas id="ctx" width="800" height="800" style="z-index:2"></canvas>
 <script>
-function dragStart(ev){
-	ev.dataTransfer.setData("ID", ev.target.getAttribute('id'));	
-}
 
-function dragOver(ev){
-	return false;
-}
-
-function dragDrop(ev){
-	var selected = ev.dataTransfer.getData("ID");
-	ev.target.appendChild(document.getElementById(selected));
+var cv = document.getElementById("ctx");
+var ctx = cv.getContext('2d');
 	
+var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
+var transitionList = ["Space Bar", "W", "S", "A", "D"];
+var states = [];
+var stateCurrent = null;
+
+var xCoord = 100;
+var yCoord = 100;
+var startX = 0;
+var startY = 0;
+
+var stateStandObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateJumpObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateLeftObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateRightObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateAttackObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateDuckObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+window.onload = function (){
+	states.push(stateJumpObj);
+	states.push(stateRightObj);
+	states.push(stateLeftObj);
+	states.push(stateAttackObj);
+	states.push(stateDuckObj);
+	states.push(stateStandObj);
+	
+	render();
+	
+	cv.onmousedown = function(event) {
+		for (var i= 0; i< states.length; i++){	
+			if ( (event.clientY > states[i].posY-42 && event.clientY < (states[i].posY+states[i].aproxHeigth-42)) 
+			&& (event.clientX > states[i].posX-42 && event.clientX < (states[i].posX+states[i].aproxWidth-42)) ){
+				states[i].clicked = true;
+				stateCurrent = states[i];
+				startX = event.clientX - states[i].posX;
+				startY = event.clientY - states[i].posY;
+			}
+		}
+	};
+
+	cv.onmousemove = function (event) {
+		if (stateCurrent != null){
+			stateCurrent.posX = event.clientX - startX;
+    		stateCurrent.posY = event.clientY - startY;
+			ctx.clearRect(0,0,800,800);
+			render2();
+		}
+	};
+
+	cv.onmouseup = function (event){
+		stateCurrent = null;	
+		for (var i = 0; i < actionList.length; i++){
+			states[i].clicked = false;	
+		}
+	};
+}
+
+function update()
+{
+
+}
+function render()
+{
+	//Clickable Actions and Transitions
+	ctx.font = "25px arial"
+	for(i = 0; i < actionList.length; i++)
+	{
+		states[i].posX = xCoord;
+		states[i].posY = yCoord;
+		//circles
+		ctx.beginPath();
+		ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
+		ctx.stroke();
+		ctx.closePath();
+		//names
+		ctx.fillStyle = 'black';
+		ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
+		yCoord += 110;
+	}
+	yCoord = 100;
+	xCoord = 100;
+}
+
+function render2(){
+	ctx.font = "25px arial"
+	for(i = 0; i < actionList.length; i++)
+	{
+		//circles
+		ctx.beginPath();
+		ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
+		ctx.stroke();
+		ctx.closePath();
+		
+		//names
+		ctx.fillStyle = 'black';
+		ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
+	}
 }
 
 </script>
