@@ -58,7 +58,7 @@ function loadHandler()
 		{
 			drawingSurface.clearRect(0,0,1600,900);
 			buildCheck = true;
-			setInterval(game, 1000/50);
+			setInterval(gameScreenMachine, 1000/50);
 
 		}
 	}
@@ -437,9 +437,5 @@ function createStateMachine()
 		canChoseTransition = false;
 	}
 }
-/*if(!gameStarted)
-{
-	setInterval(gameScreenMachine, 1000/50)
-}*/
-setInterval(game, 1000/50);
+
 </script>
