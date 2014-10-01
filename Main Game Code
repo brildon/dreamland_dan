@@ -71,8 +71,69 @@ var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
 var transitionList = ["Space Bar", "W", "S", "A", "D"];
 
 // objects of actions
-// Willan is workin summin out
- 
+var stateCurrent = null;
+
+var stateStandObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateJumpObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateLeftObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateRightObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateAttackObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var stateDuckObj = {
+	posY: 0,
+	posX:  0,
+	aproxWidth: 99,
+	aproxHeigth: 99,
+	radius: 50,
+	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
+	clicked: false	
+}
+
+var states = [stateJumpObj, stateRightObj, stateLeftObj, stateAttackObj, stateDuckObj, stateStandObj];
 // objects of transitions
 var spacebarTrans = {x: 10, y: 10};
 var wTrans = {x: 10, y: 10};
@@ -111,21 +172,27 @@ var keyNumber = [32, 87, 65, 83, 68];
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
-window.addEventListener("click", onClickFunction, false);
+window.addEventListener("onmousedown", onMouseDownFunction, false);
+window.addEventListener("onmousemove", onMouseMoveFunction, false);
+window.addEventListener("onmouseup", onMouseUpFunction, false);
 // Bucket Variables
 var spot = 0;
 var numSpot = 0;
 var n = 0;
+var xCoord = 100;
+var yCoord = 100;
+var startX = 0;
+var startY = 0;
 
 //TODO
 function stateMachineScreen()
 {
-
-}
-function gameScreenMachine()
-{
 	renderMachineScreen();
 	createStateMachine();
+}
+function gameScreen()
+{
+	
 }
 //TODO???
 function game()
@@ -295,10 +362,51 @@ function setKey()
 }
 
 //TODO
-// Willian is workin on summin
-function onClickFunction()
+function onMouseDownFunction(event)
 {
-	
+	for (var i= 0; i< states.length; i++)
+	{	
+		if ( (event.clientY > states[i].posY-42 && event.clientY < (states[i].posY+states[i].aproxHeigth-42)) && (event.clientX > states[i].posX-42 && event.clientX < (states[i].posX+states[i].aproxWidth-42)) )
+		{
+			states[i].clicked = true;
+			stateCurrent = states[i];
+			startX = event.clientX - states[i].posX;
+			startY = event.clientY - states[i].posY;
+		}
+	}		
+}
+
+function onMouseMoveFunction(event)
+{
+	if (stateCurrent != null)
+	{
+		stateCurrent.posX = event.clientX - startX;
+    	stateCurrent.posY = event.clientY - startY;
+		ctx.clearRect(0,0,800,800);
+		
+		ctx.font = "25px arial"
+		for(i = 0; i < actionList.length; i++)
+		{
+			//circles
+			ctx.beginPath();
+			ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
+			ctx.stroke();
+			ctx.closePath();
+		
+			//names
+			ctx.fillStyle = 'black';
+			ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
+		}	
+	}
+}
+
+function onMouseUpFunction(event)
+{
+	stateCurrent = null;	
+	for (var i = 0; i < actionList.length; i++)
+	{
+		states[i].clicked = false;	
+	}
 }
 
 //TODO?
@@ -349,42 +457,42 @@ function startMainGame()
 //Puts actions and Transitions in workable ordered array
 function createStateMachine()
 {
-	//if(isStand is clicked)
+	if(stateStandObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[0];
 		spot++;
 		canChoseAction = false;
 		canChoseTransition = true;
 	}
-	//if(isJump is clicked)
+	if(stateJumpObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[1];
 		spot++;
 		canChoseAction  = false;
 		canChoseTransition = true;
 	}
-	//if(isMoveLeft is clicked)
+	if(stateLeftObj.clicked && canChoseAction)
 	{
 		stateArray[spot] == action[2];
 		spot++;
 		canChoseAction  = false;
 		canChoseTransition = true;
 	}
-	//if(isMoveRight is clicked)
+	if(stateRightObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[3];
 		spot++;
 		canChoseAction  = false;
 		canChoseTransition = true;
 	}
-	//if(isDucking is clicked)
+	if(stateDuckObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[4];
 		spot++;
 		canChoseAction  = false;
 		canChoseTransition = true;
 	}
-	//if(isAttack is clicked)
+	if(stateAttackObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[5];
 		spot++;
@@ -436,6 +544,32 @@ function createStateMachine()
 		canChoseAction  = true;
 		canChoseTransition = false;
 	}
+}
+function createInitialMachine()
+{
+	//Clickable Actions and Transitions
+	ctx.font = "25px arial"
+	for(i = 0; i < actionList.length; i++)
+	{
+		states[i].posX = xCoord;
+		states[i].posY = yCoord;
+		//circles
+		ctx.beginPath();
+		ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
+		ctx.stroke();
+		ctx.closePath();
+		//names
+		ctx.fillStyle = 'black';
+		ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
+		yCoord += 110;
+	}
+	yCoord = 100;
+	xCoord = 100;
+}
+if(!gameStarted)
+{
+	createInitialMachine();
+	setInterval(stateMachineScreen, 1000/50);
 }
 
 </script>
