@@ -15,7 +15,7 @@ var mouse = {x:0,y:0};
 
 var image = new Image();	
 image.addEventListener("load", loadHandler, false);
-image.src = "menu.png";
+image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 
 
 function menu(e)
@@ -43,7 +43,7 @@ function loadHandler()
 	{
 		if(buildCheck == false)
 		{
-			image.src = "menu.png";
+			image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 			drawingSurface.drawImage(image,0,0,1600,900);
 			buildCheck=true;
 			
