@@ -58,8 +58,6 @@ function loadHandler()
 		{
 			drawingSurface.clearRect(0,0,1600,900);
 			buildCheck = true;
-			setInterval(gameScreenMachine, 1000/50);
-
 		}
 	}
 }
@@ -566,7 +564,7 @@ function createInitialMachine()
 	yCoord = 100;
 	xCoord = 100;
 }
-if(!gameStarted)
+if(buildCheck)
 {
 	createInitialMachine();
 	setInterval(stateMachineScreen, 1000/50);
