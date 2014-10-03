@@ -147,7 +147,7 @@ function menu(e)
 		mouse.y = e.pageY - cv.offsetTop;	
 	}
 	
-	if(mouse.x < 930 && mouse.y < 650 && mouse.x > 540 && mouse.y > 440)
+	if(mouse.x < 930 && mouse.y < 650 && mouse.x > 540 && mouse.y > 440 && menuCheck==true)
 	{
 		buildCheck=false;
 		menuCheck=false;
