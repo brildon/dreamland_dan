@@ -1,4 +1,4 @@
-<canvas id="ctx" width="1600" height="900" style="z-index:2"></canvas>
+<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 
 <script>
 /* Author Notes: Make actions re-clickable after being placed
