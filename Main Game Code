@@ -26,7 +26,7 @@ var xCoord = 100;
 var yCoord = 100;
 var startX = 0;
 var startY = 0;
-
+var actionSelect = 1;
 
 // objects of transitions
 var spacebarTrans = {x: 10, y: 10};
@@ -537,20 +537,37 @@ function keyUp(e)
 //Loop through the ordered Array "finiteArray" and set all actions and transitions in proper place
 function finalizeStateMachine(finiteArray)
 {
+	actionSelect = 0;
 	for(i = 0; i < finiteArray.length; i++)
 	{
+		if(i == 0)
+		{
+			action[i] = finiteArray[i];
+			actionSelect++;
+		}
+		if(i % 2 == 1)
+		{
+			if(isAction)
+			{
+				action[i - 1] = finiteArray[i];
+				actionSelect++;
+				if(actionSelect == 2)
+				{
+					isTrans = true;
+					isAction = false;
+					actionSelect = 0;
+				}	
+			}
+			transition[i - 1] = finiteArray[i];
+		}
 		if(i % 2 == 0)
 		{
-			if(i == 0)
+			if(isTrans)
 			{
-				action[i] = finiteArray[i];
+				transition
 			}
-			
 			action[i - 1] = finiteArray[i];
-		}
-		else
-		{
-			transition[i - 1] = finiteArray[i];
+			actionSelect++;
 		}
 	} 
 }
@@ -572,10 +589,12 @@ function createStateMachine()
 	console.log("Action is " + canChoseAction);
 	console.log("Transition is " + canChoseTransition);
 	console.log("Spot is " + spot);
+	
 	if(stateStandObj.clicked && canChoseAction)
 	{
 		stateArray[spot] = action[0];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction = false;
 	}
@@ -583,6 +602,7 @@ function createStateMachine()
 	{
 		stateArray[spot] = action[1];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction  = false;
 	}
@@ -590,6 +610,7 @@ function createStateMachine()
 	{
 		stateArray[spot] == action[2];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction  = false;
 	}
@@ -597,6 +618,7 @@ function createStateMachine()
 	{
 		stateArray[spot] = action[3];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction  = false;
 	}
@@ -604,6 +626,7 @@ function createStateMachine()
 	{
 		stateArray[spot] = action[4];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction  = false;
 	}
@@ -611,6 +634,7 @@ function createStateMachine()
 	{
 		stateArray[spot] = action[5];
 		spot++;
+		actionSelect++;
 		canChoseTransition = true;
 		canChoseAction  = false;
 	}
@@ -658,6 +682,18 @@ function createStateMachine()
 		spot++;
 		canChoseAction  = true;
 		canChoseTransition = false;
+	}
+	if( !stateStandObj.clicked && !stateJumpObj.clicked && !stateLeftObj.clicked && !stateRightObj.clicked && !stateDuckObj.clicked && !stateAttackObj.clicked && !canChoseAction)
+	{
+		if(actionSelect == 2)
+		{
+			actionSelect = 0;
+		}
+		if(actionSelect < 2 && actionSelect != 0)
+		{
+			canChoseAction  = true;
+			canChoseTransition = false;
+		}
 	}
 }
 
