@@ -1,183 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>DreamLand Dan</title>
 </head>
 <body>
 <canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 <script>
-
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
-	
-var actionList = ["Jump", "Right", "Left", "Attack", "Duck", "Stand"];
-var transitionList = ["Space Bar", "W", "S", "A", "D"];
-var states = [];
-var trans = [];
-var transCurrent = null;
-var stateCurrent = null;
-
-// Bucket Variables
-var spot = 0;
-var numSpot = 0;
-var n = 0;
-var xCoord = 100;
-var yCoord = 100;
-var startX = 0;
-var startY = 0;
-var actionSelect = 1;
-
-// objects of transitions
-var spacebarTrans = {x: 10, y: 10};
-var wTrans = {x: 10, y: 10};
-var aTrans = {x: 10, y: 10};
-var sTrans = {x: 10, y:10};
-var dTrans = {x: 10, y: 10};
-// When you can or can't choose object/transition
-var canChoseAction = true;
-var canChoseTransition = false;
-// Organizer array
-var stateArray = [];
-// abstract variables for actions or objects
-var key = [];
-var length = 220; 
-var width = 50;
-// action boolean statements
-var isStand = true;
-var isJump = false;
-var isMoveLeft = false;
-var isMoveRight = false;
-var isDucking = false;
-var isAttack = false;
-// action Array
-var action = [isStand, isJump, isMoveLeft, isMoveRight, isDucking, isAttack];
-// transition boolean statements
-var spacebarPressed = false;
-var wPressed = false;
-var aPressed = false;
-var sPressed = false;
-var dPressed = false;
-// transition and key correspondent arrays
-var transition = [spacebarPressed, wPressed, aPressed, sPressed, dPressed];
-var keyNumber = [32, 87, 65, 83, 68];
-
-var stateStandObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var stateJumpObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var stateLeftObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var stateRightObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var stateAttackObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var stateDuckObj = {
-	posY: 0,
-	posX:  0,
-	aproxWidth: 99,
-	aproxHeigth: 99,
-	radius: 50,
-	startAngle: ((Math.PI/180)*0, (Math.PI/180)*360), 
-	clicked: false	
-}
-
-var transSpaceObj = {
-	posY: 0,
-	posX: 0,
-	height: 99,
-	width: 99,
-	clicked: false
-}
-
-var transWObj = {
-	posY: 0,
-	posX: 0,
-	height: 99,
-	width: 99,
-	clicked: false
-}
-
-var transAObj = {
-	posY: 0,
-	posX: 0,
-	height: 99,
-	width: 99,
-	clicked: false
-}
-
-var transSObj = {
-	posY: 0,
-	posX: 0,
-	height: 99,
-	width: 99,
-	clicked: false
-}
-
-var transDObj = {
-	posY: 0,
-	posX: 0,
-	height: 99,
-	width: 99,
-	clicked: false
-}
 
 var menuCheck = true;
-
 var buildCheck = false;
-
 var mouse = {x:0,y:0};
 
-var image = new Image();	
-image.addEventListener("load", loadHandler, false);
-image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
+var key = [];
 
+var playerObj = {
+	posY: 824,
+	posX: 10,
+	height: 50,
+	width: 50,
+	jumpStrength: 20,
+	jumpDecay: 0.5,
+	speed: 5
+}
+
+var isAttack = false;
+var isDucking = false;
+var isMoveLeft = false;
+var isMoveRight = false;
+var isJump = false;
 
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
 
 //loadHandler();
+var image = new Image();	
+image.addEventListener("load", loadHandler, false);
+image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 
 function menu(e)
 {
@@ -215,113 +76,17 @@ function loadHandler()
 		{
 			ctx.clearRect(0,0,1600,900);
 			buildCheck = true;
-			createInitialMachine();
+			setInterval(gameScreen, 1000/50);
+			//createInitialMachine();
 			//setInterval(stateMachineScreen, 1000/50);
 		}
 	}
 }
 
- function createInitialMachine(){
-	states.push(stateJumpObj);
-	states.push(stateRightObj);
-	states.push(stateLeftObj);
-	states.push(stateAttackObj);
-	states.push(stateDuckObj);
-	states.push(stateStandObj);
-	
-	trans.push(transSpaceObj);
-	trans.push(transWObj);
-	trans.push(transSObj);
-	trans.push(transAObj);
-	trans.push(transDObj);
-	
-	renderMachineScreen();
-	
-	setInterval(createStateMachine, 1000/50);
-	
-	cv.onmousedown = function(event) 
-	{	
-		for (var i= 0; i< states.length; i++)
-		{	
-			if ( (event.clientY > states[i].posY-42 && event.clientY < (states[i].posY+states[i].aproxHeigth-42)) 
-			&& (event.clientX > states[i].posX-42 && event.clientX < (states[i].posX+states[i].aproxWidth-42)) )
-			{
-				states[i].clicked = true;
-				stateCurrent = states[i];
-				startX = event.clientX - states[i].posX;
-				startY = event.clientY - states[i].posY;
-			}
-		}
-		
-		for (var i= 0; i< trans.length; i++)
-		{	
-			if ( (event.clientY > trans[i].posY && event.clientY < (trans[i].posY + trans[i].height)) 
-			&& (event.clientX > trans[i].posX && event.clientX < (trans[i].posX + trans[i].width)) )
-			{
-				console.log("This is working");
-				trans[i].clicked = true;
-				transCurrent = trans[i];
-				startX = event.clientX - trans[i].posX;
-				startY = event.clientY - trans[i].posY;
-			}
-		}
-	};
-
-	cv.onmousemove = function (event) {
-		if (stateCurrent != null){
-			stateCurrent.posX = event.clientX - startX;
-    		stateCurrent.posY = event.clientY - startY;
-			ctx.clearRect(0,0,1600,900);
-			render2();
-		}
-		if(transCurrent != null)
-		{
-			transCurrent.posX = event.clientX - startX;
-    		transCurrent.posY = event.clientY - startY;
-			ctx.clearRect(0,0,1600,900);
-			render2();
-		}
-	};
-
-	cv.onmouseup = function (event){
-		if(stateCurrent != null)
-		{	
-			for (var i = 0; i < actionList.length; i++)
-			{
-				states[i].clicked = false;	
-			}
-			stateCurrent = null;
-		}
-		if(transCurrent != null)
-		{
-			for (var i = 0; i < transitionList.length; i++)
-			{
-				trans[i].clicked = false;	
-			}
-			transCurrent = null;
-		}
-	};
-}
-
-//TODO
-function stateMachineScreen()
-{
-	renderMachineScreen();
-	createStateMachine();
-}
-
-
 function gameScreen()
 {
-	
-}
-
-
-//TODO???
-function game()
-{
-	renderGameScreen();
 	update();
+	render();
 }
 
 function update()
@@ -329,107 +94,90 @@ function update()
 	//SpaceBar
 	if(key[32])
 	{
-		
-		for(i = 0; i < keyNumber.length; i++)
-		{
-			if(32 == keyNumber[i])
-			{
-				transition[i] = true;
-			}
-		}
+		isAttack = true;
 	}
 	//W
 	if(key[87])
 	{
-		
-		for(i = 0; i < keyNumber.length; i++)
+		if(!isJump)
 		{
-			if(87 == keyNumber[i])
-			{
-				transition[i] = true;
-			}
-		}
+			playerObj.posY = 823;
+			isJump = true;
+		}	
 	}
 	//A
 	if(key[65])
 	{
-		
-		for(i = 0; i < keyNumber.length; i++)
-		{
-			if(65 == keyNumber[i])
-			{
-				transition[i] = true;
-			}
-		}
+		isMoveLeft = true;
 	}
 	//S
 	if(key[83])
 	{
-		
-		for(i = 0; i < keyNumber.length; i++)
-		{
-			if(83 == keyNumber[i])
-			{
-				transition[i] = true;
-			}
-		}
+		isDucking = true;
 	}
 	//D
 	if(key[68])
 	{
-		
-		for(i = 0; i < keyNumber.length; i++)
-		{
-			if(68 == keyNumber[i])
-			{
-				transition[i] = true;
-			}
-		}
+		isMoveRight = true;
 	}
 	
-	//Transition corresponding to actions check
-	for(i  = 0; i < transition.length; i++)
+	//SpaceBar
+	if(!key[32])
 	{
-		if(transition[i])
-		{
-			action[i + 1*(n)] = false;
-		}
-		if(!action[i + 1*(n)] && transition[i])
-		{
-			n += 1;
-			action[i + 1*(n)] = true;
-		}
-		if(!transition[i])
-		{
-			action[i + 1*(n)] = false;
-			action[i + 1*(n - 1)] = true;
-		}
+		isAttack = false;
+	}
+	//W
+	
+	//A
+	if(!key[65])
+	{
+		isMoveLeft = false;
+	}
+	//S
+	if(!key[83])
+	{
+		isDucking = false;
+	}
+	//D
+	if(!key[68])
+	{
+		isMoveRight = false;
 	}
 	
 	// Preform actions
 	if(isJump)
 	{
-		
-	}
-	
-	if(isStand)
-	{
-	
+		if(playerObj.posY > 824)
+		{
+			playerObj.jumpDecay = .5;
+			playerObj.jumpStrength = 20;
+			playerObj.posY = 824;
+			isJump = false;
+		}
+		//Gravity equation...
+		else if(playerObj.posY != 824)
+		{
+			// constantly updates playerOne's Y position
+			playerObj.posY -= (playerObj.jumpStrength - playerObj.jumpDecay);
+			// constantly increases the amount of pull downwards by one. 
+			playerObj.jumpDecay += 1;
+		}
 	}
 	
 	if(isMoveLeft)
 	{
-	
+		playerObj.posX -= playerObj.speed;
 	}
 	
 	if(isMoveRight)
 	{
-	
+		console.log("Yep");
+		playerObj.posX += playerObj.speed;
 	}
 	
 	if(isDucking)
 	{
-	
+		playerObj.heigth = playerObj.heigth/2;
 	}
 	
 	if(isAttack)
@@ -438,263 +186,21 @@ function update()
 	}
 }
 
-//TODO
-function renderGameScreen()
+function render()
 {
-	//if(level 1)
-	//if(level 2)
-	//if(level 3)
-	//if(level 4)
-	//if(level 5)
+	ctx.clearRect(0,0,1584, 884);
+	ctx.fillStyle = 'green';
+	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 }
 
-function setKey()
-{
-	
-}
-
-function renderMachineScreen()
-{
-	//Clickable Actions and Transitions
-	ctx.font = "25px arial"
-	for(i = 0; i < actionList.length; i++)
-	{
-		states[i].posX = xCoord;
-		states[i].posY = yCoord;
-		//circles
-		ctx.beginPath();
-		ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
-		ctx.stroke();
-		ctx.closePath();
-		//names
-		ctx.fillStyle = 'black';
-		ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
-		yCoord += 110;
-	}
-	yCoord = 100;
-	xCoord = 1400;
-	
-	for(i = 0; i < transitionList.length; i++)
-	{
-		trans[i].posX = xCoord;
-		trans[i].posY = yCoord;
-		//squares
-		ctx.beginPath();
-		ctx.fillRect(trans[i].posX, trans[i].posY, trans[i].height, trans[i].width);
-		ctx.stroke();
-		ctx.closePath();
-		//names
-		ctx.fillStyle = 'black';
-		ctx.fillText(transitionList[i], trans[i].posX, trans[i].posY);
-		yCoord += 110;
-	}
-	yCoord = 100;
-	xCoord = 100;
-}
-
-function render2(){
-	ctx.font = "25px arial"
-	for(i = 0; i < actionList.length; i++)
-	{
-		//circles
-		ctx.beginPath();
-		ctx.arc(states[i].posX, states[i].posY, states[i].radius, states[i].startAngle , false);
-		ctx.stroke();
-		ctx.closePath();
-		
-		//names
-		ctx.fillStyle = 'black';
-		ctx.fillText(actionList[i], states[i].posX-35, states[i].posY);
-	}
-	
-	for(i = 0; i < transitionList.length; i++)
-	{
-		//squares
-		ctx.beginPath();
-		ctx.fillRect(trans[i].posX, trans[i].posY, trans[i].height, trans[i].width);
-		ctx.stroke();
-		ctx.closePath();
-		//names
-		ctx.fillStyle = 'black';
-		ctx.fillText(transitionList[i], trans[i].posX, trans[i].posY);
-	}
-}
-
-//TODO?
 function keyDown(e)
 {
 		key[e.keyCode] = true;
 }
 
-//TODO?
 function keyUp(e)
 {
 		delete key[e.keyCode];
-}
-
-
-//TODO??
-//Loop through the ordered Array "finiteArray" and set all actions and transitions in proper place
-function finalizeStateMachine(finiteArray)
-{
-	actionSelect = 0;
-	for(i = 0; i < finiteArray.length; i++)
-	{
-		if(i == 0)
-		{
-			action[i] = finiteArray[i];
-			actionSelect++;
-		}
-		if(i % 2 == 1)
-		{
-			if(isAction)
-			{
-				action[i - 1] = finiteArray[i];
-				actionSelect++;
-				if(actionSelect == 2)
-				{
-					isTrans = true;
-					isAction = false;
-					actionSelect = 0;
-				}	
-			}
-			transition[i - 1] = finiteArray[i];
-		}
-		if(i % 2 == 0)
-		{
-			if(isTrans)
-			{
-				transition
-			}
-			action[i - 1] = finiteArray[i];
-			actionSelect++;
-		}
-	} 
-}
-
-//TODO
-function startMainGame()
-{
-	if(stateArray == null)
-	{
-		stateArray[0] = action[0];
-	}
-	finalizeStateMachine(stateArray);
-}
-
-//TODO??
-//Puts actions and Transitions in workable ordered array
-function createStateMachine()
-{
-	console.log("Action is " + canChoseAction);
-	console.log("Transition is " + canChoseTransition);
-	console.log("Spot is " + spot);
-	
-	if(stateStandObj.clicked && canChoseAction)
-	{
-		stateArray[spot] = action[0];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction = false;
-	}
-	if(stateJumpObj.clicked && canChoseAction)
-	{
-		stateArray[spot] = action[1];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction  = false;
-	}
-	if(stateLeftObj.clicked && canChoseAction)
-	{
-		stateArray[spot] == action[2];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction  = false;
-	}
-	if(stateRightObj.clicked && canChoseAction)
-	{
-		stateArray[spot] = action[3];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction  = false;
-	}
-	if(stateDuckObj.clicked && canChoseAction)
-	{
-		stateArray[spot] = action[4];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction  = false;
-	}
-	if(stateAttackObj.clicked && canChoseAction)
-	{
-		stateArray[spot] = action[5];
-		spot++;
-		actionSelect++;
-		canChoseTransition = true;
-		canChoseAction  = false;
-	}
-	if(transSpaceObj.clicked && canChoseTransition)
-	{
-		stateArray[spot] = transition[0];
-		keyNumber[numSpot] = keyNumber[0];
-		numSpot++;
-		spot++;
-		canChoseAction  = true;
-		canChoseTransition = false;
-	}
-	if(transWObj.clicked && canChoseTransition)
-	{
-		stateArray[spot] = transition[1];
-		keyNumber[numSpot] = keyNumber[1];
-		numSpot++;
-		spot++;
-		canChoseAction  = true;
-		canChoseTransition = false;
-	}
-	if(transAObj.clicked && canChoseTransition)
-	{
-		stateArray[spot] = transition[2];
-		keyNumber[numSpot] = keyNumber[2];
-		numSpot++;
-		spot++;
-		canChoseAction  = true;
-		canChoseTransition = false;
-	}
-	if(transSObj.clicked && canChoseTransition)
-	{
-		stateArray[spot] = transition[3];
-		keyNumber[numSpot] = keyNumber[3];
-		numSpot++;
-		spot++;
-		canChoseAction  = true;
-		canChoseTransition = false;
-	}
-	if(transDObj.clicked && canChoseTransition)
-	{
-		stateArray[spot] = transition[4];
-		keyNumber[numSpot] = keyNumber[4];
-		numSpot++;
-		spot++;
-		canChoseAction  = true;
-		canChoseTransition = false;
-	}
-	if( !stateStandObj.clicked && !stateJumpObj.clicked && !stateLeftObj.clicked && !stateRightObj.clicked && !stateDuckObj.clicked && !stateAttackObj.clicked && !canChoseAction)
-	{
-		if(actionSelect == 2)
-		{
-			actionSelect = 0;
-		}
-		if(actionSelect < 2 && actionSelect != 0)
-		{
-			canChoseAction  = true;
-			canChoseTransition = false;
-		}
-	}
 }
 
 </script>
