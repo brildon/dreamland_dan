@@ -16,10 +16,10 @@ var mouse = {x:0,y:0};
 var key = [];
 
 var playerObj = {
-	posY: 824,
+	posY: 600,
 	posX: 10,
-	height: 50,
-	width: 50,
+	height: 138,
+	width: 124,
 	jumpStrength: 20,
 	jumpDecay: 0.5,
 	speed: 5
@@ -39,6 +39,19 @@ window.addEventListener("keyup", keyUp, false);
 var image = new Image();	
 image.addEventListener("load", loadHandler, false);
 image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
+
+var background = new Image();	
+background.addEventListener("load", loadHandler, false);
+background.src = "https://cloud.githubusercontent.com/assets/8864180/4586542/2f30a63c-5019-11e4-9b68-9c892cc6df07.png";
+
+var llama_left = new Image();	
+var llama_right = new Image();
+llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
+llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
+
+
+
+
 
 function menu(e)
 {
@@ -77,8 +90,8 @@ function loadHandler()
 			ctx.clearRect(0,0,1600,900);
 			buildCheck = true;
 			setInterval(gameScreen, 1000/50);
-			//createInitialMachine();
-			//setInterval(stateMachineScreen, 1000/50);
+			background.src = "https://cloud.githubusercontent.com/assets/8864180/4586542/2f30a63c-5019-11e4-9b68-9c892cc6df07.png";
+			ctx.drawImage(background,0,0,1600,900);
 		}
 	}
 }
@@ -101,7 +114,7 @@ function update()
 	{
 		if(!isJump)
 		{
-			playerObj.posY = 823;
+			playerObj.posY = 599;
 			isJump = true;
 		}	
 	}
@@ -147,15 +160,15 @@ function update()
 	// Preform actions
 	if(isJump)
 	{
-		if(playerObj.posY > 824)
+		if(playerObj.posY > 600)
 		{
 			playerObj.jumpDecay = .5;
 			playerObj.jumpStrength = 20;
-			playerObj.posY = 824;
+			playerObj.posY = 600;
 			isJump = false;
 		}
 		//Gravity equation...
-		else if(playerObj.posY != 824)
+		else if(playerObj.posY != 600)
 		{
 			// constantly updates playerOne's Y position
 			playerObj.posY -= (playerObj.jumpStrength - playerObj.jumpDecay);
@@ -188,9 +201,15 @@ function update()
 
 function render()
 {
-	ctx.clearRect(0,0,1584, 884);
-	ctx.fillStyle = 'green';
-	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+	ctx.drawImage(background,0,0,1600,900);
+	
+	if(!isMoveLeft)
+	ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+	
+	if(isMoveLeft)
+		ctx.drawImage(llama_left,playerObj.posX, playerObj.posY);
+
+	
 }
 
 function keyDown(e)
