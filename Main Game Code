@@ -184,7 +184,6 @@ function update()
 	
 	if(isMoveRight)
 	{
-		console.log("Yep");
 		playerObj.posX += playerObj.speed;
 	}
 	
