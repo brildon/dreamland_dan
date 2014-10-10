@@ -197,6 +197,9 @@ function update()
 	{
 	
 	}
+	
+	playerObj.posX = Math.max(0,Math.min(playerObj.posX,cv.width-playerObj.width));
+	playerObj.posY = Math.max(0,Math.min(playerObj.posY,cv.height-playerObj.height));
 }
 
 function render()
