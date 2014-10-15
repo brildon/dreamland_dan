@@ -12,6 +12,7 @@ var ctx = cv.getContext('2d');
 var menuCheck = true;
 var buildCheck = false;
 var collide = false;
+var falling = false;
 var isDucked = false;
 var isStanding = true;
 var mouse = {x:0,y:0};
@@ -45,32 +46,13 @@ var camera = {
 	}
 }
 
-var collisionObj = {
-	x: 0,
-	y: 0,
-	height: 10,
-	width: 75,
-	
-	centerX: function (){
-		return this.x + (this.width / 2);
-	},
-	centerY: function (){
-		return this.y + (this.height / 2);	
-	},
-	halfWidth: function(){
-		return (this.width / 2);	
-	},
-	halfHeight: function(){
-		return (this.height / 2);	
-	}	
-	
-}
-
 var playerObj = {
 	posY: 600,
 	posX: 600,
 	height: 138,
 	width: 124,
+	hMask: 10,
+	wMask: 75,
 	jumpStrength: 20,
 	jumpDecay: 0.5,
 	speed: 5,
@@ -265,8 +247,6 @@ function side_scroller(){
 function update()
 {
 	var playerDirec = 0;
-	collisionObj.x = playerObj.posX;
-	collisionObj.y = playerObj.posY + playerObj.height - collisionObj.height;
 	
 	//SpaceBar
 	if(key[32])
@@ -331,6 +311,7 @@ function update()
 				playerObj.posY = floorLvl;
 				playerDirec = 0;
 				isJump = false;
+				falling = true;
 			}
 			//Gravity equation...
 			else if(playerObj.posY != floorLvl)
@@ -339,9 +320,10 @@ function update()
 				collide = false;
 				if (playerDirec < 0 ){ //caindo
 					for (var i = 0; i< aBranch.length; i++){
-						if (hitTest(collisionObj,aBranch[i])){
+						if (hitTest(playerObj,aBranch[i])){
 								floorLvl = playerObj.posY;	
 								collide = true;	
+								falling = false;
 						}
 					}
 				}
@@ -357,15 +339,27 @@ function update()
 	for (var i = 0; i< aBranch.length; i++){
 		if (hitTest(playerObj,aBranch[i])){
 				collide = true;	
+				falling = false;
 		}
 	}
 	
-	if (!collide){
+	if (!collide&&!isJump){
 		floorLvl=600;
 		if (playerObj.posY<floorLvl)
 		{
-			playerObj.posY+=2;
+			if(!falling)
+			{
+				falling = true;
+				fallStrength = 0;
+			}
+			else
+			{
+				playerObj.posY+=fallStrength;
+				fallStrength++;
+			}
 		}
+		else
+			falling = false;
 	}
 	
 	
@@ -422,7 +416,7 @@ function render()
 	ctx.translate(-camera.x, -camera.y);
 	ctx.drawImage(background,0,0,6370,900);
 	
-	ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	ctx.fillRect(playerObj.posX, playerObj.posY+124, playerObj.wMask, playerObj.hMask);
 	
 	if(!isMoveLeft){
 		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
