@@ -15,15 +15,99 @@ var mouse = {x:0,y:0};
 
 var key = [];
 
+var gameWorld = {
+	x: 0,
+	y: 0,
+	width: 6370,
+	heigth: 884	
+}
+
+var camera = {
+	x: 0,
+	y: 0,
+	width: cv.width,
+	height: cv.height,
+	
+	rightInnerBoundary: function (){
+		return this.x + (this.width * 0.75);	
+	},	
+	leftInnerBoundary: function (){
+		return this.x+ (this.width * 0.25);	
+	},
+	topInnerBoundary: function (){
+		return this.y + (this.height * 0.25);	
+	},
+	bottomInnerBoundary: function (){
+		return this.y + (this.height * 0.75);	
+	}
+}
+
 var playerObj = {
 	posY: 600,
-	posX: 10,
+	posX: 600,
 	height: 138,
 	width: 124,
+	hMask: 0,
+	wMask: 75,
 	jumpStrength: 20,
 	jumpDecay: 0.5,
-	speed: 5
+	speed: 5,
+	
+	centerX: function (){
+		return this.posX + (this.wMask / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.wMask / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
 }
+
+var branchObj = {
+	posX: 0,
+	posY: 0,
+	height: 10,
+	width : 100,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
+var playerObj = Object.create(playerObj);
+
+var aBranch = new Array (3);
+for (var i=0;i<aBranch.length;i++){
+	aBranch[i] = Object.create(branchObj);	
+}
+
+aBranch[0].posX = 150;
+aBranch[0].posY = 580;
+
+aBranch[1].posX = 300;
+aBranch[1].posY = 400;
+	
+aBranch[2].posX = 2450;
+aBranch[2].posY = 580;
+
+var hitVar = false;
+var floorLvl = 600;
+
+camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
+camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
 
 var isAttack = false;
 var isDucking = false;
@@ -42,16 +126,12 @@ image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2
 
 var background = new Image();	
 background.addEventListener("load", loadHandler, false);
-background.src = "https://cloud.githubusercontent.com/assets/8864180/4586542/2f30a63c-5019-11e4-9b68-9c892cc6df07.png";
+background.src = "https://cloud.githubusercontent.com/assets/8835208/4622647/808596b8-533f-11e4-8e1d-661d39b4d09b.png";
 
 var llama_left = new Image();	
 var llama_right = new Image();
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
-
-
-
-
 
 function menu(e)
 {
@@ -77,7 +157,6 @@ function loadHandler()
 	{
 		if(buildCheck == false)
 		{
-			image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 			ctx.drawImage(image,0,0,1600,900);
 			buildCheck=true;		
 		}
@@ -87,11 +166,8 @@ function loadHandler()
 	{	
 		if(buildCheck == false)
 		{
-			ctx.clearRect(0,0,1600,900);
 			buildCheck = true;
 			setInterval(gameScreen, 1000/50);
-			background.src = "https://cloud.githubusercontent.com/assets/8864180/4586542/2f30a63c-5019-11e4-9b68-9c892cc6df07.png";
-			ctx.drawImage(background,0,0,1600,900);
 		}
 	}
 }
@@ -99,11 +175,49 @@ function loadHandler()
 function gameScreen()
 {
 	update();
+	
+	side_scroller();
+	
 	render();
+}
+
+function side_scroller(){
+	playerObj.posX = Math.max(0, Math.min(playerObj.posX, gameWorld.width - playerObj.width));
+		
+	camera.x = Math.floor(playerObj.posX + (playerObj.width/2) - (camera.width/2));
+	camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
+	
+	if (playerObj.posX < camera.leftInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));	
+	}
+	if (playerObj.posY < camera.topInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
+	}
+	if (playerObj.posX + playerObj.width > camera.rightInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX + playerObj.width - (camera.width *0.75));	
+	}
+	if (playerObj.posY + playerObj.height > camera.bottomInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY + playerObj.height - (camera.height * 0.75));
+	}
+	
+	if (camera.x < gameWorld.x){
+		camera.x = gameWorld.x;	
+	}
+	if (camera.y < gameWorld.y){
+		camera.y = gameWorld.y;	
+	}
+	if (camera.x + camera.width > gameWorld.x + gameWorld.width){
+		camera.x = gameWorld.x + gameWorld.width - camera.width;	
+	}
+	if (camera.y + camera.height > gameWorld.heigth){
+		camera.y = gameWorld.heigth - camera.height;	
+	}	
 }
 
 function update()
 {
+	var playerDirec = 0;
+	
 	//SpaceBar
 	if(key[32])
 	{
@@ -114,7 +228,7 @@ function update()
 	{
 		if(!isJump)
 		{
-			playerObj.posY = 599;
+			playerObj.posY = floorLvl-1;
 			isJump = true;
 		}	
 	}
@@ -141,7 +255,7 @@ function update()
 	}
 	//W
 	
-	//A
+	//A 
 	if(!key[65])
 	{
 		isMoveLeft = false;
@@ -160,26 +274,35 @@ function update()
 	// Preform actions
 	if(isJump)
 	{
-		if(playerObj.posY > 600)
-		{
-			playerObj.jumpDecay = .5;
-			playerObj.jumpStrength = 20;
-			playerObj.posY = 600;
-			isJump = false;
-		}
-		//Gravity equation...
-		else if(playerObj.posY != 600)
-		{
-			// constantly updates playerOne's Y position
-			playerObj.posY -= (playerObj.jumpStrength - playerObj.jumpDecay);
-			// constantly increases the amount of pull downwards by one. 
-			playerObj.jumpDecay += 1;
-		}
+			if(playerObj.posY > floorLvl) //quando passa do nivel do chao
+			{
+				playerObj.jumpDecay = .5;
+				playerObj.jumpStrength = 20;
+				playerObj.posY = floorLvl;
+				playerDirec = 0;
+				isJump = false;
+			}
+			//Gravity equation...
+			else if(playerObj.posY != floorLvl)
+			{
+				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+				if (playerDirec < 0 ){ //caindo
+					for (var i = 0; i< aBranch.length; i++){
+						if (hitTest(playerObj,aBranch[i])){
+								floorLvl = playerObj.posY;			
+						}
+					}
+				}
+			
+				// constantly updates playerOne's Y position
+				playerObj.posY -= playerDirec;
+				// constantly increases the amount of pull downwards by one. 
+				playerObj.jumpDecay += 1;
+			}
 	}
-	
 	if(isMoveLeft)
 	{
-		playerObj.posX -= playerObj.speed;
+		playerObj.posX -= playerObj.speed;	
 	}
 	
 	if(isMoveRight)
@@ -196,22 +319,36 @@ function update()
 	{
 	
 	}
-	
-	playerObj.posX = Math.max(0,Math.min(playerObj.posX,cv.width-playerObj.width));
-	playerObj.posY = Math.max(0,Math.min(playerObj.posY,cv.height-playerObj.height));
+	render();
+}
+
+function hitTest(r1,r2){
+	//console.log("testando");
+	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
 }
 
 function render()
 {
-	ctx.drawImage(background,0,0,1600,900);
 	
-	if(!isMoveLeft)
-	ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+	ctx.clearRect(0,0,1600,900);
 	
-	if(isMoveLeft)
+	ctx.save();
+	ctx.translate(-camera.x, -camera.y);
+	ctx.drawImage(background,0,0,6370,900);
+	
+	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.wMask, playerObj.height);
+	
+	if(!isMoveLeft){
+		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+	}
+	if(isMoveLeft){
 		ctx.drawImage(llama_left,playerObj.posX, playerObj.posY);
-
-	
+	}
+		
+	for (var i=0;i<aBranch.length;i++){
+		ctx.fillRect(aBranch[i].posX,aBranch[i].posY,aBranch[i].width,aBranch[i].height);	
+	}
+	ctx.restore();
 }
 
 function keyDown(e)
