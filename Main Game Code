@@ -11,6 +11,7 @@ var ctx = cv.getContext('2d');
 
 var menuCheck = true;
 var buildCheck = false;
+var collide = false;
 var isDucked = false;
 var isStanding = true;
 var mouse = {x:0,y:0};
@@ -49,7 +50,7 @@ var playerObj = {
 	posX: 600,
 	height: 138,
 	width: 124,
-	hMask: 0,
+	hMask: 10,
 	wMask: 75,
 	jumpStrength: 20,
 	jumpDecay: 0.5,
@@ -63,6 +64,28 @@ var playerObj = {
 	},
 	halfWidth: function(){
 		return (this.wMask / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
+}
+
+var worldFloor = {
+	posX: 0,
+	posY: 0,
+	height: 10,
+	width: gameWorld.width,
+	hMask: 0,
+	wMask: 0,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
 	},
 	halfHeight: function(){
 		return (this.height / 2);	
@@ -104,6 +127,10 @@ aBranch[1].posY = 400;
 	
 aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
+
+var worldFloor = Object.create(worldFloor);
+worldFloor.posX = 0;
+worldFloor.posY = 734;
 
 var hitVar = false;
 var floorLvl = 600;
@@ -288,20 +315,39 @@ function update()
 			else if(playerObj.posY != floorLvl)
 			{
 				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+				collide = false;
 				if (playerDirec < 0 ){ //caindo
 					for (var i = 0; i< aBranch.length; i++){
 						if (hitTest(playerObj,aBranch[i])){
-								floorLvl = playerObj.posY;			
+								floorLvl = playerObj.posY;	
+								collide = true;	
 						}
 					}
 				}
-			
+
 				// constantly updates playerOne's Y position
 				playerObj.posY -= playerDirec;
 				// constantly increases the amount of pull downwards by one. 
 				playerObj.jumpDecay += 1;
 			}
 	}
+	
+	collide=false;
+	for (var i = 0; i< aBranch.length; i++){
+		if (hitTest(playerObj,aBranch[i])){
+				collide = true;	
+		}
+	}
+	
+	if (!collide){
+		floorLvl=600;
+		if (playerObj.posY<floorLvl)
+		{
+			playerObj.posY+=2;
+		}
+	}
+	
+	
 	if(isMoveLeft)
 	{
 		playerObj.posX -= playerObj.speed;	
@@ -338,6 +384,7 @@ function update()
 	
 	}
 	render();
+	
 }
 
 function hitTest(r1,r2){
@@ -354,7 +401,7 @@ function render()
 	ctx.translate(-camera.x, -camera.y);
 	ctx.drawImage(background,0,0,6370,900);
 	
-	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.wMask, playerObj.height);
+	ctx.fillRect(playerObj.posX, playerObj.posY+124, playerObj.wMask, playerObj.hMask);
 	
 	if(!isMoveLeft){
 		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
@@ -366,6 +413,9 @@ function render()
 	for (var i=0;i<aBranch.length;i++){
 		ctx.fillRect(aBranch[i].posX,aBranch[i].posY,aBranch[i].width,aBranch[i].height);	
 	}
+	
+	ctx.fillRect(worldFloor.posX,worldFloor.posY,worldFloor.width,worldFloor.height);
+	
 	ctx.restore();
 }
 
