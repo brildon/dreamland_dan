@@ -360,7 +360,7 @@ function render()
 		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
 	}
 	if(isMoveLeft){
-		ctx.drawImage(llama_left,playerObj.posX, playerObj.posY);
+			ctx.drawImage(llama_left,playerObj.posX-49, playerObj.posY);
 	}
 		
 	for (var i=0;i<aBranch.length;i++){
