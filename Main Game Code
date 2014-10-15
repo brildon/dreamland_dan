@@ -11,6 +11,8 @@ var ctx = cv.getContext('2d');
 
 var menuCheck = true;
 var buildCheck = false;
+var isDucked = false;
+var isStanding = true;
 var mouse = {x:0,y:0};
 
 var key = [];
@@ -312,7 +314,23 @@ function update()
 	
 	if(isDucking)
 	{
-		playerObj.heigth = playerObj.heigth/2;
+		isStanding = false;
+		if (isDucked == false)
+		{
+			isDucked = true;	
+			playerObj.height = 138/2;
+			playerObj.posY = playerObj.posY + 69;
+		}
+	}
+	if(!isDucking)
+	{
+		isDucked = false;
+		if(isStanding == false)
+		{
+			isStanding = true;
+			playerObj.height = 138;	
+			playerObj.posY = playerObj.posY - 69;
+		}
 	}
 	
 	if(isAttack)
