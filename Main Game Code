@@ -346,7 +346,7 @@ function update()
 				if (playerDirec < 0 ){ //caindo
 					for (var i = 0; i< aBranch.length; i++){
 						if (hitTest(collisionObj,aBranch[i])){
-								floorLvl = playerObj.posY;	
+								floorLvl = playerObj.posY+1;	
 								collide = true;	
 								falling = false;
 						}
