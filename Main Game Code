@@ -135,6 +135,8 @@ worldFloor.posY = 734;
 
 var hitVar = false;
 var floorLvl = 600;
+var box1 = new breakObj(800, 600, 50, 50, false);
+var box2 = new breakObj(900, 600, 50, 50, false);
 
 camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
 camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
@@ -418,6 +420,15 @@ function render()
 	
 	ctx.fillRect(playerObj.posX, playerObj.posY+124, playerObj.wMask, playerObj.hMask);
 	
+	if(!box1.broken)
+	{
+		ctx.fillRect(box1.posX, box1.posY, box1.width, box1.height);
+	}
+	if(!box2.broken)
+	{
+		ctx.fillRect(box2.posX, box2.posY, box2.width, box2.height);
+	}
+	
 	if(!isMoveLeft){
 		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
 	}
@@ -444,6 +455,14 @@ function keyUp(e)
 		delete key[e.keyCode];
 }
 
+function breakObj(posX, posY, height, width, broken)
+{
+	this.posX = posX;
+	this.posY = posY;
+	this.height = height;
+	this.width = width;
+	this.broken = broken;
+}
 </script>
 </body>
 </html>
