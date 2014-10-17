@@ -76,6 +76,7 @@ var playerObj = {
 	wMask: 75,
 	jumpStrength: 20,
 	jumpDecay: 0.5,
+	fallStrengh: 0,
 	speed: 5,
 	
 	centerX: function (){
@@ -369,22 +370,29 @@ function update()
 	}
 	
 	if (!collide&&!isJump){
+		
 		floorLvl=600;
+		console.log(playerObj.posY, floorLvl);
 		if (playerObj.posY<floorLvl)
 		{
 			if(!falling)
 			{
+				console.log ("heeeeeeeeeeey");
+				playerObj.jumpDecay = 0.5;
 				falling = true;
-				fallStrength = 0;
 			}
 			else
 			{
-				playerObj.posY+=fallStrength;
-				fallStrength++;
+				playerObj.posY+= playerObj.jumpDecay;
+				playerObj.jumpDecay += 1;
+				
+				
 			}
 		}
-		else
-			falling = false;
+		else{
+			
+		//	console.log ("hey");
+		}
 	}
 	
 	
@@ -448,7 +456,7 @@ function render()
 	ctx.translate(-camera.x, -camera.y);
 	ctx.drawImage(background,0,0,6370,900);
 	
-	ctx.fillRect(playerObj.posX, playerObj.posY+124, playerObj.wMask, playerObj.hMask);
+	ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 	
 	if(!box1.broken)
 	{
