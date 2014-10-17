@@ -46,6 +46,27 @@ var camera = {
 	}
 }
 
+var collisionObj = {
+	x: 0,
+	y: 0,
+	height: 10,
+	width: 75,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+	
+}
+
 var playerObj = {
 	posY: 600,
 	posX: 600,
@@ -249,6 +270,8 @@ function side_scroller(){
 function update()
 {
 	var playerDirec = 0;
+	collisionObj.x = playerObj.posX;
+	collisionObj.y = playerObj.posY + playerObj.height - collisionObj.height;
 	
 	//SpaceBar
 	if(key[32])
@@ -322,7 +345,7 @@ function update()
 				collide = false;
 				if (playerDirec < 0 ){ //caindo
 					for (var i = 0; i< aBranch.length; i++){
-						if (hitTest(playerObj,aBranch[i])){
+						if (hitTest(collisionObj,aBranch[i])){
 								floorLvl = playerObj.posY;	
 								collide = true;	
 								falling = false;
@@ -339,7 +362,7 @@ function update()
 	
 	collide=false;
 	for (var i = 0; i< aBranch.length; i++){
-		if (hitTest(playerObj,aBranch[i])){
+		if (hitTest(collisionObj,aBranch[i])){
 				collide = true;	
 				falling = false;
 		}
