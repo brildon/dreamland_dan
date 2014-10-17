@@ -398,7 +398,14 @@ function update()
 	
 	if(isAttack)
 	{
-	
+		if(box1.posX <= (playerObj.posX + playerObj.width) && playerObj.posY == box1.posY && box1.posX >= playerObj.posX)
+		{
+			box1.broken = true;
+		}
+		if(box2.posX <= (playerObj.posX + playerObj.width) && playerObj.posY == box2.posY && box2.posX >= playerObj.posX)
+		{
+			box2.broken = true;
+		}
 	}
 	render();
 	
@@ -438,6 +445,12 @@ function render()
 		
 	for (var i=0;i<aBranch.length;i++){
 		ctx.fillRect(aBranch[i].posX,aBranch[i].posY,aBranch[i].width,aBranch[i].height);	
+	}
+	
+	if(isAttack)
+	{
+		ctx.fillStyle = 'green';
+		ctx.fillRect(playerObj.posX + playerObj.width, playerObj.posY, playerObj.width/2, playerObj.height/4);
 	}
 	
 	ctx.fillRect(worldFloor.posX,worldFloor.posY,worldFloor.width,worldFloor.height);
