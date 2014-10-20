@@ -5,6 +5,7 @@
 </head>
 <body>
 <canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+<embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
 <script>
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
