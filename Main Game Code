@@ -17,6 +17,8 @@ var isDucked = false;
 var isStanding = true;
 var mouse = {x:0,y:0};
 
+var collisionIndex = -1;
+
 var key = [];
 
 var gameWorld = {
@@ -70,7 +72,7 @@ var collisionObj = {
 var playerObj = {
 	posY: 600,
 	posX: 600,
-	height: 138,
+	height: 137,
 	width: 124,
 	hMask: 10,
 	wMask: 75,
@@ -78,6 +80,7 @@ var playerObj = {
 	jumpDecay: 0.5,
 	fallStrengh: 0,
 	speed: 5,
+	state: 0,
 	
 	centerX: function (){
 		return this.posX + (this.wMask / 2);
@@ -93,32 +96,10 @@ var playerObj = {
 	}
 }
 
-var worldFloor = {
-	posX: 0,
-	posY: 0,
-	height: 10,
-	width: gameWorld.width,
-	hMask: 0,
-	wMask: 0,
-	
-	centerX: function (){
-		return this.posX + (this.width / 2);
-	},
-	centerY: function (){
-		return this.posY + (this.height / 2);	
-	},
-	halfWidth: function(){
-		return (this.width / 2);	
-	},
-	halfHeight: function(){
-		return (this.height / 2);	
-	}
-}
-
 var branchObj = {
 	posX: 0,
 	posY: 0,
-	height: 10,
+	height: 5,
 	width : 100,
 	
 	centerX: function (){
@@ -137,7 +118,7 @@ var branchObj = {
 
 var playerObj = Object.create(playerObj);
 
-var aBranch = new Array (3);
+var aBranch = new Array (6);
 for (var i=0;i<aBranch.length;i++){
 	aBranch[i] = Object.create(branchObj);	
 }
@@ -151,12 +132,18 @@ aBranch[1].posY = 400;
 aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
 
-var worldFloor = Object.create(worldFloor);
-worldFloor.posX = 0;
-worldFloor.posY = 734;
+aBranch[3].posX = 0;
+aBranch[3].posY = 737;
+aBranch[3].width = gameWorld.width;
+
+aBranch[4].posX = 150;
+aBranch[4].posY = 220;
+
+aBranch[5].posX = 500;
+aBranch[5].posY = 450;
 
 var hitVar = false;
-var floorLvl = 600;
+var floorLvl = 737;
 var box1 = new breakObj(800, 600, 50, 50, false);
 var box2 = new breakObj(900, 600, 50, 50, false);
 
@@ -175,18 +162,18 @@ window.addEventListener("keyup", keyUp, false);
 
 //loadHandler();
 var image = new Image();	
-image.addEventListener("load", loadHandler, false);
+//image.addEventListener("load", loadHandler, false);
 image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 
 var background = new Image();	
-background.addEventListener("load", loadHandler, false);
+//	background.addEventListener("load", loadHandler, false);
 background.src = "https://cloud.githubusercontent.com/assets/8835208/4622647/808596b8-533f-11e4-8e1d-661d39b4d09b.png";
 
 var llama_left = new Image();	
 var llama_right = new Image();
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
-
+/*
 function menu(e)
 {
 	var tempStartH;
@@ -225,6 +212,8 @@ function loadHandler()
 		}
 	}
 }
+*/
+setInterval(gameScreen,1000/50);
 
 function gameScreen()
 {
@@ -271,8 +260,9 @@ function side_scroller(){
 function update()
 {
 	var playerDirec = 0;
+	
 	collisionObj.x = playerObj.posX;
-	collisionObj.y = playerObj.posY + playerObj.height - collisionObj.height;
+	collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
 	
 	//SpaceBar
 	if(key[32])
@@ -284,7 +274,7 @@ function update()
 	{
 		if(!isJump)
 		{
-			playerObj.posY = floorLvl-1;
+			playerObj.posY = playerObj.posY-1;
 			isJump = true;
 		}	
 	}
@@ -292,6 +282,7 @@ function update()
 	if(key[65])
 	{
 		isMoveLeft = true;
+		playerObj.state = 1;
 	}
 	//S
 	if(key[83])
@@ -302,6 +293,7 @@ function update()
 	if(key[68])
 	{
 		isMoveRight = true;
+		playerObj.state = 0;
 	}
 	
 	//SpaceBar
@@ -330,26 +322,27 @@ function update()
 	// Preform actions
 	if(isJump)
 	{
-			if(playerObj.posY > floorLvl) //quando passa do nivel do chao
+		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
 			{
 				playerObj.jumpDecay = .5;
 				playerObj.jumpStrength = 20;
-				playerObj.posY = floorLvl;
+				playerObj.posY = (floorLvl-playerObj.height);
 				playerDirec = 0;
 				isJump = false;
-				falling = true;
+				//falling = true;
 			}
+			
 			//Gravity equation...
 			else if(playerObj.posY != floorLvl)
 			{
 				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
-				collide = false;
+				//collide = false;
 				if (playerDirec < 0 ){ //caindo
 					for (var i = 0; i< aBranch.length; i++){
 						if (hitTest(collisionObj,aBranch[i])){
-								floorLvl = playerObj.posY+1;	
-								collide = true;	
-								falling = false;
+								floorLvl = aBranch[i].posY;
+								//collide = true;	
+								//falling = false;
 						}
 					}
 				}
@@ -366,18 +359,18 @@ function update()
 		if (hitTest(collisionObj,aBranch[i])){
 				collide = true;	
 				falling = false;
+				collisionIndex = i;
+				floorLvl = aBranch[i].posY;
 		}
 	}
 	
 	if (!collide&&!isJump){
+		floorLvl=737;
 		
-		floorLvl=600;
-		console.log(playerObj.posY, floorLvl);
 		if (playerObj.posY<floorLvl)
 		{
 			if(!falling)
-			{
-				console.log ("heeeeeeeeeeey");
+			{		
 				playerObj.jumpDecay = 0.5;
 				falling = true;
 			}
@@ -385,16 +378,16 @@ function update()
 			{
 				playerObj.posY+= playerObj.jumpDecay;
 				playerObj.jumpDecay += 1;
-				
+				if (playerObj.posY >600){
+					playerObj.posY = 600;	
+				}
 				
 			}
 		}
 		else{
-			
-		//	console.log ("hey");
+			falling = false;
 		}
 	}
-	
 	
 	if(isMoveLeft)
 	{
@@ -467,11 +460,11 @@ function render()
 		ctx.fillRect(box2.posX, box2.posY, box2.width, box2.height);
 	}
 	
-	if(!isMoveLeft){
+	if(playerObj.state == 0){
 		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
 	}
-	if(isMoveLeft){
-			ctx.drawImage(llama_left,playerObj.posX-49, playerObj.posY);
+	if(playerObj.state == 1){
+		ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
 	}
 		
 	for (var i=0;i<aBranch.length;i++){
@@ -483,9 +476,7 @@ function render()
 		ctx.fillStyle = 'green';
 		ctx.fillRect(playerObj.posX + playerObj.width, playerObj.posY, playerObj.width/2, playerObj.height/4);
 	}
-	
-	ctx.fillRect(worldFloor.posX,worldFloor.posY,worldFloor.width,worldFloor.height);
-	
+		
 	ctx.restore();
 }
 
