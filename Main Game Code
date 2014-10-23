@@ -4,11 +4,43 @@
 <title>DreamLand Dan</title>
 </head>
 <body>
-<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+
 <embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
+<div id="container" style="width:1500px; height:500px; position:relative;" >
+    	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+	<input type="text" style="left=200; top=300;" id="textboxOne"></input>
+	<input type="text" style="left=300; top=300;" id="textboxTwo"></input>
+	<input type="text" style="left=200; top=300;" id="textboxThree"></input>
+	<input type="text" style="left=200; top=300;" id="textboxFour"></input>
+	<input type="text" style="left=200; top=300;" id="textboxFive"></input>
+	<input type="text" style="left=200; top=300;" id="textboxSix"></input>
+</div>
 <script>
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
+
+var textboxOne = document.getElementById("textboxOne");
+var textboxTwo = document.getElementById("textboxTwo");
+var textboxThree = document.getElementById("textboxThree");
+var textboxFour = document.getElementById("textboxFour");
+var textboxFive = document.getElementById("textboxFive");
+var textboxSix = document.getElementById("textboxSix");
+
+	textboxOne.style.visibility='hidden';
+	textboxTwo.style.visibility='hidden';
+	textboxThree.style.visibility='hidden';
+	textboxFour.style.visibility='hidden';
+	textboxFive.style.visibility='hidden';
+	textboxSix.style.visibility='hidden';
+
+var sheepPoints = 6;	
+var levelAt = 0;
+
+var leftWords = [];
+var rightWords = [];
+var jumpWords = [];
+var crouchWords = [];
+var attackWords = [];
 
 var menuCheck = true;
 var buildCheck = false;
@@ -16,6 +48,14 @@ var collide = false;
 var falling = false;
 var isDucked = false;
 var isStanding = true;
+
+var regExpOne;
+var regExpTwo;
+var regExpThree;
+var regExpFour;
+var regExpFive;
+var regExpSix;
+
 var mouse = {x:0,y:0};
 
 var collisionIndex = -1;
@@ -157,6 +197,7 @@ var isMoveLeft = false;
 var isMoveRight = false;
 var isJump = false;
 
+
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
@@ -209,6 +250,14 @@ function loadHandler()
 		if(buildCheck == false)
 		{
 			buildCheck = true;
+			
+			textboxOne.style.visibility='visible';
+			textboxTwo.style.visibility='visible';
+			textboxThree.style.visibility='visible';
+			textboxFour.style.visibility='visible';
+			textboxFive.style.visibility='visible';
+			textboxSix.style.visibility='visible';
+			
 			setInterval(gameScreen, 1000/50);
 		}
 	}
