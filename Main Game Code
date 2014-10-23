@@ -4,7 +4,6 @@
 <title>DreamLand Dan</title>
 </head>
 <body>
-
 <embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
 <div id="container" style="width:1500px; height:500px; position:relative;" >
     	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
@@ -107,7 +106,6 @@ var collisionObj = {
 	halfHeight: function(){
 		return (this.height / 2);	
 	}	
-	
 }
 
 var playerObj = {
@@ -157,7 +155,58 @@ var branchObj = {
 	}		
 }
 
+var sheepObj = {
+	posX: 0,
+	posY: 0,
+	height: 69,
+	width : 124,
+	saved: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
 var playerObj = Object.create(playerObj);
+
+var sheep = new Array (6);
+for (var i=0; i<sheep.length; i++)
+{
+	sheep[i]=Object.create(branchObj);
+}
+
+sheep[0].posX =750;
+sheep[0].posY =650;
+sheep[0].saved = false;
+
+sheep[1].posX =1500 ;
+sheep[1].posY =650;
+sheep[1].saved = false;
+
+sheep[2].posX =2500 ;
+sheep[2].posY =650;
+sheep[2].saved = false;
+
+sheep[3].posX =3250;
+sheep[3].posY =650;
+sheep[3].saved = false;
+
+sheep[4].posX =4000;
+sheep[4].posY =650;
+sheep[4].saved = false;
+
+sheep[5].posX =4750;
+sheep[5].posY =650;
+sheep[5].saved = false;
 
 var aBranch = new Array (6);
 for (var i=0;i<aBranch.length;i++){
@@ -213,8 +262,17 @@ background.src = "https://cloud.githubusercontent.com/assets/8835208/4622647/808
 
 var llama_left = new Image();	
 var llama_right = new Image();
+var llama_duck_left = new Image();
+var llama_duck_right = new Image();
+var sheep_right = new Image();
+var sheep_left = new Image();
+llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760667/dae888d6-5af1-11e4-91a3-e80853a2e7bf.png";
+llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760665/dae0a92c-5af1-11e4-89f1-82140c195ae4.png";
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
+sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760666/dae47cd2-5af1-11e4-8c89-d18d53fd4ad1.png";
+sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760668/daec1546-5af1-11e4-8f05-72ddf1c0a71e.png";
+
 /*
 function menu(e)
 {
@@ -481,8 +539,16 @@ function update()
 			box2.broken = true;
 		}
 	}
-	render();
 	
+	for(var i=0; i<sheep.length; i++)
+	{
+		if(hitTest(playerObj,sheep[i]))
+		{
+			sheep[i].saved=true;
+		}
+	}
+	
+	render();
 }
 
 function hitTest(r1,r2){
@@ -492,7 +558,6 @@ function hitTest(r1,r2){
 
 function render()
 {
-	
 	ctx.clearRect(0,0,1600,900);
 	
 	ctx.save();
@@ -511,10 +576,16 @@ function render()
 	}
 	
 	if(playerObj.state == 0){
-		ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+		if(isDucking)
+			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+		else
+			ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
 	}
 	if(playerObj.state == 1){
-		ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
+		if(isDucking)
+			ctx.drawImage(llama_duck_left,playerObj.posX-43, playerObj.posY);
+		else
+			ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
 	}
 		
 	for (var i=0;i<aBranch.length;i++){
@@ -525,6 +596,18 @@ function render()
 	{
 		ctx.fillStyle = 'green';
 		ctx.fillRect(playerObj.posX + playerObj.width, playerObj.posY, playerObj.width/2, playerObj.height/4);
+	}
+	
+	for (var i=0; i<sheep.length;i++)
+	{
+		if(sheep[i].saved==false)
+		{
+			ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+		}
+		else
+		{
+			ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+		}
 	}
 		
 	ctx.restore();
