@@ -253,11 +253,11 @@ window.addEventListener("keyup", keyUp, false);
 
 //loadHandler();
 var image = new Image();	
-//image.addEventListener("load", loadHandler, false);
+image.addEventListener("load", loadHandler, false);
 image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
 
 var background = new Image();	
-//	background.addEventListener("load", loadHandler, false);
+background.addEventListener("load", loadHandler, false);
 background.src = "https://cloud.githubusercontent.com/assets/8835208/4622647/808596b8-533f-11e4-8e1d-661d39b4d09b.png";
 
 var llama_left = new Image();	
@@ -273,7 +273,7 @@ llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/82
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760666/dae47cd2-5af1-11e4-8c89-d18d53fd4ad1.png";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760668/daec1546-5af1-11e4-8f05-72ddf1c0a71e.png";
 
-/*
+
 function menu(e)
 {
 	var tempStartH;
@@ -320,8 +320,6 @@ function loadHandler()
 		}
 	}
 }
-*/
-setInterval(gameScreen,1000/50);
 
 function gameScreen()
 {
