@@ -1,0 +1,949 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sheep! Heard Dan</title>
+</head>
+<body>
+<embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
+<div id="container" style="width:1500px; height:500px; position:relative;" >
+    	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+	<input type="text" style="left=200; top=300;" id="textboxOne"></input>
+	<input type="text" style="left=300; top=300;" id="textboxTwo"></input>
+	<input type="text" style="left=200; top=300;" id="textboxThree"></input>
+	<input type="text" style="left=200; top=300;" id="textboxFour"></input>
+	<input type="text" style="left=200; top=300;" id="textboxFive"></input>
+	<input type="text" style="left=200; top=300;" id="textboxSix"></input>
+</div>
+<script>
+var cv = document.getElementById("ctx");
+var ctx = cv.getContext('2d');
+
+var textboxOne = document.getElementById("textboxOne");
+var textboxTwo = document.getElementById("textboxTwo");
+var textboxThree = document.getElementById("textboxThree");
+var textboxFour = document.getElementById("textboxFour");
+var textboxFive = document.getElementById("textboxFive");
+var textboxSix = document.getElementById("textboxSix");
+
+	textboxOne.style.visibility='hidden';
+	textboxTwo.style.visibility='hidden';
+	textboxThree.style.visibility='hidden';
+	textboxFour.style.visibility='hidden';
+	textboxFive.style.visibility='hidden';
+	textboxSix.style.visibility='hidden';
+
+var sheepPoints = 6;	
+var levelAt = 0;
+
+var leftWords = [];
+var rightWords = [];
+var jumpWords = [];
+var crouchWords = [];
+var attackWords = [];
+
+var menuCheck = true;
+var buildCheck = false;
+var creditsScreen = false;
+var collide = false;
+var falling = false;
+var isDucked = false;
+var isStanding = true;
+var sheepSaved = 0;
+var collision = false;
+var movingRight = true;
+var regExpScreen = true;
+
+var regExpOne;
+var regExpTwo;
+var regExpThree;
+var regExpFour;
+var regExpFive;
+var regExpSix;
+
+var mouse = {x:0,y:0};
+
+var collisionIndex = -1;
+
+var key = [];
+
+var gameWorld = {
+	x: 0,
+	y: 0,
+	width: 6336,
+	heigth: 884	
+}
+
+var camera = {
+	x: 0,
+	y: 0,
+	width: cv.width,
+	height: cv.height,
+	
+	rightInnerBoundary: function (){
+		return this.x + (this.width * 0.75);	
+	},	
+	leftInnerBoundary: function (){
+		return this.x+ (this.width * 0.25);	
+	},
+	topInnerBoundary: function (){
+		return this.y + (this.height * 0.25);	
+	},
+	bottomInnerBoundary: function (){
+		return this.y + (this.height * 0.75);	
+	}
+}
+
+var collisionObj = {
+	x: 0,
+	y: 0,
+	height: 10,
+	width: 75,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+
+var playerObj = {
+	posY: 600,
+	posX: 200,
+	height: 137,
+	width: 124,
+	hMask: 10,
+	wMask: 75,
+	jumpStrength: 17,
+	jumpDecay: 0.5,
+	fallStrengh: 0,
+	speed: 5,
+	state: 0,
+	
+	centerX: function (){
+		return this.posX + (this.wMask / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.wMask / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
+}
+
+var branchObj = {
+	posX: 0,
+	posY: 0,
+	height: 5,
+	width : 100,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
+var breakObj = {
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width: 100,
+	broken: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+
+var sheepObj = {
+	posX: 0,
+	posY: 0,
+	height: 69,
+	width : 124,
+	saved: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
+var cougarObj =
+{
+	posX: 0,
+	posY: 0,
+	height: 70,
+	width : 151,
+	saved: false
+}
+
+var playerObj = Object.create(playerObj);
+
+var hitBox = {
+	posX: playerObj.posX+playerObj.width,
+	posY: playerObj.posY,
+	height: playerObj.height,
+	width : 5,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);
+	}
+}
+
+var attackBox = Object.create(hitBox);
+
+var cougar = Object.create(cougarObj);
+cougar.posX = 6000;
+cougar.posY = 667;
+
+var breakables = new Array (20);
+
+for (var i =0; i<breakables.length; i++)
+{
+	breakables[i]=Object.create(breakObj);
+}
+
+
+breakables[0].posX =800;
+breakables[0].posY =637;
+breakables[0].broken=false;
+breakables[1].posX =1000;
+breakables[1].posY =637;
+breakables[1].broken=false;
+breakables[2].posX =900;
+breakables[2].posY =637;
+breakables[2].broken=false;
+breakables[3].posX =900;
+breakables[3].posY =537;
+breakables[3].broken=false;
+
+breakables[4].posX =1500;
+breakables[4].posY =537;
+breakables[4].broken=false;
+breakables[5].posX =1600;
+breakables[5].posY =537;
+breakables[5].broken=false;
+breakables[6].posX =1700;
+breakables[6].posY =537;
+breakables[6].broken=false;
+
+breakables[7].posX =2300;
+breakables[7].posY =637;
+breakables[7].broken=false;
+breakables[8].posX =2400;
+breakables[8].posY =637;
+breakables[8].broken=false;
+breakables[9].posX =2400;
+breakables[9].posY =537;
+breakables[9].broken=false;
+breakables[10].posX =2400;
+breakables[10].posY =310;
+breakables[10].broken=false;
+breakables[11].posX =2500;
+breakables[11].posY =310;
+breakables[11].broken=false;
+breakables[12].posX =2600;
+breakables[12].posY =310;
+breakables[12].broken=false;
+breakables[13].posX =2600;
+breakables[13].posY =637;
+breakables[13].broken=false;
+breakables[14].posX =2700;
+breakables[14].posY =637;
+breakables[14].broken=false;
+breakables[15].posX =2700;
+breakables[15].posY =537;
+breakables[15].broken=false;
+breakables[16].posX =2700;
+breakables[16].posY =310;
+breakables[16].broken=false;
+
+breakables[17].posX =5350;
+breakables[17].posY =637;
+breakables[17].broken=false;
+breakables[18].posX =5450;
+breakables[18].posY =537;
+breakables[18].broken=false;
+breakables[19].posX =5560;
+breakables[19].posY =637;
+breakables[19].broken=false;
+
+
+var sheep = new Array (6);
+for (var i=0; i<sheep.length; i++)
+{
+	sheep[i]=Object.create(branchObj);
+}
+
+sheep[0].posX =550;
+sheep[0].posY =650;
+sheep[0].saved = false;
+
+sheep[1].posX =1500 ;
+sheep[1].posY =650;
+sheep[1].saved = false;
+
+sheep[2].posX =2500 ;
+sheep[2].posY =650;
+sheep[2].saved = false;
+
+sheep[3].posX =3250;
+sheep[3].posY =650;
+sheep[3].saved = false;
+
+sheep[4].posX =4000;
+sheep[4].posY =650;
+sheep[4].saved = false;
+
+sheep[5].posX =5450;
+sheep[5].posY =650;
+sheep[5].saved = false;
+
+var aBranch = new Array (6);
+for (var i=0;i<aBranch.length;i++){
+	aBranch[i] = Object.create(branchObj);	
+}
+
+aBranch[0].posX = 150;
+aBranch[0].posY = 580;
+
+aBranch[1].posX = 300;
+aBranch[1].posY = 400;
+	
+aBranch[2].posX = 2450;
+aBranch[2].posY = 580;
+
+aBranch[3].posX = 0;
+aBranch[3].posY = 737;
+aBranch[3].width = gameWorld.width;
+
+aBranch[4].posX = 150;
+aBranch[4].posY = 220;
+
+aBranch[5].posX = 500;
+aBranch[5].posY = 450;
+
+var hitVar = false;
+var floorLvl = 737;
+
+
+camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
+camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
+
+var isAttack = false;
+var isDucking = false;
+var isMoveLeft = false;
+var isMoveRight = false;
+var isJump = false;
+
+
+// event listeners for key's and click's
+window.addEventListener("keydown", keyDown, false);
+window.addEventListener("keyup", keyUp, false);
+
+//loadHandler();
+var image = new Image();	
+image.addEventListener("load", loadHandler, false);
+image.src = "https://cloud.githubusercontent.com/assets/8835208/4764399/6fdf279c-5b24-11e4-8a22-14603b0af298.png";
+
+var credits = new Image();
+credits.addEventListener("loard", loadHandler, false);
+credits.src = "https://cloud.githubusercontent.com/assets/8864180/4768461/691913fa-5b6a-11e4-91f0-0014cf37a5d0.png";
+
+
+var background = new Image();	
+background.addEventListener("load", loadHandler, false);
+background.src = "https://cloud.githubusercontent.com/assets/8864180/4765125/f531d2bc-5b35-11e4-97af-57fb880a6c3c.png";
+
+var regExp = new Image();
+regExp.addEventListener("load", loadHandler, false);
+regExp.src = "https://cloud.githubusercontent.com/assets/8864180/4768675/60fb8ba4-5b6e-11e4-8f18-56b11b2006ca.png";
+
+
+var llama_left = new Image();	
+var llama_right = new Image();
+var llama_duck_left = new Image();
+var llama_duck_right = new Image();
+var sheep_right = new Image();
+var sheep_left = new Image();
+var cougar_left = new Image();
+var cougar_right = new Image();
+var box = new Image();
+
+llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
+llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
+llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
+llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
+sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760666/dae47cd2-5af1-11e4-8c89-d18d53fd4ad1.png";
+sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760668/daec1546-5af1-11e4-8f05-72ddf1c0a71e.png";
+cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
+cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765449/c6af9a7a-5b3d-11e4-94e5-4d3e4432dda1.png";
+box.src = "https://cloud.githubusercontent.com/assets/8864180/4765447/c6a78c4a-5b3d-11e4-8020-ea9b9a75309a.png";
+
+
+function menu(e)
+{
+	var tempStartH;
+	var tempStartW;
+	
+	if(e.layerX || e.layerY == 0){
+		mouse.x = e.pageX - cv.offsetLeft;
+		mouse.y = e.pageY - cv.offsetTop;	
+	}
+	
+	if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true && creditsScreen ==false)
+	{
+		buildCheck=false;
+		menuCheck=false;
+		loadHandler();
+	}
+	if(870<mouse.x && mouse.x<1260 && 670<mouse.y && mouse.y<820)
+	{
+		creditsScreen = true;
+		buildCheck=false;
+		loadHandler();	
+	}
+	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true)
+	{
+		console.log("test");
+		creditsScreen = false;
+		loadHandler();
+	}
+	if(buildCheck==false && regExpScreen ==false && mouse.x > 1000)
+	{
+		loadHandler();
+	}
+	
+}
+
+function loadHandler()
+{   
+    
+	console.log(menuCheck);
+	if(menuCheck == true)
+	{
+		console.log("yay");
+		if (creditsScreen==true)
+		{
+			
+			ctx.drawImage(credits,0,0,1600,900);
+		}
+		else if(buildCheck == false)
+		{
+			console.log("good");
+			ctx.drawImage(image,0,0,1600,900);
+			buildCheck=true;		
+		}
+		document.onmousedown = menu;
+	}
+	else
+	{	
+		if(regExpScreen == true)
+		{
+			regExpScreen = false;
+			ctx.drawImage(regExp,0,0,1600,900);
+			textboxOne.style.visibility='visible';
+			textboxTwo.style.visibility='visible';
+			textboxThree.style.visibility='visible';
+			textboxFour.style.visibility='visible';
+			textboxFive.style.visibility='visible';
+			textboxSix.style.visibility='visible';
+		}
+		else if(buildCheck==false)
+		{
+			buildCheck = true;
+			setInterval(gameScreen, 1000/50);
+		}
+	}
+	
+}
+
+function gameScreen()
+{
+	update();
+	
+	side_scroller();
+	
+	render();
+}
+
+function side_scroller(){
+	playerObj.posX = Math.max(0, Math.min(playerObj.posX, gameWorld.width - playerObj.width));
+		
+	camera.x = Math.floor(playerObj.posX + (playerObj.width/2) - (camera.width/2));
+	camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
+	
+	if (playerObj.posX < camera.leftInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));	
+	}
+	if (playerObj.posY < camera.topInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
+	}
+	if (playerObj.posX + playerObj.width > camera.rightInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX + playerObj.width - (camera.width *0.75));	
+	}
+	if (playerObj.posY + playerObj.height > camera.bottomInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY + playerObj.height - (camera.height * 0.75));
+	}
+	
+	if (camera.x < gameWorld.x){
+		camera.x = gameWorld.x;	
+	}
+	if (camera.y < gameWorld.y){
+		camera.y = gameWorld.y;	
+	}
+	if (camera.x + camera.width > gameWorld.x + gameWorld.width){
+		camera.x = gameWorld.x + gameWorld.width - camera.width;	
+	}
+	if (camera.y + camera.height > gameWorld.heigth){
+		camera.y = gameWorld.heigth - camera.height;	
+	}	
+}
+
+function update()
+{
+	if(playerObj.posX<150)
+	{
+		regExpScreen=true;
+		loadHandler();	
+	}
+	
+	
+	var playerDirec = 0;
+	
+	collisionObj.x = playerObj.posX;
+	collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+	
+	//SpaceBar
+	if(key[32])
+	{
+		isAttack = true;
+	}
+	//W
+	if(key[87])
+	{
+		if(!isJump)
+		{
+			playerObj.posY = playerObj.posY-1;
+			isJump = true;
+		}	
+	}
+	//A
+	if(key[65])
+	{
+		isMoveLeft = true;
+		playerObj.state = 1;
+		movingRight = false;
+	}
+	//S
+	if(key[83])
+	{
+		isDucking = true;
+	}
+	//D
+	if(key[68])
+	{
+		isMoveRight = true;
+		playerObj.state = 0;
+		movingRight = true;
+
+	}
+	
+	//SpaceBar
+	if(!key[32])
+	{
+		isAttack = false;
+	}
+	//W
+	
+	//A 
+	if(!key[65])
+	{
+		isMoveLeft = false;
+	}
+	//S
+	if(!key[83])
+	{
+		isDucking = false;
+	}
+	//D
+	if(!key[68])
+	{
+		isMoveRight = false;
+	}
+	
+	collision=false;
+	// Preform actions
+	if(isJump)
+	{
+		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+			{
+				playerObj.jumpDecay = .5;
+				playerObj.jumpStrength = 17;
+				playerObj.posY = (floorLvl-playerObj.height);
+				playerDirec = 0;
+				isJump = false;
+				//falling = true;
+			}
+			
+			//Gravity equation...
+			else if(playerObj.posY != floorLvl)
+			{
+				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+				//collide = false;
+				if (playerDirec < 0 ){ //caindo
+					for (var i = 0; i< breakables.length; i++){
+						if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
+								floorLvl = breakables[i].posY;
+								playerObj.posY =breakables[i].posY-playerObj.height;
+								collision = true;
+								
+								console.log("top of box:"+breakables[i].posY);
+								//collide = true;	
+								//falling = false;
+						}
+					}
+				}
+				if(!collision)
+				{
+					floorLvl = 737;
+					// constantly updates playerOne's Y position
+					playerObj.posY -= playerDirec;
+					// constantly increases the amount of pull downwards by one. 
+					playerObj.jumpDecay += 1;
+				}
+			}
+	}
+	
+	collide=false;
+	for (var i = 0; i< aBranch.length; i++){
+		if (hitTest(collisionObj,aBranch[i])){
+				collide = true;	
+				falling = false;
+				collisionIndex = i;
+				//floorLvl = aBranch[i].posY;
+		}
+	}
+	
+	
+
+	if (!collide&&!isJump){
+		floorLvl=737;
+		
+		if (playerObj.posY<floorLvl)
+		{
+			if(!falling)
+			{		
+				playerObj.jumpDecay = 0.5;
+				falling = true;
+			}
+			else
+			{
+				for(var i=0; i<breakables.length; i++)
+				{
+					if(hitTest(breakables[i],playerObj))
+					{
+						if(!breakables[i].broken)
+						{
+							collision=true;
+						}
+					}
+				}
+				if(!collision)
+				{
+					playerObj.posY+= playerObj.jumpDecay;
+					playerObj.jumpDecay += 1;
+					if (playerObj.posY >600){
+						playerObj.posY = 600;	
+					}
+				}
+			}
+		}
+		else{
+			falling = false;
+		}
+	}
+	collision = false;
+	if(isMoveLeft)
+	{
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(hitTest(breakables[i],playerObj))
+			{
+				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+				{
+					console.log("hit");
+					collision=true;
+				}
+			}
+		}
+		if (collision == false)
+		{
+			playerObj.posX -= playerObj.speed;
+		}
+		
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(hitTest(breakables[i],playerObj))
+			{
+				if(!breakables[i].broken)
+				{
+					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+					{
+						collision = true;
+					}
+				}
+			}
+		}
+		if(collision == true)
+		{
+			playerObj.posX+= 20;	
+		}
+	}
+	
+	collision = false;
+	if(isMoveRight)
+	{
+		
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(hitTest(breakables[i],playerObj))
+			{
+				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+				{
+					console.log("hit");
+					collision=true;
+				}
+			}
+		}
+		if (collision == false)
+		{
+			playerObj.posX += playerObj.speed;
+		}
+		
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(hitTest(breakables[i],playerObj))
+			{
+				if(!breakables[i].broken)
+				{
+					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+					{
+						collision = true;
+					}
+				}
+			}
+		}
+		if(collision == true)
+		{
+			playerObj.posX-= 20;	
+		}
+	}
+	
+	if(isDucking)
+	{
+		isStanding = false;
+		if (isDucked == false)
+		{
+			isDucked = true;	
+			playerObj.height = 88;
+			playerObj.posY = playerObj.posY+50;
+		}
+	}
+	if(!isDucking)
+	{
+		isDucked = false;
+		if(isStanding == false)
+		{
+			isStanding = true;
+			playerObj.height = 138;	
+			playerObj.posY = playerObj.posY-50;
+		}
+	}
+	
+
+	
+	for(var i=0; i<sheep.length; i++)
+	{
+		if(hitTest(playerObj,sheep[i]))
+		{
+			sheep[i].saved=true;
+		}
+		if(sheep[i].saved)
+		{
+			sheep[i].posX--;	
+		}
+	}
+	
+	sheepSaved = 0;
+	if(cougar.saved==false)
+	{
+		for(var i=0; i<sheep.length; i++)
+		{
+			if(sheep[i].saved)
+				{
+					sheepSaved++;
+				}
+		}
+	}
+	if(sheepSaved>5)
+	{
+		cougar.posX = cougar.posX+5;	
+	}
+
+	if(isAttack)
+	{
+		
+		for(var i=0; i<breakables.length; i++)
+		{
+			
+			if(hitTest(attackBox,breakables[i]))
+			{
+				breakables[i].broken = true;
+			}
+		}
+	}
+
+	if(movingRight)
+	{
+		attackBox.posX = playerObj.posX+playerObj.width;
+		attackBox.posY = playerObj.posY;
+	}
+	else
+	{
+		attackBox.posX = playerObj.posX-45;
+		attackBox.posY = playerObj.posY;
+	}
+
+	console.log("players y:"+(playerObj.posY+playerObj.height));
+	console.log("floor: "+floorLvl);
+	render();
+}
+
+function hitTest(r1,r2){
+	//console.log("testando");
+	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
+}
+
+function render()
+{
+	ctx.clearRect(0,0,1600,900);
+	
+	ctx.save();
+	ctx.translate(-camera.x, -camera.y);
+	ctx.drawImage(background,0,0,6336,900);
+	
+	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	
+	if(playerObj.state == 0){
+		if(isDucking)
+			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+		else
+			ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+	}
+	if(playerObj.state == 1){
+		if(isDucking)
+			ctx.drawImage(llama_duck_left,playerObj.posX-43, playerObj.posY);
+		else
+			ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
+	}
+		
+	/*for (var i=0;i<aBranch.length;i++){
+		ctx.fillRect(aBranch[i].posX,aBranch[i].posY,aBranch[i].width,aBranch[i].height);	
+	}*/
+	
+	/*if(isAttack)
+	{
+		ctx.fillStyle = 'green';
+		ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+	}*/
+	
+	for (var i=0; i<sheep.length;i++)
+	{
+		if(sheep[i].saved==false)
+		{
+			ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+		}
+		else
+		{
+			ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+		}
+	}
+		
+	if(sheepSaved==6)
+	{
+		ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
+	}
+	else
+	{
+		ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
+	}
+	
+	for(var i=0; i<breakables.length; i++)
+	{
+		if(!breakables[i].broken)
+		{
+			ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+		}
+	}
+		
+	ctx.restore();
+}
+
+function keyDown(e)
+{
+		key[e.keyCode] = true;
+}
+
+function keyUp(e)
+{
+		delete key[e.keyCode];
+}
+
+
+</script>
+</body>
+</html>
