@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>DreamLand Dan</title>
+<title>Sheep! Heard Dan</title>
 </head>
 <body>
 <embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
@@ -254,7 +254,9 @@ window.addEventListener("keyup", keyUp, false);
 //loadHandler();
 var image = new Image();	
 image.addEventListener("load", loadHandler, false);
-image.src = "https://cloud.githubusercontent.com/assets/8864180/4445341/959aebc2-47f8-11e4-847c-787805f7d18a.png";
+image.src = "https://cloud.githubusercontent.com/assets/8835208/4763812/664b50a0-5b17-11e4-8e61-dd0df5cfcd0f.png";
+
+
 
 var background = new Image();	
 background.addEventListener("load", loadHandler, false);
@@ -284,7 +286,7 @@ function menu(e)
 		mouse.y = e.pageY - cv.offsetTop;	
 	}
 	
-	if(mouse.x < 930 && mouse.y < 650 && mouse.x > 540 && mouse.y > 440 && menuCheck==true)
+	if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true)
 	{
 		buildCheck=false;
 		menuCheck=false;
