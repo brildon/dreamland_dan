@@ -208,7 +208,7 @@ sheep[5].posX =4750;
 sheep[5].posY =650;
 sheep[5].saved = false;
 
-var aBranch = new Array (6);
+var aBranch = new Array (10);
 for (var i=0;i<aBranch.length;i++){
 	aBranch[i] = Object.create(branchObj);	
 }
@@ -232,8 +232,20 @@ aBranch[4].posY = 220;
 aBranch[5].posX = 500;
 aBranch[5].posY = 450;
 
-var hitVar = false;
+aBranch[6].posX = 800;
+aBranch[6].posY = 500;
+
+aBranch[7].posX = 1000;
+aBranch[7].posY = 450;
+
+aBranch[8].posX = 1200;
+aBranch[8].posY = 400;
+
+aBranch[9].posX = 1500;
+aBranch[9].posY = 350;
+
 var floorLvl = 737;
+
 var box1 = new breakObj(800, 600, 50, 50, false);
 var box2 = new breakObj(900, 600, 50, 50, false);
 
@@ -254,13 +266,11 @@ window.addEventListener("keyup", keyUp, false);
 //loadHandler();
 var image = new Image();	
 image.addEventListener("load", loadHandler, false);
-image.src = "https://cloud.githubusercontent.com/assets/8835208/4763812/664b50a0-5b17-11e4-8e61-dd0df5cfcd0f.png";
-
-
+image.src = "https://cloud.githubusercontent.com/assets/8835208/4764399/6fdf279c-5b24-11e4-8a22-14603b0af298.png";
 
 var background = new Image();	
 background.addEventListener("load", loadHandler, false);
-background.src = "https://cloud.githubusercontent.com/assets/8835208/4622647/808596b8-533f-11e4-8e1d-661d39b4d09b.png";
+background.src = "https://cloud.githubusercontent.com/assets/8864180/4765125/f531d2bc-5b35-11e4-97af-57fb880a6c3c.png";
 
 var llama_left = new Image();	
 var llama_right = new Image();
@@ -365,6 +375,8 @@ function side_scroller(){
 	}	
 }
 
+var test = false;
+
 function update()
 {
 	var playerDirec = 0;
@@ -430,36 +442,38 @@ function update()
 	// Preform actions
 	if(isJump)
 	{
-		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
-			{
-				playerObj.jumpDecay = .5;
-				playerObj.jumpStrength = 20;
-				playerObj.posY = (floorLvl-playerObj.height);
-				playerDirec = 0;
-				isJump = false;
-				//falling = true;
-			}
 			
-			//Gravity equation...
-			else if(playerObj.posY != floorLvl)
-			{
-				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
-				//collide = false;
-				if (playerDirec < 0 ){ //caindo
-					for (var i = 0; i< aBranch.length; i++){
-						if (hitTest(collisionObj,aBranch[i])){
-								floorLvl = aBranch[i].posY;
-								//collide = true;	
-								//falling = false;
-						}
-					}
+		//Gravity equation...
+		playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+			
+		// constantly updates playerOne's Y position
+		playerObj.posY -= playerDirec;
+		// constantly increases the amount of pull downwards by one. 
+		playerObj.jumpDecay += 1;
+					
+		if (playerDirec < 0 ){ //caindo
+			for (var i = 0; i< aBranch.length; i++){
+				if (playerObj.posY > 600){
+					floorLvl = 737;
+					test = true;
 				}
-
-				// constantly updates playerOne's Y position
-				playerObj.posY -= playerDirec;
-				// constantly increases the amount of pull downwards by one. 
-				playerObj.jumpDecay += 1;
+				if (hitTest(collisionObj,aBranch[i])){
+					console.log ("hit");
+					floorLvl = aBranch[i].posY;
+					test = true;
+				}
 			}
+		}
+	
+		if (test){
+			playerObj.jumpDecay = .5;
+			playerObj.jumpStrength = 20;
+			playerObj.posY = (floorLvl-playerObj.height);
+			playerDirec = 0;
+			isJump = false;
+			test = false;
+			console.log("test");
+		}
 	}
 	
 	collide=false;
