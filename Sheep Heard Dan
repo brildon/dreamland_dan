@@ -66,6 +66,17 @@ var collisionIndex = -1;
 
 var key = [];
 
+var distantBackground = {
+	sourceY: 0,
+	sourceX: 0,
+	sourceWidth: 6336	,
+	sourceHeight: 884,
+	width: 6336,
+	height: 884,
+	x: 0,
+	y: 0
+}
+
 var gameWorld = {
 	x: 0,
 	y: 0,
@@ -78,6 +89,8 @@ var camera = {
 	y: 0,
 	width: cv.width,
 	height: cv.height,
+	vx: 0,
+	previousX: 0,
 	
 	rightInnerBoundary: function (){
 		return this.x + (this.width * 0.75);	
@@ -396,7 +409,11 @@ credits.src = "https://cloud.githubusercontent.com/assets/8864180/4768461/691913
 
 var background = new Image();	
 background.addEventListener("load", loadHandler, false);
-background.src = "https://cloud.githubusercontent.com/assets/8864180/4765125/f531d2bc-5b35-11e4-97af-57fb880a6c3c.png";
+background.src = "https://cloud.githubusercontent.com/assets/8835208/4794979/821b1ad4-5df8-11e4-8447-0119d6b16c3a.png";
+
+var distBackground = new Image();
+distBackground.addEventListener("load", loadHandler, false);
+distBackground.src = "https://cloud.githubusercontent.com/assets/8835208/4794971/704218a8-5df8-11e4-83ae-db3ed47158b4.png";
 
 var regExp = new Image();
 regExp.addEventListener("load", loadHandler, false);
@@ -540,7 +557,13 @@ function side_scroller(){
 	}
 	if (camera.y + camera.height > gameWorld.heigth){
 		camera.y = gameWorld.heigth - camera.height;	
-	}	
+	}
+	
+	camera.vx = camera.x - camera.previousX;
+	
+	distantBackground.x += camera.vx / 2;
+	
+	camera.previousX = camera.x;
 }
 
 function update()
@@ -704,6 +727,7 @@ function update()
 		}
 		else{
 			falling = false;
+
 		}
 	}
 	collision = false;
@@ -875,6 +899,7 @@ function render()
 	ctx.save();
 	ctx.translate(-camera.x, -camera.y);
 	ctx.drawImage(background,0,0,6336,900);
+	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
 	
 	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 	
