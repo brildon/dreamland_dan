@@ -252,7 +252,7 @@ var cougar = Object.create(cougarObj);
 cougar.posX = 6000;
 cougar.posY = 667;
 
-var breakables = new Array (20);
+var breakables = new Array (6);
 
 for (var i =0; i<breakables.length; i++)
 {
@@ -261,24 +261,24 @@ for (var i =0; i<breakables.length; i++)
 
 
 breakables[0].posX =800;
-breakables[0].posY =637;
+breakables[0].posY =487;
 breakables[0].broken=false;
-breakables[1].posX =1000;
-breakables[1].posY =637;
+breakables[1].posX =900;
+breakables[1].posY =487;
 breakables[1].broken=false;
-breakables[2].posX =900;
-breakables[2].posY =637;
+breakables[2].posX =1000;
+breakables[2].posY =487;
 breakables[2].broken=false;
-breakables[3].posX =900;
-breakables[3].posY =537;
+breakables[3].posX =1100;
+breakables[3].posY =487;
 breakables[3].broken=false;
 
-breakables[4].posX =1500;
-breakables[4].posY =537;
+breakables[4].posX =1200;
+breakables[4].posY =487;
 breakables[4].broken=false;
-breakables[5].posX =1600;
-breakables[5].posY =537;
-breakables[5].broken=false;
+breakables[5].posX =1300;
+breakables[5].posY =487;
+breakables[5].broken=false;/*
 breakables[6].posX =1700;
 breakables[6].posY =537;
 breakables[6].broken=false;
@@ -322,7 +322,7 @@ breakables[18].posY =537;
 breakables[18].broken=false;
 breakables[19].posX =5560;
 breakables[19].posY =637;
-breakables[19].broken=false;
+breakables[19].broken=false;*/
 
 
 var sheep = new Array (6);
@@ -436,10 +436,10 @@ llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/476514
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
-llama_jump_right.src = "https://cloud.githubusercontent.com/assets/8835208/4829812/5d0061ea-5f89-11e4-8685-2b9a874dc2fa.png";
-llama_jump_left.src = "https://cloud.githubusercontent.com/assets/8835208/4829811/5cfe8c8a-5f89-11e4-80f5-9849d54ac6b1.png";
-sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760666/dae47cd2-5af1-11e4-8c89-d18d53fd4ad1.png";
-sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760668/daec1546-5af1-11e4-8f05-72ddf1c0a71e.png";
+llama_jump_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830602/f2d2ce24-5f8e-11e4-813d-4d704d8cf415.png";
+llama_jump_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830604/f2f1d986-5f8e-11e4-9185-3b4df0866247.png";
+sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
+sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765449/c6af9a7a-5b3d-11e4-94e5-4d3e4432dda1.png";
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4765447/c6a78c4a-5b3d-11e4-8020-ea9b9a75309a.png";
@@ -716,6 +716,9 @@ function update()
 						if(!breakables[i].broken)
 						{
 							collision=true;
+							if (playerObj.posY+playerObj.height > breakables[i].posY)
+								playerObj.posY = breakables[i].posY-playerObj.height+.5;
+								falling = false;
 						}
 					}
 				}
@@ -823,12 +826,26 @@ function update()
 	}
 	if(!isDucking)
 	{
-		isDucked = false;
-		if(isStanding == false)
+		for(var i=0; i<breakables.length; i++)
 		{
-			isStanding = true;
-			playerObj.height = 138;	
-			playerObj.posY = playerObj.posY-50;
+			if(hitTest(playerObj,breakables[i]))
+			{
+				isDucking = true;
+				playerObj.posY = breakables[i].posY+breakables[i].height;
+				//collide = false;
+				//collision = false;
+				//falling=true;
+			}
+		}
+		if(!isDucking)
+		{
+			isDucked = false;
+			if(isStanding == false)
+			{
+				isStanding = true;
+				playerObj.height = 138;	
+				playerObj.posY = playerObj.posY-50;
+			}
 		}
 	}
 	
@@ -886,8 +903,7 @@ function update()
 		attackBox.posY = playerObj.posY;
 	}
 
-	console.log("players y:"+(playerObj.posY+playerObj.height));
-	console.log("floor: "+floorLvl);
+	
 	render();
 }
 
