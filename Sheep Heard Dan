@@ -424,6 +424,8 @@ var llama_left = new Image();
 var llama_right = new Image();
 var llama_duck_left = new Image();
 var llama_duck_right = new Image();
+var llama_jump_left = new Image();
+var llama_jump_right = new Image();
 var sheep_right = new Image();
 var sheep_left = new Image();
 var cougar_left = new Image();
@@ -432,8 +434,10 @@ var box = new Image();
 
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
-llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4586896/82814c90-5020-11e4-992b-ad73f2ed03be.png";
-llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4586897/8285871a-5020-11e4-94fd-a55f2a82e864.png";
+llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
+llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
+llama_jump_right.src = "https://cloud.githubusercontent.com/assets/8835208/4829812/5d0061ea-5f89-11e4-8685-2b9a874dc2fa.png";
+llama_jump_left.src = "https://cloud.githubusercontent.com/assets/8835208/4829811/5cfe8c8a-5f89-11e4-80f5-9849d54ac6b1.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4760666/dae47cd2-5af1-11e4-8c89-d18d53fd4ad1.png";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4760668/daec1546-5af1-11e4-8f05-72ddf1c0a71e.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
@@ -906,12 +910,16 @@ function render()
 	if(playerObj.state == 0){
 		if(isDucking)
 			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+		else if(isJump)
+			ctx.drawImage(llama_jump_right,playerObj.posX, playerObj.posY);
 		else
 			ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
 	}
 	if(playerObj.state == 1){
 		if(isDucking)
 			ctx.drawImage(llama_duck_left,playerObj.posX-43, playerObj.posY);
+		else if(isJump)
+			ctx.drawImage(llama_jump_left,playerObj.posX-43, playerObj.posY);
 		else
 			ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
 	}
