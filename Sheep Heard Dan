@@ -924,6 +924,9 @@ function update()
 		console.log(hitTest(playerObj,miniGame));
 		ctx.clearRect(0,0,1600,900);
 		ctx.drawImage(regExp,0,0,1600,900);
+		ctx.fillText(regExpOne, textBoxArray[0].xCoord, textBoxArray[0].yCoord);
+		ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord);
+		ctx.fillText(regExpThree, textBoxArray[2].xCoord, textBoxArray[2].yCoord);
 	}
 	else
 		render();
@@ -1509,6 +1512,21 @@ function writeText()
 					if(currentTextBox == textBoxArray[2])
 					{
 						regExpThree = regExpThree + "Z"; 
+					}
+				}
+				if(key[46]) //delete button
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne.substring(regExpOne.length - 1, regExpOne.length) = "";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo.substring(regExpTwo.length - 1, regExpTwo.length) = "";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree.substring(regExpThree.length - 1, regExpThree.length) = "";
 					}
 				}
 			}
