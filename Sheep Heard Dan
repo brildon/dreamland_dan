@@ -1026,8 +1026,6 @@ function writeText()
 		console.log(textBoxArray[0].xCoord);
 		console.log(textBoxArray[1].xCoord);
 		console.log(textBoxArray[2].xCoord);
-		console.log(textBoxArray[3].xCoord);
-		console.log(textBoxArray[4].xCoord);
 		console.log(currentTextBox);
 		
 		for(i = 0; i < textBoxArray.length; i++)
@@ -1055,8 +1053,6 @@ function writeText()
 		console.log(textBoxArray[0].xCoord);
 		console.log(textBoxArray[1].xCoord);
 		console.log(textBoxArray[2].xCoord);
-		console.log(textBoxArray[3].xCoord);
-		console.log(textBoxArray[4].xCoord);
 		console.log(currentTextBox);
 	}
 	
