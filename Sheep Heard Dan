@@ -126,6 +126,30 @@ var collisionObj = {
 	}	
 }
 
+var miniGameObj = {
+	x: 0,
+	y: 0,
+	height: 100,
+	width: 100,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
+}
+
+	var miniGame = Object.create(miniGameObj);
+	miniGame.x = 1800
+	miniGame.y = 637
+
 var playerObj = {
 	posY: 600,
 	posX: 200,
@@ -469,7 +493,7 @@ function menu(e)
 	}
 	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true)
 	{
-		console.log("test");
+		//console.log("test");
 		creditsScreen = false;
 		loadHandler();
 	}
@@ -483,10 +507,10 @@ function menu(e)
 function loadHandler()
 {   
     
-	console.log(menuCheck);
+	//console.log(menuCheck);
 	if(menuCheck == true)
 	{
-		console.log("yay");
+		//console.log("yay");
 		if (creditsScreen==true)
 		{
 			
@@ -528,7 +552,7 @@ function gameScreen()
 	
 	side_scroller();
 	
-	render();
+	//render();
 }
 
 function side_scroller(){
@@ -668,7 +692,7 @@ function update()
 								playerObj.posY =breakables[i].posY-playerObj.height;
 								collision = true;
 								
-								console.log("top of box:"+breakables[i].posY);
+								//console.log("top of box:"+breakables[i].posY);
 								//collide = true;	
 								//falling = false;
 						}
@@ -746,7 +770,7 @@ function update()
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					console.log("hit");
+					//console.log("hit");
 					collision=true;
 				}
 			}
@@ -785,7 +809,7 @@ function update()
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					console.log("hit");
+					//console.log("hit");
 					collision=true;
 				}
 			}
@@ -902,9 +926,15 @@ function update()
 		attackBox.posX = playerObj.posX-45;
 		attackBox.posY = playerObj.posY;
 	}
-
 	
-	render();
+	if(hitTest(playerObj,miniGame))
+	{
+		console.log(hitTest(playerObj,miniGame));
+		ctx.clearRect(0,0,1600,900);
+		ctx.drawImage(regExp,0,0,1600,900);
+	}
+	else
+		render();
 }
 
 function hitTest(r1,r2){
@@ -921,7 +951,7 @@ function render()
 	ctx.drawImage(background,0,0,6336,900);
 	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
 	
-	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
 	
 	if(playerObj.state == 0){
 		if(isDucking)
