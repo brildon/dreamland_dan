@@ -7,30 +7,11 @@
 <embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
 <div id="container" style="width:1500px; height:500px; position:relative;" >
     	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
-	<input type="text" style="left=200; top=300;" id="textboxOne"></input>
-	<input type="text" style="left=300; top=300;" id="textboxTwo"></input>
-	<input type="text" style="left=200; top=300;" id="textboxThree"></input>
-	<input type="text" style="left=200; top=300;" id="textboxFour"></input>
-	<input type="text" style="left=200; top=300;" id="textboxFive"></input>
-	<input type="text" style="left=200; top=300;" id="textboxSix"></input>
+
 </div>
 <script>
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
-
-var textboxOne = document.getElementById("textboxOne");
-var textboxTwo = document.getElementById("textboxTwo");
-var textboxThree = document.getElementById("textboxThree");
-var textboxFour = document.getElementById("textboxFour");
-var textboxFive = document.getElementById("textboxFive");
-var textboxSix = document.getElementById("textboxSix");
-
-	textboxOne.style.visibility='hidden';
-	textboxTwo.style.visibility='hidden';
-	textboxThree.style.visibility='hidden';
-	textboxFour.style.visibility='hidden';
-	textboxFive.style.visibility='hidden';
-	textboxSix.style.visibility='hidden';
 
 var sheepPoints = 6;	
 var levelAt = 0;
@@ -53,12 +34,9 @@ var collision = false;
 var movingRight = true;
 var regExpScreen = true;
 
-var regExpOne;
-var regExpTwo;
-var regExpThree;
-var regExpFour;
-var regExpFive;
-var regExpSix;
+var regExpOne = "";
+var regExpTwo = "";
+var regExpThree = "";
 
 var mouse = {x:0,y:0};
 
@@ -416,6 +394,25 @@ var isMoveLeft = false;
 var isMoveRight = false;
 var isJump = false;
 
+var textBox = {
+	xCoord: 0,
+	yCoord: 0,
+	canWrite: false,
+	typerX: 0
+}
+
+
+var textBoxArray = new Array(3);
+
+for(i = 1; i <= textBoxArray.length; i++)
+{
+	textBoxArray[i - 1] = Object.create(textBox);
+	textBoxArray[i - 1].xCoord = i*100;
+	textBoxArray[i - 1].yCoord = i*100;
+	textBoxArray[i - 1].typerX = i*100;
+}	
+
+var currentTextBox = null;
 
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
@@ -497,7 +494,7 @@ function menu(e)
 		creditsScreen = false;
 		loadHandler();
 	}
-	if(buildCheck==false && regExpScreen ==false && mouse.x > 1000)
+	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500)
 	{
 		loadHandler();
 	}
@@ -530,12 +527,7 @@ function loadHandler()
 		{
 			regExpScreen = false;
 			ctx.drawImage(regExp,0,0,1600,900);
-			textboxOne.style.visibility='visible';
-			textboxTwo.style.visibility='visible';
-			textboxThree.style.visibility='visible';
-			textboxFour.style.visibility='visible';
-			textboxFive.style.visibility='visible';
-			textboxSix.style.visibility='visible';
+			writeText();
 		}
 		else if(buildCheck==false)
 		{
@@ -1022,6 +1014,511 @@ function keyUp(e)
 		delete key[e.keyCode];
 }
 
+function writeText()
+{
+	document.onmousedown = function(e)
+	{
+		mouse.x = e.pageX - cv.offsetLeft;
+		mouse.y = e.pageY - cv.offsetTop;
+		
+		console.log(mouse.x);
+		console.log(mouse.y);
+		console.log(textBoxArray[0].xCoord);
+		console.log(textBoxArray[1].xCoord);
+		console.log(textBoxArray[2].xCoord);
+		console.log(textBoxArray[3].xCoord);
+		console.log(textBoxArray[4].xCoord);
+		console.log(currentTextBox);
+		
+		for(i = 0; i < textBoxArray.length; i++)
+		{
+			if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+100 && mouse.y < textBoxArray[i].yCoord+100)
+			{
+				console.log("Blarg " + i);
+				if(currentTextBox == null)
+				{
+					console.log("Filled");
+					currentTextBox = textBoxArray[i];
+					currentTextBox.canWrite = true;
+				}
+				else
+				{
+					currentTextBox.canWrite = false;
+					currentTextBox = textBoxArray[i];
+					currentTextBox.canWrite = true;
+				}
+			}	
+		}
+		console.log("Yea This works...");
+		console.log(mouse.x);
+		console.log(mouse.y);
+		console.log(textBoxArray[0].xCoord);
+		console.log(textBoxArray[1].xCoord);
+		console.log(textBoxArray[2].xCoord);
+		console.log(textBoxArray[3].xCoord);
+		console.log(textBoxArray[4].xCoord);
+		console.log(currentTextBox);
+	}
+	
+	document.onkeydown = function(e)
+	{
+		key[e.keyCode] = true;
+		if(currentTextBox != null)
+		{
+			if(currentTextBox.canWrite == true)
+			{
+				console.log("Yes Can Type");
+				ctx.fillStyle = 'red';
+				ctx.font = "50px Chiller";
+				if(key[65]) // a
+				{
+					ctx.fillText("A", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "A";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "A";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "A"; 
+					}
+					console.log(regExpOne);
+					console.log(regExpTwo);
+					console.log(regExpThree);
+				}
+				if(key[66]) // b
+				{
+					ctx.fillText("B", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "B";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "B";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "B"; 
+					}
+				}
+				if(key[67]) // c
+				{
+					ctx.fillText("C", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "C";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "C";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "C"; 
+					}
+				}
+				if(key[68]) // d
+				{
+					ctx.fillText("D", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "D";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "D";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "D"; 
+					}
+				}
+				if(key[69]) // e
+				{
+					ctx.fillText("E", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "E";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "E";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "E"; 
+					}
+				}
+				if(key[70]) // f
+				{
+					ctx.fillText("F", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "F";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "F";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "F"; 
+					}
+				}
+				if(key[71]) // g
+				{
+					ctx.fillText("G", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "G";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "G";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "G"; 
+					}
+				}
+				if(key[72]) // h
+				{
+					ctx.fillText("H", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "H";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "H";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "H"; 
+					}
+				}
+				if(key[73]) // i
+				{
+					ctx.fillText("I", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "I";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "I";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "I"; 
+					}
+				}
+				if(key[74]) // j
+				{
+					ctx.fillText("J", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "J";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "J";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "J"; 
+					}
+				}
+				if(key[75]) // k
+				{
+					ctx.fillText("K", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "K";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "K";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "K"; 
+					}
+				}
+				if(key[76]) // l
+				{
+					ctx.fillText("L", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "L";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "L";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "L"; 
+					}
+				}
+				if(key[77]) // m
+				{
+					ctx.fillText("M", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "M";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "M";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "M"; 
+					}
+				}
+				if(key[78]) // n
+				{
+					ctx.fillText("N", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "N";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "N";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "N"; 
+					}
+				}
+				if(key[79]) // o
+				{
+					ctx.fillText("O", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "O";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "O";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "O"; 
+					}
+				}
+				if(key[80]) // p
+				{
+					ctx.fillText("P", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "P";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "P";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "P"; 
+					}
+				}
+				if(key[81]) // q
+				{
+					ctx.fillText("Q", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Q";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Q";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Q"; 
+					}
+				}
+				if(key[82]) // r
+				{
+					ctx.fillText("R", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "R";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "R";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "R"; 
+					}
+				}
+				if(key[83]) // s
+				{
+					ctx.fillText("S", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "S";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "S";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "S"; 
+					}
+				}
+				if(key[84]) // t
+				{
+					ctx.fillText("T", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "T";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "T";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "T"; 
+					}
+				}
+				if(key[85]) // u
+				{
+					ctx.fillText("U", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "U";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "U";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "U"; 
+					}
+				}
+				if(key[86]) // v
+				{
+					ctx.fillText("V", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "V";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "V";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "V"; 
+					}
+				}
+				if(key[87]) // w
+				{
+					ctx.fillText("W", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "W";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "W";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "W"; 
+					}
+				}
+				if(key[88]) // x
+				{
+					ctx.fillText("X", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "X";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "X";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "X"; 
+					}
+				}
+				if(key[89]) // y
+				{
+					ctx.fillText("Y", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Y";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Y";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Y"; 
+					}
+				}
+				if(key[90]) // z
+				{
+					ctx.fillText("Z", currentTextBox.typerX, currentTextBox.yCoord);
+					currentTextBox.typerX += 25;
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Z";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Z";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Z"; 
+					}
+				}
+			}
+		}
+	}
+}
 
 </script>
 </body>
