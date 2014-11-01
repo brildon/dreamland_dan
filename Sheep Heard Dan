@@ -41,6 +41,8 @@ var regExpThree = "";
 var mouse = {x:0,y:0};
 
 var collisionIndex = -1;
+var count = 0;
+var playerDirec = 0;
 
 var key = [];
 
@@ -132,7 +134,7 @@ var playerObj = {
 	posY: 600,
 	posX: 200,
 	height: 137,
-	width: 124,
+	width: 157,
 	hMask: 10,
 	wMask: 75,
 	jumpStrength: 17,
@@ -445,8 +447,7 @@ var llama_left = new Image();
 var llama_right = new Image();
 var llama_duck_left = new Image();
 var llama_duck_right = new Image();
-var llama_jump_left = new Image();
-var llama_jump_right = new Image();
+var llama_jump_sprite = new Image();
 var sheep_right = new Image();
 var sheep_left = new Image();
 var cougar_left = new Image();
@@ -457,8 +458,7 @@ llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/476514
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
-llama_jump_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830602/f2d2ce24-5f8e-11e4-813d-4d704d8cf415.png";
-llama_jump_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830604/f2f1d986-5f8e-11e4-9185-3b4df0866247.png";
+llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
@@ -594,9 +594,6 @@ function update()
 		loadHandler();	
 	}
 	
-	
-	var playerDirec = 0;
-	
 	collisionObj.x = playerObj.posX;
 	collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
 	
@@ -660,7 +657,7 @@ function update()
 	
 	collision=false;
 	// Preform actions
-	if(isJump)
+if(isJump)
 	{
 		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
 			{
@@ -684,9 +681,18 @@ function update()
 								playerObj.posY =breakables[i].posY-playerObj.height;
 								collision = true;
 								
-								//console.log("top of box:"+breakables[i].posY);
+								console.log("top of box:"+breakables[i].posY);
 								//collide = true;	
 								//falling = false;
+						}
+					}
+				}
+				else{
+					for (var i = 0; i< breakables.length; i++){
+						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
+							console.log("bateu");
+								playerObj.posY = breakables[i].posY+breakables[i].height;
+								playerDirec= -1;
 						}
 					}
 				}
@@ -762,7 +768,7 @@ function update()
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					//console.log("hit");
+					console.log("hit");
 					collision=true;
 				}
 			}
@@ -781,13 +787,15 @@ function update()
 					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
 					{
 						collision = true;
+						collisionIndex = i;
 					}
 				}
 			}
 		}
 		if(collision == true)
 		{
-			playerObj.posX+= 20;	
+			console.log (collisionIndex);
+			playerObj.posX = breakables[collisionIndex].posX+breakables[collisionIndex].width;		
 		}
 	}
 	
@@ -801,7 +809,7 @@ function update()
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					//console.log("hit");
+					console.log("hit");
 					collision=true;
 				}
 			}
@@ -842,7 +850,7 @@ function update()
 	}
 	if(!isDucking)
 	{
-		for(var i=0; i<breakables.length; i++)
+		/*for(var i=0; i<breakables.length; i++)
 		{
 			if(hitTest(playerObj,breakables[i]))
 			{
@@ -854,7 +862,7 @@ function update()
 			}
 		}
 		if(!isDucking)
-		{
+		{*/
 			isDucked = false;
 			if(isStanding == false)
 			{
@@ -862,10 +870,8 @@ function update()
 				playerObj.height = 138;	
 				playerObj.posY = playerObj.posY-50;
 			}
-		}
+		//}
 	}
-	
-
 	
 	for(var i=0; i<sheep.length; i++)
 	{
@@ -949,18 +955,42 @@ function render()
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
 	
 	if(playerObj.state == 0){
-		if(isDucking)
+		if(isDucking){
 			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
-		else if(isJump)
-			ctx.drawImage(llama_jump_right,playerObj.posX, playerObj.posY);
-		else
+		}
+		else if(isJump){
+			if (playerDirec < 0){
+				ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+			}
+			else{
+			  	if (count >= 0 && count <20){
+				  ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);		
+				}
+				else if (count>=20 && count <40){
+				  ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				}
+			}
+		}
+		else{
 			ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+		}
 	}
 	if(playerObj.state == 1){
 		if(isDucking)
 			ctx.drawImage(llama_duck_left,playerObj.posX-43, playerObj.posY);
-		else if(isJump)
-			ctx.drawImage(llama_jump_left,playerObj.posX-43, playerObj.posY);
+		else if(isJump){
+			if (playerDirec < 0){
+				ctx.drawImage(llama_jump_sprite, 298, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+			}
+			else{
+				if (count >= 0 && count <20){
+				  ctx.drawImage(llama_jump_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);		
+				}
+				else if (count>=20 && count <40){
+				  ctx.drawImage(llama_jump_sprite, 145, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				}
+			}
+		}
 		else
 			ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
 	}
@@ -1002,6 +1032,11 @@ function render()
 		{
 			ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
 		}
+	}
+	
+	count++;
+	if (count ==40){
+		count = 0;	
 	}
 		
 	ctx.restore();
