@@ -330,7 +330,7 @@ breakables[19].broken=false;*/
 var sheep = new Array (6);
 for (var i=0; i<sheep.length; i++)
 {
-	sheep[i]=Object.create(branchObj);
+	sheep[i]=Object.create(sheepObj);
 }
 
 sheep[0].posX =550;
