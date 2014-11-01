@@ -256,7 +256,7 @@ var cougar = Object.create(cougarObj);
 cougar.posX = 6000;
 cougar.posY = 667;
 
-var breakables = new Array (6);
+var breakables = new Array (13);
 
 for (var i =0; i<breakables.length; i++)
 {
@@ -265,7 +265,7 @@ for (var i =0; i<breakables.length; i++)
 
 
 breakables[0].posX =800;
-breakables[0].posY =487;
+breakables[0].posY =600;
 breakables[0].broken=false;
 breakables[1].posX =900;
 breakables[1].posY =487;
@@ -281,8 +281,8 @@ breakables[4].posX =1200;
 breakables[4].posY =487;
 breakables[4].broken=false;
 breakables[5].posX =1300;
-breakables[5].posY =487;
-breakables[5].broken=false;/*
+breakables[5].posY =420;
+breakables[5].broken=false;
 breakables[6].posX =1700;
 breakables[6].posY =537;
 breakables[6].broken=false;
@@ -302,9 +302,7 @@ breakables[10].broken=false;
 breakables[11].posX =2500;
 breakables[11].posY =310;
 breakables[11].broken=false;
-breakables[12].posX =2600;
-breakables[12].posY =310;
-breakables[12].broken=false;
+breakables[12].posX =2600;/*
 breakables[13].posX =2600;
 breakables[13].posY =637;
 breakables[13].broken=false;
@@ -515,7 +513,7 @@ function loadHandler()
 		}
 		else if(buildCheck == false)
 		{
-			console.log("good");
+			//console.log("good");
 			ctx.drawImage(image,0,0,1600,900);
 			buildCheck=true;		
 		}
@@ -681,7 +679,7 @@ if(isJump)
 								playerObj.posY =breakables[i].posY-playerObj.height;
 								collision = true;
 								
-								console.log("top of box:"+breakables[i].posY);
+								//console.log("top of box:"+breakables[i].posY);
 								//collide = true;	
 								//falling = false;
 						}
@@ -691,8 +689,9 @@ if(isJump)
 					for (var i = 0; i< breakables.length; i++){
 						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
 							console.log("bateu");
-								playerObj.posY = breakables[i].posY+breakables[i].height;
-								playerDirec= -1;
+								playerObj.posY = breakables[i].posY+breakables[i].height+1;
+								//playerDirec= 0;
+								falling = true;
 						}
 					}
 				}
@@ -768,8 +767,10 @@ if(isJump)
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					console.log("hit");
-					collision=true;
+					if (!isJump){
+						console.log("hit");
+						collision=true;
+					}
 				}
 			}
 		}
@@ -782,19 +783,21 @@ if(isJump)
 		{
 			if(hitTest(breakables[i],playerObj))
 			{
-				if(!breakables[i].broken)
-				{
-					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-					{
-						collision = true;
-						collisionIndex = i;
-					}
+				if (!isJump){
+				  if(!breakables[i].broken)
+				  {
+					  if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+					  {
+						  collision = true;
+						  collisionIndex = i;
+					  }
+				  }
 				}
 			}
 		}
 		if(collision == true)
 		{
-			console.log (collisionIndex);
+			//console.log (collisionIndex);
 			playerObj.posX = breakables[collisionIndex].posX+breakables[collisionIndex].width;		
 		}
 	}
@@ -809,8 +812,10 @@ if(isJump)
 			{
 				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 				{
-					console.log("hit");
-					collision=true;
+					if (!isJump){
+						console.log("hit");
+						collision=true;
+					}
 				}
 			}
 		}
@@ -823,13 +828,15 @@ if(isJump)
 		{
 			if(hitTest(breakables[i],playerObj))
 			{
-				if(!breakables[i].broken)
-				{
-					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-					{
-						collision = true;
-					}
-				}
+				if (!isJump){
+					if(!breakables[i].broken)
+				  	{
+						if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+					  	{
+						  collision = true;
+					 	 }
+				  	}
+				}	
 			}
 		}
 		if(collision == true)
@@ -927,7 +934,7 @@ if(isJump)
 	
 	if(hitTest(playerObj,miniGame))
 	{
-		console.log(hitTest(playerObj,miniGame));
+		//console.log(hitTest(playerObj,miniGame));
 		ctx.clearRect(0,0,1600,900);
 		ctx.drawImage(regExp,0,0,1600,900);
 		ctx.fillText(regExpOne, textBoxArray[0].xCoord, textBoxArray[0].yCoord);
@@ -1059,21 +1066,21 @@ function writeText()
 		mouse.x = e.pageX - cv.offsetLeft;
 		mouse.y = e.pageY - cv.offsetTop;
 		
-		console.log(mouse.x);
-		console.log(mouse.y);
-		console.log(textBoxArray[0].xCoord);
-		console.log(textBoxArray[1].xCoord);
-		console.log(textBoxArray[2].xCoord);
-		console.log(currentTextBox);
+		//console.log(mouse.x);
+		//console.log(mouse.y);
+		//console.log(textBoxArray[0].xCoord);
+		//console.log(textBoxArray[1].xCoord);
+		//console.log(textBoxArray[2].xCoord);
+		//console.log(currentTextBox);
 		
 		for(i = 0; i < textBoxArray.length; i++)
 		{
 			if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+100 && mouse.y < textBoxArray[i].yCoord+100)
 			{
-				console.log("Blarg " + i);
+				//console.log("Blarg " + i);
 				if(currentTextBox == null)
 				{
-					console.log("Filled");
+					//console.log("Filled");
 					currentTextBox = textBoxArray[i];
 					currentTextBox.canWrite = true;
 				}
@@ -1085,13 +1092,13 @@ function writeText()
 				}
 			}	
 		}
-		console.log("Yea This works...");
-		console.log(mouse.x);
-		console.log(mouse.y);
-		console.log(textBoxArray[0].xCoord);
-		console.log(textBoxArray[1].xCoord);
-		console.log(textBoxArray[2].xCoord);
-		console.log(currentTextBox);
+		//console.log("Yea This works...");
+		//console.log(mouse.x);
+		//console.log(mouse.y);
+		//console.log(textBoxArray[0].xCoord);
+		//console.log(textBoxArray[1].xCoord);
+		//console.log(textBoxArray[2].xCoord);
+		//console.log(currentTextBox);
 	}
 	
 	document.onkeydown = function(e)
@@ -1101,7 +1108,7 @@ function writeText()
 		{
 			if(currentTextBox.canWrite == true)
 			{
-				console.log("Yes Can Type");
+				//console.log("Yes Can Type");
 				ctx.fillStyle = 'red';
 				ctx.font = "50px Chiller";
 				if(key[65]) // a
@@ -1120,9 +1127,9 @@ function writeText()
 					{
 						regExpThree = regExpThree + "A"; 
 					}
-					console.log(regExpOne);
-					console.log(regExpTwo);
-					console.log(regExpThree);
+					//console.log(regExpOne);
+					//console.log(regExpTwo);
+					//console.log(regExpThree);
 				}
 				if(key[66]) // b
 				{
