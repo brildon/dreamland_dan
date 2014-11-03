@@ -42,6 +42,7 @@ var mouse = {x:0,y:0};
 
 var collisionIndex = -1;
 var count = 0;
+var countR = 0;
 var playerDirec = 0;
 
 var key = [];
@@ -134,7 +135,7 @@ var playerObj = {
 	posY: 600,
 	posX: 200,
 	height: 137,
-	width: 157,
+	width: 140,
 	hMask: 10,
 	wMask: 75,
 	jumpStrength: 17,
@@ -142,26 +143,6 @@ var playerObj = {
 	fallStrengh: 0,
 	speed: 5,
 	state: 0,
-	
-	centerX: function (){
-		return this.posX + (this.wMask / 2);
-	},
-	centerY: function (){
-		return this.posY + (this.height / 2);	
-	},
-	halfWidth: function(){
-		return (this.wMask / 2);	
-	},
-	halfHeight: function(){
-		return (this.height / 2);	
-	}
-}
-
-var branchObj = {
-	posX: 0,
-	posY: 0,
-	height: 5,
-	width : 100,
 	
 	centerX: function (){
 		return this.posX + (this.width / 2);
@@ -174,7 +155,7 @@ var branchObj = {
 	},
 	halfHeight: function(){
 		return (this.height / 2);	
-	}		
+	}
 }
 
 var breakObj = {
@@ -357,33 +338,8 @@ sheep[5].posX =5450;
 sheep[5].posY =650;
 sheep[5].saved = false;
 
-var aBranch = new Array (6);
-for (var i=0;i<aBranch.length;i++){
-	aBranch[i] = Object.create(branchObj);	
-}
-
-aBranch[0].posX = 150;
-aBranch[0].posY = 580;
-
-aBranch[1].posX = 300;
-aBranch[1].posY = 400;
-	
-aBranch[2].posX = 2450;
-aBranch[2].posY = 580;
-
-aBranch[3].posX = 0;
-aBranch[3].posY = 737;
-aBranch[3].width = gameWorld.width;
-
-aBranch[4].posX = 150;
-aBranch[4].posY = 220;
-
-aBranch[5].posX = 500;
-aBranch[5].posY = 450;
-
 var hitVar = false;
 var floorLvl = 737;
-
 
 camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
 camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
@@ -446,6 +402,7 @@ var llama_right = new Image();
 var llama_duck_left = new Image();
 var llama_duck_right = new Image();
 var llama_jump_sprite = new Image();
+var llama_run_sprite = new Image();
 var sheep_right = new Image();
 var sheep_left = new Image();
 var cougar_left = new Image();
@@ -457,6 +414,7 @@ llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/47652
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
 llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
+llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
@@ -706,18 +664,6 @@ if(isJump)
 			}
 	}
 	
-	collide=false;
-	for (var i = 0; i< aBranch.length; i++){
-		if (hitTest(collisionObj,aBranch[i])){
-				collide = true;	
-				falling = false;
-				collisionIndex = i;
-				//floorLvl = aBranch[i].posY;
-		}
-	}
-	
-	
-
 	if (!collide&&!isJump){
 		floorLvl=737;
 		
@@ -961,51 +907,88 @@ function render()
 	
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
 	
-	if(playerObj.state == 0){
+	if(playerObj.state == 0){ //right
 		if(isDucking){
 			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
 		}
 		else if(isJump){
 			if (playerDirec < 0){
-				ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 			}
 			else{
 			  	if (count >= 0 && count <20){
-				  ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);		
+				  ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
 				}
-				else if (count>=20 && count <40){
-				  ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				else if (count>=20 && count <=40){
+				  ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 				}
 			}
 		}
+		else if(isMoveRight){
+			if (countR >= 0 && countR<5){
+				ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+			}
+			else if (countR >= 5 && countR<10){
+				ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+			}
+			else if (countR >= 10 && countR<15){
+				ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 15 && countR<20){
+				ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 20 && countR<25){
+				ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 25 && countR<=30){
+				ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+		}
+		
 		else{
-			ctx.drawImage(llama_right,playerObj.posX, playerObj.posY);
+			ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
 		}
 	}
-	if(playerObj.state == 1){
+	if(playerObj.state == 1){ //left
 		if(isDucking)
-			ctx.drawImage(llama_duck_left,playerObj.posX-43, playerObj.posY);
+			ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
 		else if(isJump){
 			if (playerDirec < 0){
-				ctx.drawImage(llama_jump_sprite, 298, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 			}
 			else{
 				if (count >= 0 && count <20){
-				  ctx.drawImage(llama_jump_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);		
+				  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
 				}
-				else if (count>=20 && count <40){
-				  ctx.drawImage(llama_jump_sprite, 145, 0, playerObj.width, playerObj.height, playerObj.posX-43, playerObj.posY, playerObj.width, playerObj.height);
+				else if (count>=20 && count <=40){
+				  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 				}
 			}
 		}
+		else if (isMoveLeft){
+		if (countR >= 0 && countR<5){
+				ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+			}
+			else if (countR >= 5 && countR<10){
+				ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+			}
+			else if (countR >= 10 && countR<15){
+				ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 15 && countR<20){
+				ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 20 && countR<25){
+				ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}
+			else if (countR >= 25 && countR<=30){
+				ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+			}	
+		}
 		else
-			ctx.drawImage(llama_left,playerObj.posX-43, playerObj.posY);
+			ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 	}
 		
-	/*for (var i=0;i<aBranch.length;i++){
-		ctx.fillRect(aBranch[i].posX,aBranch[i].posY,aBranch[i].width,aBranch[i].height);	
-	}*/
-	
 	/*if(isAttack)
 	{
 		ctx.fillStyle = 'green';
@@ -1045,7 +1028,11 @@ function render()
 	if (count ==40){
 		count = 0;	
 	}
-		
+	countR++;
+	if (countR ==30){
+		countR = 0;	
+	}
+	
 	ctx.restore();
 }
 
