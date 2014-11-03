@@ -542,6 +542,9 @@ function side_scroller(){
 	camera.previousX = camera.x;
 }
 
+collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+collisionObj.x = playerObj.posX+10;
+
 function update()
 {
 	if(playerObj.posX<150)
@@ -550,8 +553,13 @@ function update()
 		loadHandler();	
 	}
 	
-	collisionObj.x = playerObj.posX;
 	collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+	if (isMoveRight){
+		collisionObj.x = playerObj.posX+10;
+	}
+	else if (isMoveLeft){
+		collisionObj.x = playerObj.posX+53;	
+	}
 	
 	//SpaceBar
 	if(key[32])
@@ -613,7 +621,7 @@ function update()
 	
 	collision=false;
 	// Preform actions
-if(isJump)
+	if(isJump)
 	{
 		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
 			{
@@ -906,6 +914,8 @@ function render()
 	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
 	
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
+	//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+	ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 	
 	if(playerObj.state == 0){ //right
 		if(isDucking){
