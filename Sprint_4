@@ -13,7 +13,7 @@
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
 
-var sheepPoints = 6;	
+var sheepPoints = 0;	
 var levelAt = 0;
 
 var jumpWords = new Array(9);
@@ -492,6 +492,7 @@ var sheep_left = new Image();
 var cougar_left = new Image();
 var cougar_right = new Image();
 var box = new Image();
+var sheepIcon = new Image();
 
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
@@ -504,7 +505,7 @@ sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2d
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765449/c6af9a7a-5b3d-11e4-94e5-4d3e4432dda1.png";
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4765447/c6a78c4a-5b3d-11e4-8020-ea9b9a75309a.png";
-
+sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 
 function menu(e)
 {
@@ -932,7 +933,11 @@ function update()
 	{
 		if(hitTest(playerObj,sheep[i]))
 		{
-			sheep[i].saved=true;
+			if(!sheep[i].saved==true)
+			{
+				sheep[i].saved=true;
+				sheepPoints++;
+			}
 		}
 		if(sheep[i].saved)
 		{
@@ -1017,8 +1022,13 @@ function render()
 	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
 	
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
-	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-	ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	
+	ctx.drawImage(sheepIcon,camera.x,0);
+	ctx.fillStyle = 'black';
+	ctx.font = "50px Arial";
+	ctx.fillText(sheepPoints+"/6",camera.x+50,50,50);
 	
 	if(playerObj.state == 0){ //right
 		if(isDucking){
@@ -1228,8 +1238,8 @@ function writeText()
 			if(currentTextBox.canWrite == true)
 			{
 				console.log("Yes Can Type");
-				ctx.fillStyle = 'red';
-				ctx.font = "50px Chiller";
+				ctx.fillStyle = 'black';
+				ctx.font = "50px Arial";
 				if(key[65]) // a
 				{
 					if(currentTextBox == textBoxArray[0])
