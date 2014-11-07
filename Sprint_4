@@ -685,6 +685,9 @@ sheep[5].posX =50;
 sheep[5].posY =640;
 sheep[5].saved = false;
 
+miniGame.x = 0;
+miniGame.y = 0;
+
 }
 
 function gameScreen()
