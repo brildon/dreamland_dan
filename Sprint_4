@@ -55,6 +55,8 @@ var collisionIndex = -1;
 var count = 0;
 var countR = 0;
 var playerDirec = 0;
+var currentLvl = 1;
+var lvlFlag = false;
 
 var key = [];
 
@@ -319,7 +321,6 @@ for (var i =0; i<breakables.length; i++)
 {
 	breakables[i]=Object.create(breakObj);
 }
-
 
 breakables[0].posX =800;
 breakables[0].posY =637;
@@ -592,6 +593,98 @@ function loadHandler()
 		}
 	}
 	
+}
+
+function setPositionLvl2() {
+	
+playerObj.posX = 200;
+playerObj.posY = 600;
+
+aBranch[0].posX = 150;
+aBranch[0].posY = 580;
+
+aBranch[1].posX = 300;
+aBranch[1].posY = 400;
+	
+aBranch[2].posX = 2450;
+aBranch[2].posY = 580;
+
+aBranch[3].posX = 0;
+aBranch[3].posY = 737;
+aBranch[3].width = gameWorld.width;
+
+aBranch[4].posX = 150;
+aBranch[4].posY = 220;
+
+aBranch[5].posX = 500;
+aBranch[5].posY = 450;
+
+cougar.posX = 200;
+cougar.posY = 667;
+
+breakables[0].posX =100;
+breakables[0].posY =637;
+breakables[0].broken=false;
+breakables[1].posX =200;
+breakables[1].posY =537;
+breakables[1].broken=false;
+breakables[2].posX =300;
+breakables[2].posY =487;
+breakables[2].broken=false;
+breakables[3].posX =400;
+breakables[3].posY =487;
+breakables[3].broken=false;
+
+breakables[4].posX =500;
+breakables[4].posY =487;
+breakables[4].broken=false;
+breakables[5].posX =600;
+breakables[5].posY =420;
+breakables[5].broken=false;
+breakables[6].posX =700;
+breakables[6].posY =537;
+breakables[6].broken=false;
+
+breakables[7].posX =800;
+breakables[7].posY =637;
+breakables[7].broken=false;
+breakables[8].posX =900;
+breakables[8].posY =637;
+breakables[8].broken=false;
+breakables[9].posX =1000;
+breakables[9].posY =537;
+breakables[9].broken=false;
+breakables[10].posX =1100;
+breakables[10].posY =310;
+breakables[10].broken=false;
+breakables[11].posX =1200;
+breakables[11].posY =310;
+breakables[11].broken=false;
+
+sheep[0].posX =20;
+sheep[0].posY =640;
+sheep[0].saved = false;
+
+sheep[1].posX =300 ;
+sheep[1].posY =640;
+sheep[1].saved = false;
+
+sheep[2].posX =500 ;
+sheep[2].posY =640;
+sheep[2].saved = false;
+
+sheep[3].posX =750;
+sheep[3].posY =640;
+sheep[3].saved = false;
+
+sheep[4].posX =600;
+sheep[4].posY =640;
+sheep[4].saved = false;
+
+sheep[5].posX =50;
+sheep[5].posY =640;
+sheep[5].saved = false;
+
 }
 
 function gameScreen()
@@ -1024,6 +1117,16 @@ function update()
 		textOpen = false;
 		render();
 	}
+	
+	if (playerObj.posX === 6000){
+		currentLvl = 2;
+		lvlFlag = true;	
+	}
+	
+	if (currentLvl === 2 && lvlFlag){
+		setPositionLvl2();	
+		lvlFlag = false;
+	}
 }
 
 function hitTest(r1,r2){
@@ -1037,14 +1140,21 @@ function render()
 	
 	ctx.save();
 	ctx.translate(-camera.x, -camera.y);
-	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 	
-	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
-	//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	if (currentLvl === 1){
+		ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+		ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+		ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+		ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+	
+		ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
+		//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+		//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
+	}
+	else if (currentLvl === 2){
+		ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);	
+	}
+	
 	
 	ctx.drawImage(sheepIcon,camera.x,0);
 	ctx.fillStyle = 'black';
