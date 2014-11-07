@@ -4,14 +4,18 @@
 <title>Sheep! Heard Dan</title>
 </head>
 <body>
-<embed src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" autostart="true" loop="true" hidden="true">
 <div id="container" style="width:1500px; height:500px; position:relative;" >
     	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 
 </div>
+<audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" preload="auto" loop></audio>
 <script>
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
+
+var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
+
+document.getElementById('music').play();
 
 var sheepPoints = 0;	
 var levelAt = 0;
@@ -36,6 +40,7 @@ var attackWords = [];
 var menuCheck = true;
 var buildCheck = false;
 var creditsScreen = false;
+var optionsScreen = false;
 var collide = false;
 var falling = false;
 var isDucked = false;
@@ -44,6 +49,10 @@ var sheepSaved = 0;
 var collision = false;
 var movingRight = true;
 var regExpScreen = true;
+var soundOn = true;
+var cutScene = false;
+var lastLevel = false;
+var gameOver = false;
 
 var regExpOne = "";
 var regExpTwo = "";
@@ -163,8 +172,6 @@ var miniGameObj = {
 }
 
 	var miniGame = Object.create(miniGameObj);
-	miniGame.x = 5500
-	miniGame.y = 637
 
 var playerObj = {
 	posY: 600,
@@ -312,8 +319,7 @@ var hitBox = {
 var attackBox = Object.create(hitBox);
 
 var cougar = Object.create(cougarObj);
-cougar.posX = 6000;
-cougar.posY = 667;
+
 
 var breakables = new Array (13);
 
@@ -322,68 +328,6 @@ for (var i =0; i<breakables.length; i++)
 	breakables[i]=Object.create(breakObj);
 }
 
-breakables[0].posX =800;
-breakables[0].posY =637;
-breakables[0].broken=false;
-breakables[1].posX =900;
-breakables[1].posY =537;
-breakables[1].broken=false;
-breakables[2].posX =1000;
-breakables[2].posY =487;
-breakables[2].broken=false;
-breakables[3].posX =1100;
-breakables[3].posY =487;
-breakables[3].broken=false;
-
-breakables[4].posX =1200;
-breakables[4].posY =487;
-breakables[4].broken=false;
-breakables[5].posX =1300;
-breakables[5].posY =420;
-breakables[5].broken=false;
-breakables[6].posX =1700;
-breakables[6].posY =537;
-breakables[6].broken=false;
-
-breakables[7].posX =2300;
-breakables[7].posY =637;
-breakables[7].broken=false;
-breakables[8].posX =2400;
-breakables[8].posY =637;
-breakables[8].broken=false;
-breakables[9].posX =2400;
-breakables[9].posY =537;
-breakables[9].broken=false;
-breakables[10].posX =2400;
-breakables[10].posY =310;
-breakables[10].broken=false;
-breakables[11].posX =2500;
-breakables[11].posY =310;
-breakables[11].broken=false;
-breakables[12].posX =2600;/*
-breakables[13].posX =2600;
-breakables[13].posY =637;
-breakables[13].broken=false;
-breakables[14].posX =2700;
-breakables[14].posY =637;
-breakables[14].broken=false;
-breakables[15].posX =2700;
-breakables[15].posY =537;
-breakables[15].broken=false;
-breakables[16].posX =2700;
-breakables[16].posY =310;
-breakables[16].broken=false;
-
-breakables[17].posX =5350;
-breakables[17].posY =637;
-breakables[17].broken=false;
-breakables[18].posX =5450;
-breakables[18].posY =537;
-breakables[18].broken=false;
-breakables[19].posX =5560;
-breakables[19].posY =637;
-breakables[19].broken=false;*/
-
 
 var sheep = new Array (6);
 for (var i=0; i<sheep.length; i++)
@@ -391,29 +335,6 @@ for (var i=0; i<sheep.length; i++)
 	sheep[i]=Object.create(sheepObj);
 }
 
-sheep[0].posX =550;
-sheep[0].posY =640;
-sheep[0].saved = false;
-
-sheep[1].posX =1500 ;
-sheep[1].posY =640;
-sheep[1].saved = false;
-
-sheep[2].posX =2500 ;
-sheep[2].posY =640;
-sheep[2].saved = false;
-
-sheep[3].posX =3250;
-sheep[3].posY =640;
-sheep[3].saved = false;
-
-sheep[4].posX =4000;
-sheep[4].posY =640;
-sheep[4].saved = false;
-
-sheep[5].posX =5450;
-sheep[5].posY =640;
-sheep[5].saved = false;
 
 var hitVar = false;
 var floorLvl = 737;
@@ -512,7 +433,14 @@ var cougar_right = new Image();
 var box = new Image();
 var sheepIcon = new Image();
 var sheepWizard = new Image();
+var optionSoundOn = new Image();
+var endScene = new Image();
+var optionSoundOff = new Image();
+var cutscene = new Image();
+var restart = new Image();
 
+
+endScene.src = "https://cloud.githubusercontent.com/assets/8864180/4950698/acadc788-665e-11e4-86e0-f0785f8c70ad.png";
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
@@ -526,6 +454,11 @@ cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/d
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/4948653/dd0011f8-6608-11e4-8078-ddf4b063ff58.png";
+optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8864180/4950025/2bb39eaa-6654-11e4-8a5f-b257b6b1004b.png";
+optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
+cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
+restart.src = "https://cloud.githubusercontent.com/assets/8864180/4951552/c68d9b60-6668-11e4-806f-eb3eebb55a91.png";
+
 
 
 function menu(e)
@@ -538,13 +471,13 @@ function menu(e)
 		mouse.y = e.pageY - cv.offsetTop;	
 	}
 	
-	if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true && creditsScreen ==false)
+	if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true && creditsScreen ==false && optionsScreen==false)
 	{
 		buildCheck=false;
 		menuCheck=false;
 		loadHandler();
 	}
-	if(870<mouse.x && mouse.x<1260 && 670<mouse.y && mouse.y<820)
+	if(870<mouse.x && mouse.x<1260 && 670<mouse.y && mouse.y<820 && optionsScreen == false)
 	{
 		creditsScreen = true;
 		buildCheck=false;
@@ -556,8 +489,30 @@ function menu(e)
 		creditsScreen = false;
 		loadHandler();
 	}
+	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true)
+	{
+		//console.log("test");
+		optionsScreen = false;
+		loadHandler();
+	}
 	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500)
 	{
+		loadHandler();
+	}
+	if(490<mouse.x && mouse.x<880 && mouse.y>540 && 670 > mouse.y && creditsScreen == false)
+	{
+		optionsScreen = true;
+		buildCheck=false;
+		loadHandler();
+	}
+	if(optionsScreen && mouse.x>795 && mouse.x<925 && mouse.y >385 && mouse.y<484)
+	{
+		soundOn = false;
+		loadHandler();
+	}
+	if(optionsScreen && mouse.x>575 && mouse.x<705 && mouse.y >385 && mouse.y<484)
+	{
+		soundOn = true;
 		loadHandler();
 	}
 	
@@ -565,15 +520,31 @@ function menu(e)
 
 function loadHandler()
 {   
-    
+    ctx.restore();
+
 	//console.log(menuCheck);
 	if(menuCheck == true)
 	{
 		//console.log("yay");
 		if (creditsScreen==true)
 		{
-			
 			ctx.drawImage(credits,0,0,1600,900);
+		}
+		else if(optionsScreen==true)
+		{
+			if(soundOn)
+			{
+				ctx.drawImage(optionSoundOn,0,0,1600,900);
+				document.getElementById('music').play();
+			}
+
+			else
+			{
+				ctx.drawImage(optionSoundOff,0,0,1600,900);
+				document.getElementById('music').pause();
+			}
+
+				
 		}
 		else if(buildCheck == false)
 		{
@@ -591,14 +562,131 @@ function loadHandler()
 		}
 		else if(buildCheck==false)
 		{
+			ctx.drawImage(cutscene,0,0,1600,900);
 			buildCheck = true;
-			setInterval(gameScreen, 1000/50);
+			window.setTimeout(gameStart,5000);		
 		}
 	}
-	
+}
+function endGame()
+{
+	menuCheck = true;
+	buildCheck = false;
+	creditsScreen = true;
+	optionsScreen = false;
+	loadHandler();
 }
 
+function gameStart()
+{
+	intialize();
+	var game = setInterval(gameScreen, 1000/50);
+}
+function intialize()
+{
+	sheepPoints = 0;
+	
+	playerObj.posX = 200;
+	playerObj.posY = 600;	
+	
+	miniGame.x = 5500
+	miniGame.y = 637
+	
+	cougar.posX = 6000;
+	cougar.posY = 667;
+		
+	sheep[0].posX =550;
+	sheep[0].posY =640;
+	sheep[0].saved = false;
+	
+	sheep[1].posX =1500 ;
+	sheep[1].posY =640;
+	sheep[1].saved = false;
+	
+	sheep[2].posX =2500 ;
+	sheep[2].posY =640;
+	sheep[2].saved = false;
+	
+	sheep[3].posX =3250;
+	sheep[3].posY =640;
+	sheep[3].saved = false;
+	
+	sheep[4].posX =4000;
+	sheep[4].posY =640;
+	sheep[4].saved = false;
+	
+	sheep[5].posX =5450;
+	sheep[5].posY =640;
+	sheep[5].saved = false;
+	
+	breakables[0].posX =800;
+	breakables[0].posY =637;
+	breakables[0].broken=false;
+	breakables[1].posX =900;
+	breakables[1].posY =537;
+	breakables[1].broken=false;
+	breakables[2].posX =1000;
+	breakables[2].posY =487;
+	breakables[2].broken=false;
+	breakables[3].posX =1100;
+	breakables[3].posY =487;
+	breakables[3].broken=false;
+	
+	breakables[4].posX =1200;
+	breakables[4].posY =487;
+	breakables[4].broken=false;
+	breakables[5].posX =1300;
+	breakables[5].posY =420;
+	breakables[5].broken=false;
+	breakables[6].posX =1700;
+	breakables[6].posY =537;
+	breakables[6].broken=false;
+	
+	breakables[7].posX =2300;
+	breakables[7].posY =637;
+	breakables[7].broken=false;
+	breakables[8].posX =2400;
+	breakables[8].posY =637;
+	breakables[8].broken=false;
+	breakables[9].posX =2400;
+	breakables[9].posY =537;
+	breakables[9].broken=false;
+	breakables[10].posX =2400;
+	breakables[10].posY =310;
+	breakables[10].broken=false;
+	breakables[11].posX =2500;
+	breakables[11].posY =310;
+	breakables[11].broken=false;
+	breakables[12].posX =2600;/*
+	breakables[13].posX =2600;
+	breakables[13].posY =637;
+	breakables[13].broken=false;
+	breakables[14].posX =2700;
+	breakables[14].posY =637;
+	breakables[14].broken=false;
+	breakables[15].posX =2700;
+	breakables[15].posY =537;
+	breakables[15].broken=false;
+	breakables[16].posX =2700;
+	breakables[16].posY =310;
+	breakables[16].broken=false;
+	
+	breakables[17].posX =5350;
+	breakables[17].posY =637;
+	breakables[17].broken=false;
+	breakables[18].posX =5450;
+	breakables[18].posY =537;
+	breakables[18].broken=false;
+	breakables[19].posX =5560;
+	breakables[19].posY =637;
+	breakables[19].broken=false;*/
+
+}
+
+
 function setPositionLvl2() {
+lvlFlag = false;
+lastLevel = true;
 	
 playerObj.posX = 200;
 playerObj.posY = 600;
@@ -748,390 +836,404 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
-	/*if(playerObj.posX<150)
-	{
-		regExpScreen=true;
-		loadHandler();	
-	}*/
-	
-	collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
-	if (isMoveRight){
-		collisionObj.x = playerObj.posX+10;
-	}
-	else if (isMoveLeft){
-		collisionObj.x = playerObj.posX+53;	
-	}
-	
-	//SpaceBar
-	if(key[32])
-	{
-		isAttack = true;
-	}
-	//W
-	if(key[87])
-	{
-		if(!isJump)
+	if(gameOver==false)
 		{
-			playerObj.posY = playerObj.posY-1;
-			isJump = true;
-		}	
-	}
-	//A
-	if(key[65])
-	{
-		isMoveLeft = true;
-		playerObj.state = 1;
-		movingRight = false;
-	}
-	//S
-	if(key[83])
-	{
-		isDucking = true;
-	}
-	//D
-	if(key[68])
-	{
-		isMoveRight = true;
-		playerObj.state = 0;
-		movingRight = true;
-
-	}
-	
-	//SpaceBar
-	if(!key[32])
-	{
-		isAttack = false;
-	}
-	//W
-	
-	//A 
-	if(!key[65])
-	{
-		isMoveLeft = false;
-	}
-	//S
-	if(!key[83])
-	{
-		isDucking = false;
-	}
-	//D
-	if(!key[68])
-	{
-		isMoveRight = false;
-	}
-	
-	collision=false;
-	// Preform actions
-	if(isJump)
-	{
-		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+		/*if(playerObj.posX<150)
+		{
+			regExpScreen=true;
+			loadHandler();	
+		}*/
+		
+		collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+		if (isMoveRight){
+			collisionObj.x = playerObj.posX+10;
+		}
+		else if (isMoveLeft){
+			collisionObj.x = playerObj.posX+53;	
+		}
+		
+		//SpaceBar
+		if(key[32])
+		{
+			isAttack = true;
+		}
+		//W
+		if(key[38])
+		{
+			if(!isJump)
 			{
-				playerObj.jumpDecay = .5;
-				playerObj.jumpStrength = 17;
-				playerObj.posY = (floorLvl-playerObj.height);
-				playerDirec = 0;
-				isJump = false;
-				//falling = true;
+				playerObj.posY = playerObj.posY-1;
+				isJump = true;
+			}	
+		}
+		//A
+		if(key[37])
+		{
+			isMoveLeft = true;
+			playerObj.state = 1;
+			movingRight = false;
+		}
+		//S
+		if(key[40])
+		{
+			isDucking = true;
+		}
+		//D
+		if(key[39])
+		{
+			isMoveRight = true;
+			playerObj.state = 0;
+			movingRight = true;
+	
+		}
+		
+		//SpaceBar
+		if(!key[32])
+		{
+			isAttack = false;
+		}
+		//W
+		
+		//A 
+		if(!key[37])
+		{
+			isMoveLeft = false;
+		}
+		//S
+		if(!key[40])
+		{
+			isDucking = false;
+		}
+		//D
+		if(!key[39])
+		{
+			isMoveRight = false;
+		}
+		
+		collision=false;
+		// Preform actions
+		if(isJump)
+		{
+			if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+				{
+					playerObj.jumpDecay = .5;
+					playerObj.jumpStrength = 17;
+					playerObj.posY = (floorLvl-playerObj.height);
+					playerDirec = 0;
+					isJump = false;
+					//falling = true;
+				}
+				
+				//Gravity equation...
+				else if(playerObj.posY != floorLvl)
+				{
+					playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+					//collide = false;
+					if (playerDirec < 0 ){ //caindo
+						for (var i = 0; i< breakables.length; i++){
+							if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
+									floorLvl = breakables[i].posY;
+									playerObj.posY =breakables[i].posY-playerObj.height;
+									collision = true;
+									
+									//console.log("top of box:"+breakables[i].posY);
+									//collide = true;	
+									//falling = false;
+							}
+						}
+					}
+					/*else{
+						for (var i = 0; i< breakables.length; i++){
+							if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
+								console.log("bateu");
+									playerObj.posY = breakables[i].posY+breakables[i].height+1;
+									//playerDirec= 0;
+									falling = true;
+							}
+						}
+					}*/
+					if(!collision)
+					{
+						floorLvl = 737;
+						// constantly updates playerOne's Y position
+						playerObj.posY -= playerDirec;
+						// constantly increases the amount of pull downwards by one. 
+						playerObj.jumpDecay += 1;
+					}
+				}
+		}
+		
+		collide=false;
+		for (var i = 0; i< aBranch.length; i++){
+			if (hitTest(collisionObj,aBranch[i])){
+					collide = true;	
+					falling = false;
+					collisionIndex = i;
+					//floorLvl = aBranch[i].posY;
+			}
+		}
+		
+		if (!collide&&!isJump){
+			floorLvl=737;
+			
+			if (playerObj.posY<floorLvl)
+			{
+				if(!falling)
+				{		
+					playerObj.jumpDecay = 0.5;
+					falling = true;
+				}
+				else
+				{
+					for(var i=0; i<breakables.length; i++)
+					{
+						if(hitTest(breakables[i],playerObj))
+						{
+							if(!breakables[i].broken)
+							{
+								collision=true;
+								if (playerObj.posY+playerObj.height > breakables[i].posY)
+									playerObj.posY = breakables[i].posY-playerObj.height+.5;
+									falling = false;
+							}
+						}
+					}
+					if(!collision)
+					{
+						playerObj.posY+= playerObj.jumpDecay;
+						playerObj.jumpDecay += 1;
+						if(!isDucking)
+						{
+							if (playerObj.posY >600){
+								playerObj.posY = 600;	
+							}
+						}
+						else
+						{
+								if (playerObj.posY >650)
+								{
+									playerObj.posY = 650;
+								}
+						}
+					}
+				}
+			}
+			else{
+				falling = false;
+	
+			}
+		}
+		collision = false;
+		if(isMoveLeft)
+		{
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			if (collision == false)
+			{
+				playerObj.posX -= playerObj.speed;
 			}
 			
-			//Gravity equation...
-			else if(playerObj.posY != floorLvl)
+			for(var i=0; i<breakables.length; i++)
 			{
-				playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
-				//collide = false;
-				if (playerDirec < 0 ){ //caindo
-					for (var i = 0; i< breakables.length; i++){
-						if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
-								floorLvl = breakables[i].posY;
-								playerObj.posY =breakables[i].posY-playerObj.height;
-								collision = true;
-								
-								//console.log("top of box:"+breakables[i].posY);
-								//collide = true;	
-								//falling = false;
-						}
-					}
-				}
-				/*else{
-					for (var i = 0; i< breakables.length; i++){
-						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
-							console.log("bateu");
-								playerObj.posY = breakables[i].posY+breakables[i].height+1;
-								//playerDirec= 0;
-								falling = true;
-						}
-					}
-				}*/
-				if(!collision)
+				if(hitTest(breakables[i],playerObj))
 				{
-					floorLvl = 737;
-					// constantly updates playerOne's Y position
-					playerObj.posY -= playerDirec;
-					// constantly increases the amount of pull downwards by one. 
-					playerObj.jumpDecay += 1;
-				}
-			}
-	}
-	
-	collide=false;
-	for (var i = 0; i< aBranch.length; i++){
-		if (hitTest(collisionObj,aBranch[i])){
-				collide = true;	
-				falling = false;
-				collisionIndex = i;
-				//floorLvl = aBranch[i].posY;
-		}
-	}
-	
-	if (!collide&&!isJump){
-		floorLvl=737;
-		
-		if (playerObj.posY<floorLvl)
-		{
-			if(!falling)
-			{		
-				playerObj.jumpDecay = 0.5;
-				falling = true;
-			}
-			else
-			{
-				for(var i=0; i<breakables.length; i++)
-				{
-					if(hitTest(breakables[i],playerObj))
+					if(!breakables[i].broken)
 					{
-						if(!breakables[i].broken)
+						if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
 						{
-							collision=true;
-							if (playerObj.posY+playerObj.height > breakables[i].posY)
-								playerObj.posY = breakables[i].posY-playerObj.height+.5;
-								falling = false;
+							collision = true;
 						}
 					}
 				}
-				if(!collision)
+			}
+			if(collision == true)
+			{
+				playerObj.posX+= 20;	
+			}
+		}
+		
+		collision = false;
+		if(isMoveRight)
+		{
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
 				{
-					playerObj.posY+= playerObj.jumpDecay;
-					playerObj.jumpDecay += 1;
-					if(!isDucking)
+					if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
 					{
-						if (playerObj.posY >600){
-							playerObj.posY = 600;	
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			if (collision == false)
+			{
+				playerObj.posX += playerObj.speed;
+			}
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken)
+					{
+						if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+						{
+							collision = true;
 						}
 					}
-					else
-					{
-							if (playerObj.posY >650)
-							{
-								playerObj.posY = 650;
-							}
-					}
 				}
 			}
-		}
-		else{
-			falling = false;
-
-		}
-	}
-	collision = false;
-	if(isMoveLeft)
-	{
-		for(var i=0; i<breakables.length; i++)
-		{
-			if(hitTest(breakables[i],playerObj))
+			if(collision == true)
 			{
-				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
-				{
-					console.log("hit");
-					collision=true;
-				}
+				playerObj.posX-= 20;	
 			}
-		}
-		if (collision == false)
-		{
-			playerObj.posX -= playerObj.speed;
 		}
 		
-		for(var i=0; i<breakables.length; i++)
+		if(isDucking)
 		{
-			if(hitTest(breakables[i],playerObj))
+			isStanding = false;
+			if (isDucked == false)
 			{
-				if(!breakables[i].broken)
-				{
-					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-					{
-						collision = true;
-					}
-				}
-			}
-		}
-		if(collision == true)
-		{
-			playerObj.posX+= 20;	
-		}
-	}
-	
-	collision = false;
-	if(isMoveRight)
-	{
-		
-		for(var i=0; i<breakables.length; i++)
-		{
-			if(hitTest(breakables[i],playerObj))
-			{
-				if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
-				{
-					console.log("hit");
-					collision=true;
-				}
-			}
-		}
-		if (collision == false)
-		{
-			playerObj.posX += playerObj.speed;
-		}
-		
-		for(var i=0; i<breakables.length; i++)
-		{
-			if(hitTest(breakables[i],playerObj))
-			{
-				if(!breakables[i].broken)
-				{
-					if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-					{
-						collision = true;
-					}
-				}
-			}
-		}
-		if(collision == true)
-		{
-			playerObj.posX-= 20;	
-		}
-	}
-	
-	if(isDucking)
-	{
-		isStanding = false;
-		if (isDucked == false)
-		{
-			isDucked = true;	
-			playerObj.height = 88;
-			playerObj.posY = playerObj.posY+50;
-			floorlvl = floorlvl+50;
-		}
-	}
-	if(!isDucking)
-	{
-		/*for(var i=0; i<breakables.length; i++)
-		{
-			if(hitTest(playerObj,breakables[i]))
-			{
-				isDucking = true;
-				playerObj.posY = breakables[i].posY+breakables[i].height;
-				//collide = false;
-				//collision = false;
-				//falling=true;
+				isDucked = true;	
+				playerObj.height = 88;
+				playerObj.posY = playerObj.posY+50;
+				floorlvl = floorlvl+50;
 			}
 		}
 		if(!isDucking)
-		{*/
-			isDucked = false;
-			if(isStanding == false)
-			{
-				isStanding = true;
-				playerObj.height = 138;	
-				playerObj.posY = playerObj.posY-50;
-				floorlvl = floorlvl-50;
-			}
-		//}
-	}
-	
-	for(var i=0; i<sheep.length; i++)
-	{
-		if(hitTest(playerObj,sheep[i]))
 		{
-			if(!sheep[i].saved==true)
+			/*for(var i=0; i<breakables.length; i++)
 			{
-				sheep[i].saved=true;
-				sheepPoints++;
+				if(hitTest(playerObj,breakables[i]))
+				{
+					isDucking = true;
+					playerObj.posY = breakables[i].posY+breakables[i].height;
+					//collide = false;
+					//collision = false;
+					//falling=true;
+				}
 			}
+			if(!isDucking)
+			{*/
+				isDucked = false;
+				if(isStanding == false)
+				{
+					isStanding = true;
+					playerObj.height = 138;	
+					playerObj.posY = playerObj.posY-50;
+					floorlvl = floorlvl-50;
+				}
+			//}
 		}
-		if(sheep[i].saved)
-		{
-			sheep[i].posX--;	
-		}
-	}
-	
-	sheepSaved = 0;
-	if(cougar.saved==false)
-	{
+		
 		for(var i=0; i<sheep.length; i++)
 		{
-			if(sheep[i].saved)
-				{
-					sheepSaved++;
-				}
-		}
-	}
-	if(sheepSaved>5)
-	{
-		cougar.posX = cougar.posX+5;	
-	}
-
-	if(isAttack)
-	{
-		
-		for(var i=0; i<breakables.length; i++)
-		{
-			
-			if(hitTest(attackBox,breakables[i]))
+			if(hitTest(playerObj,sheep[i]))
 			{
-				breakables[i].broken = true;
+				if(!sheep[i].saved==true)
+				{
+					sheep[i].saved=true;
+					sheepPoints++;
+				}
+			}
+			if(sheep[i].saved)
+			{
+				sheep[i].posX--;	
 			}
 		}
-	}
-
-	if(movingRight)
-	{
-		attackBox.posX = playerObj.posX+playerObj.width;
-		attackBox.posY = playerObj.posY;
-	}
-	else
-	{
-		attackBox.posX = playerObj.posX-45;
-		attackBox.posY = playerObj.posY;
-	}
-	
-	if(hitTest(playerObj,miniGame))
-	{
-		textOpen = true;
-		writeText();
-		ctx.clearRect(0,0,1600,900);
-		ctx.drawImage(regExp,0,0,1600,900);
-		ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
-		ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
-		ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
 		
-		ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
-		ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
-		ctx.fillRect(submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
-	}
-	else
-	{
-		currentTextBox = null;
-		textOpen = false;
-		render();
-	}
+		sheepSaved = 0;
+		if(cougar.saved==false)
+		{
+			for(var i=0; i<sheep.length; i++)
+			{
+				if(sheep[i].saved)
+					{
+						sheepSaved++;
+					}
+			}
+		}
+		if(sheepSaved>5)
+		{
+			cougar.posX = cougar.posX+5;	
+		}
 	
-	if (playerObj.posX === 6000){
-		currentLvl = 2;
-		lvlFlag = true;	
-	}
+		if(isAttack)
+		{
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				
+				if(hitTest(attackBox,breakables[i]))
+				{
+					breakables[i].broken = true;
+				}
+			}
+		}
 	
-	if (currentLvl === 2 && lvlFlag){
-		setPositionLvl2();	
-		lvlFlag = false;
+		if(movingRight)
+		{
+			attackBox.posX = playerObj.posX+playerObj.width;
+			attackBox.posY = playerObj.posY;
+		}
+		else
+		{
+			attackBox.posX = playerObj.posX-45;
+			attackBox.posY = playerObj.posY;
+		}
+		
+		if(hitTest(playerObj,miniGame))
+		{
+			textOpen = true;
+			writeText();
+			ctx.clearRect(0,0,1600,900);
+			ctx.drawImage(regExp,0,0,1600,900);
+			ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+			ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+			ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+			
+			ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
+			ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
+			ctx.fillRect(submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
+		}
+		else
+		{
+			currentTextBox = null;
+			textOpen = false;
+			render();
+		}
+		
+		if (playerObj.posX > 6000){
+			currentLvl = 2;
+			lvlFlag = true;	
+		}
+		
+		if (currentLvl === 2 && lvlFlag){
+			if(lastLevel==false)
+			{
+				ctx.drawImage(cutscene,0,0,1600,900);
+				window.setTimeout(setPositionLvl2,5000);
+			}
+			else
+			{
+				ctx.drawImage(endScene,0,0,1600,900);
+				gameOver = true;
+				setTimeout(endGame,5000);
+			}
+			//setPositionLvl2();	
+			//lvlFlag = false;
+		}
 	}
 }
 
@@ -1142,160 +1244,178 @@ function hitTest(r1,r2){
 
 function render()
 {
-	ctx.clearRect(0,0,1600,900);
-	
-	ctx.save();
-	ctx.translate(-camera.x, -camera.y);
-	
-	if (currentLvl === 1){
-		ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-		ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-		ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-		ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
-	
-	ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
-		//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-		//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
-	}
-	else if (currentLvl === 2){
-		ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);	
-	}
-	
-	
-	ctx.drawImage(sheepIcon,camera.x,0);
-	ctx.fillStyle = 'black';
-	ctx.font = "50px Arial";
-	ctx.fillText(sheepPoints+"/6",camera.x+50,50,50);
-	
-	if(playerObj.state == 0){ //right
-		if(isDucking){
-			ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+	if(gameOver==false)
+	{
+		ctx.clearRect(0,0,1600,900);
+		
+		ctx.save();
+		ctx.translate(-camera.x, -camera.y);
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
+		
+		if (currentLvl === 1){
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+			ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+			ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+			ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+		
+		ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+			//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+			//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 		}
-		else if(isJump){
-			if (playerDirec < 0){
-				ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+		else if (currentLvl === 2){
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);	
+		}
+		
+		
+		ctx.drawImage(sheepIcon,camera.x,0);
+		ctx.fillStyle = 'black';
+		ctx.font = "50px Arial";
+		ctx.fillText(sheepPoints+"/6",camera.x+50,50,50);
+		
+		if(playerObj.state == 0){ //right
+			if(isDucking){
+				ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
 			}
+			else if(isJump){
+				if (playerDirec < 0){
+					ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+				}
+				else{
+					if (count >= 0 && count <20){
+					  ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+					}
+					else if (count>=20 && count <=40){
+					  ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+			}
+			else if(isMoveRight){
+				if (countR >= 0 && countR<5){
+					ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+				}
+				else if (countR >= 5 && countR<10){
+					ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+				}
+				else if (countR >= 10 && countR<15){
+					ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 15 && countR<20){
+					ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 20 && countR<25){
+					ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 25 && countR<=30){
+					ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+			}
+			
 			else{
-			  	if (count >= 0 && count <20){
-				  ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-				}
-				else if (count>=20 && count <=40){
-				  ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-				}
+				ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
 			}
 		}
-		else if(isMoveRight){
+		if(playerObj.state == 1){ //left
+			if(isDucking)
+				ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
+			else if(isJump){
+	
+				if (playerDirec < 0){
+					ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+				}
+				else{
+					if (count >= 0 && count <20){
+					  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+					}
+					else if (count>=20 && count <=40){
+					  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+			}
+			else if (isMoveLeft){
 			if (countR >= 0 && countR<5){
-				ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+				}
+				else if (countR >= 5 && countR<10){
+					ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+				}
+				else if (countR >= 10 && countR<15){
+					ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 15 && countR<20){
+					ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 20 && countR<25){
+					ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}
+				else if (countR >= 25 && countR<=30){
+					ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+				}	
 			}
-			else if (countR >= 5 && countR<10){
-				ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-			}
-			else if (countR >= 10 && countR<15){
-				ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 15 && countR<20){
-				ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 20 && countR<25){
-				ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 25 && countR<=30){
-				ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
+			else
+				ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 		}
 		
-		else{
-			ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
-		}
-	}
-	if(playerObj.state == 1){ //left
-		if(isDucking)
-			ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
-		else if(isJump){
-
-			if (playerDirec < 0){
-				ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-			}
-			else{
-				if (count >= 0 && count <20){
-				  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-				}
-				else if (count>=20 && count <=40){
-				  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-				}
-			}
-		}
-		else if (isMoveLeft){
-		if (countR >= 0 && countR<5){
-				ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-			}
-			else if (countR >= 5 && countR<10){
-				ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-			}
-			else if (countR >= 10 && countR<15){
-				ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 15 && countR<20){
-				ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 20 && countR<25){
-				ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}
-			else if (countR >= 25 && countR<=30){
-				ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-			}	
-		}
-		else
-			ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
-	}
-	
-		
-	/*if(isAttack)
-	{
-		ctx.fillStyle = 'green';
-		ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
-	}*/
-	
-	for (var i=0; i<sheep.length;i++)
-	{
-		if(sheep[i].saved==false)
+			
+		/*if(isAttack)
 		{
-			ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+			ctx.fillStyle = 'green';
+			ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+		}*/
+		
+		for (var i=0; i<sheep.length;i++)
+		{
+			if(sheep[i].saved==false)
+			{
+				ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+			}
+			else
+			{
+				ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+			}
+		}
+			
+		if(sheepSaved==6)
+		{
+			ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
 		}
 		else
 		{
-			ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+			ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
 		}
-	}
 		
-	if(sheepSaved==6)
-	{
-		ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
-	}
-	else
-	{
-		ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
-	}
-	
-	for(var i=0; i<breakables.length; i++)
-	{
-		if(!breakables[i].broken)
+		for(var i=0; i<breakables.length; i++)
 		{
-			ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+			if(!breakables[i].broken)
+			{
+				ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+			}
 		}
+		
+		count++;
+		if (count ==40){
+			count = 0;	
+		}
+		countR++;
+		if (countR ==30){
+			countR = 0;	
+		}
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
+			
+		ctx.drawImage(restart,1534+camera.x,10);
+			
+		if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
+		{
+			intialize();
+		}
+			
+		ctx.restore();
 	}
-	
-	count++;
-	if (count ==40){
-		count = 0;	
-	}
-	countR++;
-	if (countR ==30){
-		countR = 0;	
-	}
-	
-	ctx.restore();
 }
 
 function keyDown(e)
