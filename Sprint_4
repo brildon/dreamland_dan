@@ -425,7 +425,13 @@ for(i = 1; i <= textBoxArray.length; i++)
 	
 	textBoxArray[0].yCoord = 700;
 	textBoxArray[1].yCoord = 700;
-	textBoxArray[2].yCoord = 700;	
+	textBoxArray[2].yCoord = 700;
+	
+var submitButton = {
+	posX: 0,
+	posY: 0,
+	clicked: false
+}
 
 var currentTextBox = null;
 
