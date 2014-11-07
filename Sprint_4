@@ -13,12 +13,23 @@
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
 
-var sheepPoints = 0;	
+var sheepPoints = 6;	
 var levelAt = 0;
 
-var leftWords = [];
-var rightWords = [];
-var jumpWords = [];
+var jumpWords = new Array(9);
+	
+	jumpWords[0] = "COUP";
+	jumpWords[1] = "BUMP";
+	jumpWords[2] = "HOP";
+	
+	jumpWords[3] = "LEAP";
+	jumpWords[4] = "SLEEP";
+	jumpWords[5] = "EAT";
+	
+	jumpWords[6] = "SLUMP";
+	jumpWords[7] = "JUMP";
+	jumpWords[8] = "JACK";
+	
 var crouchWords = [];
 var attackWords = [];
 
@@ -393,6 +404,8 @@ var isMoveLeft = false;
 var isMoveRight = false;
 var isJump = false;
 
+var textOpen = false;
+
 var textBox = {
 	xCoord: 0,
 	yCoord: 0,
@@ -415,6 +428,26 @@ for(i = 1; i <= textBoxArray.length; i++)
 	textBoxArray[2].yCoord = 700;	
 
 var currentTextBox = null;
+
+var submitButtonArray = new Array(3);
+
+for(j = 0; j < submitButtonArray.length; j++)
+{
+	submitButtonArray[j] = Object.create(submitButton);
+	console.log(submitButtonArray[j]);
+}
+
+submitButtonArray[0].posX = 100;
+submitButtonArray[1].posX = 600;
+submitButtonArray[2].posX = 1000;
+
+submitButtonArray[0].posY = 800;
+submitButtonArray[1].posY = 800;
+submitButtonArray[2].posY = 800;
+
+var regExp1;
+var regExp2;
+var regExp3;
 
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
@@ -442,7 +475,6 @@ var regExp = new Image();
 regExp.addEventListener("load", loadHandler, false);
 regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4886662/3600e47c-637e-11e4-99e8-9d5c37849a23.png";
 
-
 var llama_left = new Image();	
 var llama_right = new Image();
 var llama_duck_left = new Image();
@@ -454,7 +486,6 @@ var sheep_left = new Image();
 var cougar_left = new Image();
 var cougar_right = new Image();
 var box = new Image();
-var sheepIcon = new Image();
 
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
@@ -467,7 +498,7 @@ sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2d
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765449/c6af9a7a-5b3d-11e4-94e5-4d3e4432dda1.png";
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4765447/c6a78c4a-5b3d-11e4-8020-ea9b9a75309a.png";
-sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
+
 
 function menu(e)
 {
@@ -529,8 +560,6 @@ function loadHandler()
 		if(regExpScreen == true)
 		{
 			regExpScreen = false;
-			ctx.drawImage(regExp,0,0,1600,900);
-			writeText();
 		}
 		else if(buildCheck==false)
 		{
@@ -897,11 +926,7 @@ function update()
 	{
 		if(hitTest(playerObj,sheep[i]))
 		{
-			if(!sheep[i].saved==true)
-			{
-				sheep[i].saved=true;
-				sheepPoints++;
-			}
+			sheep[i].saved=true;
 		}
 		if(sheep[i].saved)
 		{
@@ -951,15 +976,24 @@ function update()
 	
 	if(hitTest(playerObj,miniGame))
 	{
-		//console.log(hitTest(playerObj,miniGame));
+		textOpen = true;
+		writeText();
 		ctx.clearRect(0,0,1600,900);
 		ctx.drawImage(regExp,0,0,1600,900);
-		ctx.fillText(regExpOne, textBoxArray[0].xCoord, textBoxArray[0].yCoord);
-		ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord);
-		ctx.fillText(regExpThree, textBoxArray[2].xCoord, textBoxArray[2].yCoord);
+		ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+		ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+		ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+		
+		ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
+		ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
+		ctx.fillRect(submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
 	}
 	else
+	{
+		currentTextBox = null;
+		textOpen = false;
 		render();
+	}
 }
 
 function hitTest(r1,r2){
@@ -977,13 +1011,8 @@ function render()
 	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
 	
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
-	//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-	//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
-	
-	ctx.drawImage(sheepIcon,camera.x,0);
-	ctx.fillStyle = 'black';
-	ctx.font = "50px Arial";
-	ctx.fillText(sheepPoints+"/6",camera.x+50,50,50);
+	ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+	ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 	
 	if(playerObj.state == 0){ //right
 		if(isDucking){
@@ -1127,44 +1156,62 @@ function keyUp(e)
 
 function writeText()
 {
-	document.onmousedown = function(e)
+	if(textOpen)
 	{
-		mouse.x = e.pageX - cv.offsetLeft;
-		mouse.y = e.pageY - cv.offsetTop;
-		
-		console.log(mouse.x);
-		console.log(mouse.y);
-		console.log(textBoxArray[0].xCoord);
-		console.log(textBoxArray[1].xCoord);
-		console.log(textBoxArray[2].xCoord);
-		console.log(currentTextBox);
-		
-		for(i = 0; i < textBoxArray.length; i++)
+		document.onmousedown = function(e)
 		{
-			if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
+			mouse.x = e.pageX - cv.offsetLeft;
+			mouse.y = e.pageY - cv.offsetTop;
+			
+			console.log(mouse.x);
+			console.log(mouse.y);
+			console.log(textBoxArray[0].xCoord);
+			console.log(textBoxArray[1].xCoord);
+			console.log(textBoxArray[2].xCoord);
+			console.log(currentTextBox);
+			
+			for(i = 0; i < textBoxArray.length; i++)
 			{
-				console.log("Blarg " + i);
-				if(currentTextBox == null)
+				if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
 				{
-					console.log("Filled");
-					currentTextBox = textBoxArray[i];
-					currentTextBox.canWrite = true;
-				}
-				else
+					if(currentTextBox == null)
+					{
+						currentTextBox = textBoxArray[i];
+						currentTextBox.canWrite = true;
+					}
+					else
+					{
+						currentTextBox.canWrite = false;
+						currentTextBox = textBoxArray[i];
+						currentTextBox.canWrite = true;
+					}
+				}	
+			}
+			
+			if(mouse.x >= submitButtonArray[0].posX && mouse.x <= submitButtonArray[0].posX + 50 && mouse.y >= submitButtonArray[0].posY && mouse.y <= submitButtonArray[0].posY + 50)
+			{
+				regExp1 = new RegExp(regExpOne);
+				console.log(regExp1);
+				submitButtonArray[0].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 50 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 50 && submitButtonArray[0].clicked)
+			{
+				regExp2 = new RegExp(regExpTwo);
+				console.log(regExp2);
+				submitButtonArray[1].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 50 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 50 && submitButtonArray[1].clicked)
+			{
+				regExp3 = new RegExp(regExpThree);
+				console.log(regExp3);
+				submitButtonArray[2].clicked = true;
+				//make sure to use array for action
+				if(stringtest.match(regExp3))
 				{
-					currentTextBox.canWrite = false;
-					currentTextBox = textBoxArray[i];
-					currentTextBox.canWrite = true;
+					console.log("True");
 				}
-			}	
+			}
 		}
-		console.log("Yea This works...");
-		console.log(mouse.x);
-		console.log(mouse.y);
-		console.log(textBoxArray[0].xCoord);
-		console.log(textBoxArray[1].xCoord);
-		console.log(textBoxArray[2].xCoord);
-		console.log(currentTextBox);
 	}
 	
 	document.onkeydown = function(e)
@@ -1179,8 +1226,6 @@ function writeText()
 				ctx.font = "50px Chiller";
 				if(key[65]) // a
 				{
-					
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "A";
@@ -1197,7 +1242,6 @@ function writeText()
 				}
 				if(key[66]) // b
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "B";
@@ -1214,7 +1258,6 @@ function writeText()
 				}
 				if(key[67]) // c
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "C";
@@ -1231,7 +1274,6 @@ function writeText()
 				}
 				if(key[68]) // d
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "D";
@@ -1248,7 +1290,6 @@ function writeText()
 				}
 				if(key[69]) // e
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "E";
@@ -1265,7 +1306,6 @@ function writeText()
 				}
 				if(key[70]) // f
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "F";
@@ -1282,7 +1322,6 @@ function writeText()
 				}
 				if(key[71]) // g
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "G";
@@ -1299,7 +1338,6 @@ function writeText()
 				}
 				if(key[72]) // h
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "H";
@@ -1316,7 +1354,6 @@ function writeText()
 				}
 				if(key[73]) // i
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "I";
@@ -1333,7 +1370,6 @@ function writeText()
 				}
 				if(key[74]) // j
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "J";
@@ -1350,7 +1386,6 @@ function writeText()
 				}
 				if(key[75]) // k
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "K";
@@ -1367,7 +1402,6 @@ function writeText()
 				}
 				if(key[76]) // l
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "L";
@@ -1384,7 +1418,6 @@ function writeText()
 				}
 				if(key[77]) // m
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "M";
@@ -1401,7 +1434,6 @@ function writeText()
 				}
 				if(key[78]) // n
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "N";
@@ -1418,7 +1450,6 @@ function writeText()
 				}
 				if(key[79]) // o
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "O";
@@ -1435,7 +1466,6 @@ function writeText()
 				}
 				if(key[80]) // p
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "P";
@@ -1452,7 +1482,6 @@ function writeText()
 				}
 				if(key[81]) // q
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "Q";
@@ -1469,7 +1498,6 @@ function writeText()
 				}
 				if(key[82]) // r
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "R";
@@ -1486,7 +1514,6 @@ function writeText()
 				}
 				if(key[83]) // s
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "S";
@@ -1503,7 +1530,6 @@ function writeText()
 				}
 				if(key[84]) // t
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "T";
@@ -1520,7 +1546,6 @@ function writeText()
 				}
 				if(key[85]) // u
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "U";
@@ -1537,7 +1562,6 @@ function writeText()
 				}
 				if(key[86]) // v
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "V";
@@ -1554,7 +1578,6 @@ function writeText()
 				}
 				if(key[87]) // w
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "W";
@@ -1571,7 +1594,6 @@ function writeText()
 				}
 				if(key[88]) // x
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "X";
@@ -1588,7 +1610,6 @@ function writeText()
 				}
 				if(key[89]) // y
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "Y";
@@ -1605,7 +1626,6 @@ function writeText()
 				}
 				if(key[90]) // z
 				{
-					currentTextBox.typerX += 1;
 					if(currentTextBox == textBoxArray[0])
 					{
 						regExpOne = regExpOne + "Z";
@@ -1642,7 +1662,6 @@ function writeText()
 		}
 	}
 }
-
 </script>
 </body>
 </html>
