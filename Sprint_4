@@ -1,4 +1,4 @@
-<html>
+ <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Sheep! Heard Dan</title>
@@ -163,7 +163,7 @@ var miniGameObj = {
 }
 
 	var miniGame = Object.create(miniGameObj);
-	miniGame.x = 1800
+	miniGame.x = 5500
 	miniGame.y = 637
 
 var playerObj = {
@@ -490,7 +490,7 @@ image.src = "https://cloud.githubusercontent.com/assets/8835208/4764399/6fdf279c
 
 var credits = new Image();
 credits.addEventListener("loard", loadHandler, false);
-credits.src = "https://cloud.githubusercontent.com/assets/8864180/4768461/691913fa-5b6a-11e4-91f0-0014cf37a5d0.png";
+credits.src = "https://cloud.githubusercontent.com/assets/8864180/4948999/ec74fcfe-6610-11e4-8b38-ed50a396dea8.png";
 
 var lvl1_background = new Image();	
 lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/4923079/a12690e0-6517-11e4-9492-2fe66469f118.png";
@@ -511,6 +511,7 @@ var cougar_left = new Image();
 var cougar_right = new Image();
 var box = new Image();
 var sheepIcon = new Image();
+var sheepWizard = new Image();
 
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765144/9f69d52c-5b36-11e4-864c-0a0f8d2ee957.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765246/a4b0578e-5b38-11e4-9b57-78b9ba4ee497.png";
@@ -520,10 +521,12 @@ llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864
 llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
-cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4765448/c6ab21de-5b3d-11e4-9580-683ce0e6df38.png";
-cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4765449/c6af9a7a-5b3d-11e4-94e5-4d3e4432dda1.png";
-box.src = "https://cloud.githubusercontent.com/assets/8864180/4765447/c6a78c4a-5b3d-11e4-8020-ea9b9a75309a.png";
+cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
+cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/dd01743a-6608-11e4-979c-4dac571f3560.png";
+box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
+sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/4948653/dd0011f8-6608-11e4-8078-ddf4b063ff58.png";
+
 
 function menu(e)
 {
@@ -1150,7 +1153,7 @@ function render()
 		ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
 		ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 	
-		ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
+	ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
 		//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 		//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 	}
@@ -1210,6 +1213,7 @@ function render()
 		if(isDucking)
 			ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
 		else if(isJump){
+
 			if (playerDirec < 0){
 				ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 			}
