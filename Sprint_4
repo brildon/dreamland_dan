@@ -59,14 +59,36 @@ var playerDirec = 0;
 var key = [];
 
 var distantBackground = {
-	sourceY: 0,
+	sourceY: 1009,
 	sourceX: 0,
-	sourceWidth: 6336	,
-	sourceHeight: 884,
+	sourceWidth: 6336,
+	sourceHeight: 424,
 	width: 6336,
-	height: 884,
+	height: 428,
 	x: 0,
 	y: 0
+}
+
+var foregroundBackground = {
+	sourceY: 885,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 42,
+	width: 6336,
+	height: 53,
+	x: 0,
+	y: 680
+}
+
+var foreground2Background = {
+	sourceY: 938,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 37,
+	width: 6336,
+	height: 53,
+	x: 0,
+	y: 695
 }
 
 var gameWorld = {
@@ -369,27 +391,27 @@ for (var i=0; i<sheep.length; i++)
 }
 
 sheep[0].posX =550;
-sheep[0].posY =650;
+sheep[0].posY =640;
 sheep[0].saved = false;
 
 sheep[1].posX =1500 ;
-sheep[1].posY =650;
+sheep[1].posY =640;
 sheep[1].saved = false;
 
 sheep[2].posX =2500 ;
-sheep[2].posY =650;
+sheep[2].posY =640;
 sheep[2].saved = false;
 
 sheep[3].posX =3250;
-sheep[3].posY =650;
+sheep[3].posY =640;
 sheep[3].saved = false;
 
 sheep[4].posX =4000;
-sheep[4].posY =650;
+sheep[4].posY =640;
 sheep[4].saved = false;
 
 sheep[5].posX =5450;
-sheep[5].posY =650;
+sheep[5].posY =640;
 sheep[5].saved = false;
 
 var hitVar = false;
@@ -421,6 +443,7 @@ for(i = 1; i <= textBoxArray.length; i++)
 }
 	textBoxArray[0].xCoord = 100;
 	textBoxArray[1].xCoord = 600;
+
 	textBoxArray[2].xCoord = 1000;
 	
 	textBoxArray[0].yCoord = 700;
@@ -468,14 +491,8 @@ var credits = new Image();
 credits.addEventListener("loard", loadHandler, false);
 credits.src = "https://cloud.githubusercontent.com/assets/8864180/4768461/691913fa-5b6a-11e4-91f0-0014cf37a5d0.png";
 
-
-var background = new Image();	
-background.addEventListener("load", loadHandler, false);
-background.src = "https://cloud.githubusercontent.com/assets/8835208/4794979/821b1ad4-5df8-11e4-8447-0119d6b16c3a.png";
-
-var distBackground = new Image();
-distBackground.addEventListener("load", loadHandler, false);
-distBackground.src = "https://cloud.githubusercontent.com/assets/8835208/4794971/704218a8-5df8-11e4-83ae-db3ed47158b4.png";
+var lvl1_background = new Image();	
+lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/4923079/a12690e0-6517-11e4-9492-2fe66469f118.png";
 
 var regExp = new Image();
 regExp.addEventListener("load", loadHandler, false);
@@ -620,7 +637,9 @@ function side_scroller(){
 	
 	camera.vx = camera.x - camera.previousX;
 	
-	distantBackground.x += camera.vx / 2;
+	distantBackground.x += camera.vx / 4;
+	//foregroundBackground.x += camera.vx / 2;
+	//foreground2Background.x += camera.vx / 2;
 	
 	camera.previousX = camera.x;
 }
@@ -1018,8 +1037,10 @@ function render()
 	
 	ctx.save();
 	ctx.translate(-camera.x, -camera.y);
-	ctx.drawImage(background,0,0,6336,900);
-	ctx.drawImage(distBackground,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 	
 	ctx.fillRect(miniGame.x, miniGame.y, miniGame.width, miniGame.height);
 	//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
