@@ -449,9 +449,9 @@ submitButtonArray[0].posY = 800;
 submitButtonArray[1].posY = 800;
 submitButtonArray[2].posY = 800;
 
-var regExp1;
-var regExp2;
-var regExp3;
+var regExp1 = new RegExp(" ");
+var regExp2 = new RegExp(" ");
+var regExp3 = new RegExp(" ");
 
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
@@ -471,7 +471,7 @@ lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/492307
 
 var regExp = new Image();
 regExp.addEventListener("load", loadHandler, false);
-regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4886662/3600e47c-637e-11e4-99e8-9d5c37849a23.png";
+regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
 
 var llama_left = new Image();	
 var llama_right = new Image();
@@ -677,7 +677,7 @@ function intialize()
 	sheep[3].posY =640;
 	sheep[3].saved = false;
 	
-	sheep[4].posX =4000;
+	sheep[4].posX =3500;
 	sheep[4].posY =640;
 	sheep[4].saved = false;
 	
@@ -770,7 +770,7 @@ aBranch[1].posY = 400;
 aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
 
-aBranch[3].posX = 0;
+aBranch[3].posX = 750;
 aBranch[3].posY = 737;
 aBranch[3].width = gameWorld.width;
 
@@ -908,11 +908,6 @@ function update()
 {
 	if(gameOver==false)
 		{
-		/*if(playerObj.posX<150)
-		{
-			regExpScreen=true;
-			loadHandler();	
-		}*/
 		
 		collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
 		if (isMoveRight){
@@ -1393,8 +1388,11 @@ function update()
 			attackBox.posY = playerObj.posY;
 		}
 		
-		if(hitTest(playerObj,miniGame))
+		if(hitTest(playerObj,miniGame) && sheepSaved >= 5)
 		{
+			ctx.fillStyle = 'black';
+			ctx.font = "50px Arial";
+			
 			textOpen = true;
 			writeText();
 			ctx.clearRect(0,0,1600,900);
@@ -1402,6 +1400,53 @@ function update()
 			ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
 			ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
 			ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+			
+			for(i = 0; i < jumpWords.length; i++)
+			{
+				var coordX;
+				if(i < 3)
+				{
+					coordX = 150;
+					if(regExp3.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#00BC9F"; // blue
+					}
+					else if(regExp2.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#FEA301"; // yellow
+					}
+					else if(regExp1.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#F2561A"; // red
+					}
+					ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 300);
+					ctx.fillStyle = 'black';
+				}
+				else if(i < 6)
+				{
+					coordX = 600;
+					if(regExp3.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#00BC9F"; // blue
+					}
+					else if(regExp2.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#FEA301"; // yellow
+					}
+					ctx.fillText(jumpWords[i], coordX, (i - 3)*100 + 400);
+					ctx.fillStyle = 'black';
+				}
+				else if(i < 9)
+				{
+					coordX = 1065;
+					if(regExp3.test(jumpWords[i]))
+					{
+						ctx.fillStyle = "#00BC9F"; // blue
+					}
+					ctx.fillText(jumpWords[i], coordX, (i - 6)*100 + 400);
+					ctx.fillStyle = 'black';
+				}
+			}
 			
 			ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
 			ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
@@ -1431,11 +1476,12 @@ function update()
 				gameOver = true;
 				setTimeout(endGame,5000);
 			}
-			//setPositionLvl2();	
-			//lvlFlag = false;
 		}
-		
-		if(regExpOne=='C'&&regExpTwo=="W"&&regExpThree=="DU")
+
+		if(!regExp1.test(jumpWords[0]) && !regExp1.test(jumpWords[1]) && regExp1.test(jumpWords[2]) 
+		&& !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && !regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
+		&& !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && !regExp3.test(jumpWords[2]) && !regExp3.test(jumpWords[3]) 
+		&& !regExp3.test(jumpWords[4]) && !regExp3.test(jumpWords[5]) && !regExp3.test(jumpWords[6]) && regExp3.test(jumpWords[7]) && !regExp3.test(jumpWords[8]))
 		{
 			crouchable =true;
 		}
@@ -1443,7 +1489,6 @@ function update()
 }
 
 function hitTest(r1,r2){
-	//console.log("testando");
 	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
 }
 
@@ -1467,8 +1512,6 @@ function render()
 			ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 		
 		ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
-			//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-			//ctx.fillRect(collisionObj.x, collisionObj.y, collisionObj.width, collisionObj.height);
 		}
 		else if (currentLvl === 2){
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);	
@@ -1562,13 +1605,6 @@ function render()
 			else
 				ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 		}
-		
-			
-		/*if(isAttack)
-		{
-			ctx.fillStyle = 'green';
-			ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
-		}*/
 		
 		for (var i=0; i<sheep.length;i++)
 		{
@@ -1693,11 +1729,6 @@ function writeText()
 				regExp3 = new RegExp(regExpThree);
 				console.log(regExp3);
 				submitButtonArray[2].clicked = true;
-				//make sure to use array for action
-				if(stringtest.match(regExp3))
-				{
-					console.log("True");
-				}
 			}
 		}
 	}
@@ -1709,7 +1740,6 @@ function writeText()
 		{
 			if(currentTextBox.canWrite == true)
 			{
-				console.log("Yes Can Type");
 				ctx.fillStyle = 'black';
 				ctx.font = "50px Arial";
 				if(key[65]) // a
@@ -2148,8 +2178,6 @@ function writeText()
 				sheepPoints++;
 			}
 		}
-		console.print("regExpOne");
-
 	}
 }
 </script>
