@@ -564,7 +564,9 @@ var regInstr2 =  new Image();
 var regInstr3 =  new Image();
 var regInstr4 =  new Image();
 var finishInstr = new Image();
+var submitImg = new Image();
 
+submitImg.src = "https://cloud.githubusercontent.com/assets/8864180/5049830/63f6826a-6bee-11e4-9d19-9048b8815500.png";
 endScene.src = "https://cloud.githubusercontent.com/assets/8864180/4950698/acadc788-665e-11e4-86e0-f0785f8c70ad.png";
 llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8835208/5016392/8546051e-6a6b-11e4-91bf-6ba99b15650b.png";
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8835208/5016391/854281a0-6a6b-11e4-9513-e08d42f7a49f.png";
@@ -1582,9 +1584,9 @@ function update()
 					}
 				}
 				
-				ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
-				ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
-				ctx.fillRect(submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
+				ctx.drawImage(submitImg,submitButtonArray[0].posX, submitButtonArray[0].posY);
+				ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
+				ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
 				ctx.fillText(sheepPoints+"/6",240,125,50);
 			/*	ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
 				ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 25, 25);
@@ -1819,6 +1821,7 @@ function render()
 					}
 					else if (countR >= 5 && countR<10){
 						ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+
 					}
 					else if (countR >= 10 && countR<15){
 						ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
