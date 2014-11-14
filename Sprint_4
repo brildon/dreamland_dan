@@ -453,6 +453,31 @@ var regExp1 = new RegExp(" ");
 var regExp2 = new RegExp(" ");
 var regExp3 = new RegExp(" ");
 
+var CharacterBox ={
+	posX: 0,
+	posY: 0
+}
+
+var characterBoxArray = new Array(5);
+
+for(i = 0; i < characterBoxArray.length; i++)
+{
+	characterBoxArray[i] = Object.create(CharacterBox);
+}
+
+characterBoxArray[0].posX = 100;
+characterBoxArray[1].posX = 150;
+characterBoxArray[2].posX = 200;
+characterBoxArray[3].posX = 250;
+characterBoxArray[4].posX = 300;
+
+
+characterBoxArray[0].posY = 100;
+characterBoxArray[1].posY = 100;
+characterBoxArray[2].posY = 100;
+characterBoxArray[3].posY = 100;
+characterBoxArray[4].posY = 100;
+
 // event listeners for key's and click's
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
@@ -1453,6 +1478,12 @@ function update()
 			ctx.fillRect(submitButtonArray[0].posX, submitButtonArray[0].posY, 50, 50);
 			ctx.fillRect(submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
 			ctx.fillRect(submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
+			
+			ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
+			ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 25, 25);
+			ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 25, 25);
+			ctx.fillRect(characterBoxArray[3].posX, characterBoxArray[3].posY, 25, 25);
+			ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 25, 25);
 		}
 		else
 		{
@@ -1791,6 +1822,115 @@ function writeText()
 				console.log(regExp3);
 				submitButtonArray[2].clicked = true;
 			}
+			//TODO: Finish this shit up
+			if(sheepPoints > 0)
+			{
+				//?
+				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 25 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 25)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "?";
+						sheepPoints --;
+					}
+				}
+				//[^]
+				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 25 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 25)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "[^" + regExpOne + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "[^" + regExpTwo + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "[^" + regExpThree + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//^
+				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 25 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 25)
+				{
+					console.log("WE R Here");
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "^" + regExpOne;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "^" + regExpTwo;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "^" + regExpThree;
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//$
+				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 25 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 25)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = regExpOne + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = regExpTwo + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = regExpThree + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//|
+				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 25 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 25)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "|";
+						sheepPoints--;
+					}
+				}
+			}	
 		}
 	}
 	
@@ -2225,18 +2365,60 @@ function writeText()
 		{
 			if(currentTextBox == textBoxArray[0] && regExpOne.length != 0)
 			{
-				regExpOne = regExpOne.substr(0, regExpOne.length - 1);
-				sheepPoints++;
+				if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "]")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					regExpOne = regExpOne.substr(2, regExpOne.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "^" || regExpOne.substr(regExpOne.length-1, regExpOne.length) == "$")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints++;
+				}
 			}
 			if(currentTextBox == textBoxArray[1] && regExpTwo.length != 0)
 			{
-				regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
-				sheepPoints++;
+				if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "]")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					regExpTwo = regExpTwo.substr(2, regExpTwo.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "^" || regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "$")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints++;
+				}
 			}
 			if(currentTextBox == textBoxArray[2] && regExpThree.length != 0)
 			{
-				regExpThree = regExpThree.substr(0, regExpThree.length - 1);
-				sheepPoints++;
+				if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "]")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					regExpThree = regExpThree.substr(2, regExpThree.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "^" || regExpThree.substr(regExpThree.length-1, regExpThree.length) == "$")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints++;
+				}	
 			}
 		}
 	}
