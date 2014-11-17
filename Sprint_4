@@ -1,5 +1,4 @@
-
- <html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Sheep! Heard Dan</title>
@@ -629,13 +628,11 @@ function menu(e)
 	}
 	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true)
 	{
-		//console.log("test");
 		creditsScreen = false;
 		loadHandler();
 	}
 	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true)
 	{
-		//console.log("test");
 		optionsScreen = false;
 		loadHandler();
 	}
@@ -1588,11 +1585,11 @@ function update()
 				ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
 				ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
 				ctx.fillText(sheepPoints+"/6",240,125,50);
-			/*	ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
+				ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
 				ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 25, 25);
 				ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 25, 25);
 				ctx.fillRect(characterBoxArray[3].posX, characterBoxArray[3].posY, 25, 25);
-				ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 25, 25);*/
+				ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 25, 25);
 			}
 		}
 		else
@@ -1991,7 +1988,7 @@ function writeText()
 				submitButtonArray[2].clicked = true;
 			}
 			//TODO: Finish this shit up
-			/*if(sheepPoints > 0)
+			if(sheepPoints > 0)
 			{
 				//?
 				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 25 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 25)
@@ -2098,7 +2095,7 @@ function writeText()
 						sheepPoints--;
 					}
 				}
-			}*/	
+			}
 		}
 	}
 	
