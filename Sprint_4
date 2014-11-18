@@ -67,6 +67,7 @@ var mouse = {x:0,y:0};
 var collisionIndex = -1;
 var count = 0;
 var countR = 0;
+var countA = 0;
 var playerDirec = 0;
 var currentLvl = 1;
 var lvlFlag = false;
@@ -220,6 +221,7 @@ var playerObj = {
 	halfWidth: function(){
 		return (this.width / 2);	
 	},
+
 	halfHeight: function(){
 		return (this.height / 2);	
 	}
@@ -530,6 +532,8 @@ var llama_left = new Image();
 var llama_right = new Image();
 var llama_duck_left = new Image();
 var llama_duck_right = new Image();
+var llama_attack_right = new Image();
+var llama_attack_left = new Image();
 var llama_jump_sprite = new Image();
 var llama_run_sprite = new Image();
 var llama_duck_sprite = new Image();
@@ -571,6 +575,8 @@ llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8835208/501639
 llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8835208/5016391/854281a0-6a6b-11e4-9513-e08d42f7a49f.png";
 llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
 llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
+llama_attack_right.src = "https://cloud.githubusercontent.com/assets/8835208/5062958/a7abe51c-6d98-11e4-99cc-74d2b7923bf7.png";
+llama_attack_left.src = "https://cloud.githubusercontent.com/assets/8835208/5062957/a7aba7c8-6d98-11e4-81fb-78030bf9cdeb.png";
 llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
 llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
 llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5016102/f7bd8e58-6a68-11e4-9d5b-112f358dafc6.png";
@@ -1036,8 +1042,15 @@ function update()
 		//SpaceBar
 		if(key[32])
 		{
-			if(attackable)
-				isAttack = true;
+			if(attackable){
+				if (countA >= 0 && countA <10){
+					isAttack = true;
+				}
+				else{
+					isAttack = false;
+				}
+				countA++;
+			}
 		}
 		//W
 		if(key[38])
@@ -1074,6 +1087,7 @@ function update()
 		if(!key[32])
 		{
 			isAttack = false;
+			countA = 0;
 		}
 		//W
 		
@@ -1760,6 +1774,9 @@ function render()
 						ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 					}
 				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+				}
 				else{
 					if (countR >= 0 && countR<5){
 						ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
@@ -1781,11 +1798,12 @@ function render()
 					}
 				}
 			}
-			
 			else{
 				if(isDucking){
-					console.log("galo");
 					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
 				}
 				else{
 					ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
@@ -1833,6 +1851,9 @@ function render()
 						ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 					}
 				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
 				else{
 					if (countR >= 0 && countR<5){
 						ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
@@ -1858,10 +1879,13 @@ function render()
 				if(isDucking){
 					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
 				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
 				else{
 					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 				}
-		}
+			}	
 		
 		for (var i=0; i<sheep.length;i++)
 		{
