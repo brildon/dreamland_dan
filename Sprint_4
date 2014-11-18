@@ -65,6 +65,7 @@ var regExpThree = "";
 var mouse = {x:0,y:0};
 
 var collisionIndex = -1;
+var signIndex = -1;
 var count = 0;
 var countR = 0;
 var countA = 0;
@@ -141,7 +142,7 @@ var signObj = {
 	posY: 0,
 	height: 113,
 	width: 102,
-	active: true,
+	active: false,
 	
 	centerX: function (){
 		return this.posX + (this.width / 2);
@@ -793,6 +794,7 @@ function intialize()
 	
 	signs[0].posX = 100;
 	signs[0].posY = 623;
+	signs[0].active = true;
 	signs[1].posX = 850;
 	signs[1].posY = 623;
 	signs[2].posX = 1400;
@@ -1043,11 +1045,15 @@ function update()
 		if(key[32])
 		{
 			if(attackable){
-				if (countA >= 0 && countA <10){
+				if (countA >= 0 && countA < 10){
 					isAttack = true;
 				}
 				else{
 					isAttack = false;
+				}
+				playerObj.stopped = false;
+				if (signIndex != -1){
+					signs[signIndex].active = false;
 				}
 				countA++;
 			}
@@ -1064,23 +1070,44 @@ function update()
 		//A
 		if(key[37])
 		{
-			isMoveLeft = true;
-			playerObj.state = 1;
-			movingRight = false;
+			if(playerObj.stopped){
+				isMoveLeft = false;
+			}
+			else{
+				if (signs[0].active){
+					signs[0].active = false;	
+				}
+				isMoveLeft = true;
+				playerObj.state = 1;
+				movingRight = false;
+			}
 		}
 		//S
 		if(key[40])
 		{
-			if(crouchable)
-				isDucking = true;
+			if(playerObj.stopped){
+				isDucking = false;
+			}
+			else{
+				if(crouchable){
+					isDucking = true;
+				}
+			}
 		}
 		//D
 		if(key[39])
 		{
-			isMoveRight = true;
-			playerObj.state = 0;
-			movingRight = true;
-	
+			if (playerObj.stopped){
+				isMoveRight = false;
+			}
+			else{
+				if (signs[0].active){
+					signs[0].active = false;	
+				}
+				isMoveRight = true;
+				playerObj.state = 0;
+				movingRight = true;
+			}
 		}
 		
 		//SpaceBar
@@ -1107,13 +1134,15 @@ function update()
 			isMoveRight = false;
 		}
 		
-		for(var i =0; i<signs.length; i++)
+			for(var i =0; i<signs.length; i++)
 		{
 			
-			if(hitTest(collisionObj,signs[i]))
+			if(playerObj.posX+40 === signs[i].posX)
 			{
-				console.log("collsion with sign");
+				//console.log("collsion with sign");
+				playerObj.stopped = true;
 				signs[i].active = true;
+				signIndex = i;
 			}
 			else
 			{
