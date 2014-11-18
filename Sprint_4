@@ -137,17 +137,17 @@ var camera = {
 }
 
 var signObj = {
-	x: 0,
-	y: 0,
+	posX: 0,
+	posY: 0,
 	height: 113,
 	width: 102,
 	active: true,
 	
 	centerX: function (){
-		return this.x + (this.width / 2);
+		return this.posX + (this.width / 2);
 	},
 	centerY: function (){
-		return this.y + (this.height / 2);	
+		return this.posY + (this.height / 2);	
 	},
 	halfWidth: function(){
 		return (this.width / 2);	
