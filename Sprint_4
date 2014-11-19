@@ -5,7 +5,7 @@
 </head>
 <body>
 <div id="container" style="width:1500px; height:500px; position:relative;" >
-    <canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+    	<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 
 </div>
 <audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" preload="auto" loop></audio>
@@ -21,19 +21,19 @@ var sheepPoints = 0;
 var levelAt = 0;
 
 var jumpWords = new Array(9);
-
-jumpWords[0] = "COUP";
-jumpWords[1] = "BUMP";
-jumpWords[2] = "HOP";
-
-jumpWords[3] = "LEAP";
-jumpWords[4] = "SLEEP";
-jumpWords[5] = "EAT";
-
-jumpWords[6] = "SLUMP";
-jumpWords[7] = "JUMP";
-jumpWords[8] = "JACK";
-
+	
+	jumpWords[0] = "COUP";
+	jumpWords[1] = "BUMP";
+	jumpWords[2] = "HOP";
+	
+	jumpWords[3] = "LEAP";
+	jumpWords[4] = "SLEEP";
+	jumpWords[5] = "EAT";
+	
+	jumpWords[6] = "SLUMP";
+	jumpWords[7] = "JUMP";
+	jumpWords[8] = "JACK";
+	
 var crouchWords = [];
 var attackWords = [];
 
@@ -76,182 +76,183 @@ var lvlFlag = false;
 var key = [];
 
 var distantBackground = {
-sourceY: 1009,
-sourceX: 0,
-sourceWidth: 6336,
-sourceHeight: 424,
-width: 6336,
-height: 428,
-x: 0,
-y: 0
+	sourceY: 1009,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 424,
+	width: 6336,
+	height: 428,
+	x: 0,
+	y: 0
 }
 
 var foregroundBackground = {
-sourceY: 885,
-sourceX: 0,
-sourceWidth: 6336,
-sourceHeight: 42,
-width: 6336,
-height: 53,
-x: 0,
-y: 680
+	sourceY: 885,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 42,
+	width: 6336,
+	height: 53,
+	x: 0,
+	y: 680
 }
 
 var foreground2Background = {
-sourceY: 938,
-sourceX: 0,
-sourceWidth: 6336,
-sourceHeight: 37,
-width: 6336,
-height: 53,
-x: 0,
-y: 695
+	sourceY: 938,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 37,
+	width: 6336,
+	height: 53,
+	x: 0,
+	y: 695
 }
 
 var gameWorld = {
-x: 0,
-y: 0,
-width: 6336,
-heigth: 884	
+	x: 0,
+	y: 0,
+	width: 6336,
+	heigth: 884	
 }
 
 var camera = {
-x: 0,
-y: 0,
-width: cv.width,
-height: cv.height,
-vx: 0,
-previousX: 0,
-
-rightInnerBoundary: function (){
-    return this.x + (this.width * 0.75);	
-},	
-leftInnerBoundary: function (){
-    return this.x+ (this.width * 0.25);	
-},
-topInnerBoundary: function (){
-    return this.y + (this.height * 0.25);	
-},
-bottomInnerBoundary: function (){
-    return this.y + (this.height * 0.75);	
-}
+	x: 0,
+	y: 0,
+	width: cv.width,
+	height: cv.height,
+	vx: 0,
+	previousX: 0,
+	
+	rightInnerBoundary: function (){
+		return this.x + (this.width * 0.75);	
+	},	
+	leftInnerBoundary: function (){
+		return this.x+ (this.width * 0.25);	
+	},
+	topInnerBoundary: function (){
+		return this.y + (this.height * 0.25);	
+	},
+	bottomInnerBoundary: function (){
+		return this.y + (this.height * 0.75);	
+	}
 }
 
 var signObj = {
-posX: 0,
-posY: 0,
-height: 113,
-width: 102,
-active: false,
-read: false,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}	
+	posX: 0,
+	posY: 0,
+	height: 113,
+	width: 102,
+	active: false,
+	read: false,
+	timesRead: -1,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
 }
 
 var collisionObj = {
-x: 0,
-y: 0,
-height: 10,
-width: 75,
-
-centerX: function (){
-    return this.x + (this.width / 2);
-},
-centerY: function (){
-    return this.y + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}	
+	x: 0,
+	y: 0,
+	height: 10,
+	width: 75,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
 }
 
 var miniGameObj = {
-x: 0,
-y: 0,
-height: 100,
-width: 100,
-
-centerX: function (){
-    return this.x + (this.width / 2);
-},
-centerY: function (){
-    return this.y + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
+	x: 0,
+	y: 0,
+	height: 100,
+	width: 100,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
 }
-}
 
-var miniGame = Object.create(miniGameObj);
+	var miniGame = Object.create(miniGameObj);
 
 var playerObj = {
-posY: 600,
-posX: 200,
-height: 137,
-width: 140,
-hMask: 10,
-wMask: 75,
-jumpStrength: 18,
-jumpDecay: 0.5,
-fallStrengh: 0,
-speed: 5,
-state: 0,
+	posY: 600,
+	posX: 200,
+	height: 137,
+	width: 140,
+	hMask: 10,
+	wMask: 75,
+	jumpStrength: 18,
+	jumpDecay: 0.5,
+	fallStrengh: 0,
+	speed: 5,
+	state: 0,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
 
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-
-halfHeight: function(){
-    return (this.height / 2);	
-}
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
 }
 
 var branchObj = {
-posX: 0,
-posY: 0,
-height: 5,
-width : 100,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}		
+	posX: 0,
+	posY: 0,
+	height: 5,
+	width : 100,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
 }
 
 var aBranch = new Array (6);
 for (var i=0;i<aBranch.length;i++){
-aBranch[i] = Object.create(branchObj);	
+	aBranch[i] = Object.create(branchObj);	
 }
 
 aBranch[0].posX = 150;
@@ -259,7 +260,7 @@ aBranch[0].posY = 580;
 
 aBranch[1].posX = 300;
 aBranch[1].posY = 400;
-
+	
 aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
 
@@ -274,114 +275,114 @@ aBranch[5].posX = 500;
 aBranch[5].posY = 450;
 
 var breakObj = {
-posX: 0,
-posY: 0,
-height: 100,
-width: 100,
-broken: false,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}	
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width: 100,
+	broken: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
 }
 var largeObj = {
-posX: 0,
-posY: 0,
-height: 93,
-width: 220,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}	
+	posX: 0,
+	posY: 0,
+	height: 93,
+	width: 220,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
 }
 var smallObj = {
-posX: 0,
-posY: 0,
-height: 79,
-width: 113,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}	
+	posX: 0,
+	posY: 0,
+	height: 79,
+	width: 113,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
 }
 
 var sheepObj = {
-posX: 0,
-posY: 0,
-height: 69,
-width : 124,
-saved: false,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);	
-}		
+	posX: 0,
+	posY: 0,
+	height: 69,
+	width : 124,
+	saved: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
 }
 
 var cougarObj =
 {
-posX: 0,
-posY: 0,
-height: 70,
-width : 151,
-saved: false
+	posX: 0,
+	posY: 0,
+	height: 70,
+	width : 151,
+	saved: false
 }
 
 var playerObj = Object.create(playerObj);
 
 var hitBox = {
-posX: playerObj.posX+playerObj.width,
-posY: playerObj.posY,
-height: playerObj.height,
-width : 5,
-
-centerX: function (){
-    return this.posX + (this.width / 2);
-},
-centerY: function (){
-    return this.posY + (this.height / 2);	
-},
-halfWidth: function(){
-    return (this.width / 2);	
-},
-halfHeight: function(){
-    return (this.height / 2);
-}
+	posX: playerObj.posX+playerObj.width,
+	posY: playerObj.posY,
+	height: playerObj.height,
+	width : 5,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);
+	}
 }
 
 var attackBox = Object.create(hitBox);
@@ -391,33 +392,33 @@ var cougar = Object.create(cougarObj);
 var signs = new Array(9);
 for(var i =0; i<signs.length; i++)
 {
-signs[i] = Object.create(signObj);
+	signs[i] = Object.create(signObj);
 }
 
 var breakables = new Array (2);
 
 for (var i =0; i<breakables.length; i++)
 {
-breakables[i]=Object.create(breakObj);
+	breakables[i]=Object.create(breakObj);
 }
 
 var sm_obj = new Array (3);
 for (var i =0; i<sm_obj.length; i++)
 {
-sm_obj[i]=Object.create(smallObj);
+	sm_obj[i]=Object.create(smallObj);
 }
 
 var lg_obj = new Array (2);
 for (var i =0; i<lg_obj.length; i++)
 {
-lg_obj[i]=Object.create(largeObj);
+	lg_obj[i]=Object.create(largeObj);
 }
 
 
 var sheep = new Array (6);
 for (var i=0; i<sheep.length; i++)
 {
-sheep[i]=Object.create(sheepObj);
+	sheep[i]=Object.create(sheepObj);
 }
 
 
@@ -436,31 +437,31 @@ var isJump = false;
 var textOpen = false;
 
 var textBox = {
-xCoord: 0,
-yCoord: 0,
-canWrite: false,
-typerX: 0
+	xCoord: 0,
+	yCoord: 0,
+	canWrite: false,
+	typerX: 0
 }
 
 var textBoxArray = new Array(3);
 
 for(i = 1; i <= textBoxArray.length; i++)
 {
-textBoxArray[i - 1] = Object.create(textBox);
+	textBoxArray[i - 1] = Object.create(textBox);
 }
-textBoxArray[0].xCoord = 100;
-textBoxArray[1].xCoord = 600;
+	textBoxArray[0].xCoord = 100;
+	textBoxArray[1].xCoord = 600;
 
-textBoxArray[2].xCoord = 1000;
-
-textBoxArray[0].yCoord = 700;
-textBoxArray[1].yCoord = 700;
-textBoxArray[2].yCoord = 700;
-
+	textBoxArray[2].xCoord = 1000;
+	
+	textBoxArray[0].yCoord = 700;
+	textBoxArray[1].yCoord = 700;
+	textBoxArray[2].yCoord = 700;
+	
 var submitButton = {
-posX: 0,
-posY: 0,
-clicked: false
+	posX: 0,
+	posY: 0,
+	clicked: false
 }
 
 var currentTextBox = null;
@@ -469,8 +470,8 @@ var submitButtonArray = new Array(3);
 
 for(j = 0; j < submitButtonArray.length; j++)
 {
-submitButtonArray[j] = Object.create(submitButton);
-console.log(submitButtonArray[j]);
+	submitButtonArray[j] = Object.create(submitButton);
+	console.log(submitButtonArray[j]);
 }
 
 submitButtonArray[0].posX = 100;
@@ -486,15 +487,15 @@ var regExp2 = new RegExp(" ");
 var regExp3 = new RegExp(" ");
 
 var CharacterBox ={
-posX: 0,
-posY: 0
+	posX: 0,
+	posY: 0
 }
 
 var characterBoxArray = new Array(5);
 
 for(i = 0; i < characterBoxArray.length; i++)
 {
-characterBoxArray[i] = Object.create(CharacterBox);
+	characterBoxArray[i] = Object.create(CharacterBox);
 }
 
 characterBoxArray[0].posX = 100;
@@ -614,264 +615,264 @@ regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86
 
 function menu(e)
 {
-var tempStartH;
-var tempStartW;
-
-if(e.layerX || e.layerY == 0){
-    mouse.x = e.pageX - cv.offsetLeft;
-    mouse.y = e.pageY - cv.offsetTop;	
-}
-
-if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true && creditsScreen ==false && optionsScreen==false)
-{
-    buildCheck=false;
-    menuCheck=false;
-    loadHandler();
-}
-if(870<mouse.x && mouse.x<1260 && 670<mouse.y && mouse.y<820 && optionsScreen == false)
-{
-    creditsScreen = true;
-    buildCheck=false;
-    loadHandler();	
-}
-if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true)
-{
-    creditsScreen = false;
-    loadHandler();
-}
-if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true)
-{
-    optionsScreen = false;
-    loadHandler();
-}
-if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500)
-{
-    loadHandler();
-}
-if(490<mouse.x && mouse.x<880 && mouse.y>540 && 670 > mouse.y && creditsScreen == false)
-{
-    optionsScreen = true;
-    buildCheck=false;
-    loadHandler();
-}
-if(optionsScreen && mouse.x>795 && mouse.x<925 && mouse.y >385 && mouse.y<484)
-{
-    soundOn = false;
-    loadHandler();
-}
-if(optionsScreen && mouse.x>575 && mouse.x<705 && mouse.y >385 && mouse.y<484)
-{
-    soundOn = true;
-    loadHandler();
-}
-
+	var tempStartH;
+	var tempStartW;
+	
+	if(e.layerX || e.layerY == 0){
+		mouse.x = e.pageX - cv.offsetLeft;
+		mouse.y = e.pageY - cv.offsetTop;	
+	}
+	
+	if(mouse.x < 1102 && mouse.y < 512 && mouse.x > 813 && mouse.y > 402 && menuCheck==true && creditsScreen ==false && optionsScreen==false)
+	{
+		buildCheck=false;
+		menuCheck=false;
+		loadHandler();
+	}
+	if(870<mouse.x && mouse.x<1260 && 670<mouse.y && mouse.y<820 && optionsScreen == false)
+	{
+		creditsScreen = true;
+		buildCheck=false;
+		loadHandler();	
+	}
+	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true)
+	{
+		creditsScreen = false;
+		loadHandler();
+	}
+	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true)
+	{
+		optionsScreen = false;
+		loadHandler();
+	}
+	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500)
+	{
+		loadHandler();
+	}
+	if(490<mouse.x && mouse.x<880 && mouse.y>540 && 670 > mouse.y && creditsScreen == false)
+	{
+		optionsScreen = true;
+		buildCheck=false;
+		loadHandler();
+	}
+	if(optionsScreen && mouse.x>795 && mouse.x<925 && mouse.y >385 && mouse.y<484)
+	{
+		soundOn = false;
+		loadHandler();
+	}
+	if(optionsScreen && mouse.x>575 && mouse.x<705 && mouse.y >385 && mouse.y<484)
+	{
+		soundOn = true;
+		loadHandler();
+	}
+	
 }
 
 function loadHandler()
 {   
-ctx.restore();
+    ctx.restore();
 
-//console.log(menuCheck);
-if(menuCheck == true)
-{
-    //console.log("yay");
-    if (creditsScreen==true)
-    {
-        ctx.drawImage(credits,0,0,1600,900);
-    }
-    else if(optionsScreen==true)
-    {
-        if(soundOn)
-        {
-            ctx.drawImage(optionSoundOn,0,0,1600,900);
-            document.getElementById('music').play();
-        }
+	//console.log(menuCheck);
+	if(menuCheck == true)
+	{
+		//console.log("yay");
+		if (creditsScreen==true)
+		{
+			ctx.drawImage(credits,0,0,1600,900);
+		}
+		else if(optionsScreen==true)
+		{
+			if(soundOn)
+			{
+				ctx.drawImage(optionSoundOn,0,0,1600,900);
+				document.getElementById('music').play();
+			}
 
-        else
-        {
-            ctx.drawImage(optionSoundOff,0,0,1600,900);
-            document.getElementById('music').pause();
-        }
+			else
+			{
+				ctx.drawImage(optionSoundOff,0,0,1600,900);
+				document.getElementById('music').pause();
+			}
 
-            
-    }
-    else if(buildCheck == false)
-    {
-        //console.log("good");
-        ctx.drawImage(image,0,0,1600,900);
-        buildCheck=true;		
-    }
-    document.onmousedown = menu;
-}
-else
-{	
-    if(regExpScreen == true)
-    {
-        regExpScreen = false;
-    }
-    else if(buildCheck==false)
-    {
-        ctx.drawImage(cutscene,0,0,1600,900);
-        buildCheck = true;
-        gameover = false;
-        window.setTimeout(gameStart,5000);		
-    }
-}
+				
+		}
+		else if(buildCheck == false)
+		{
+			//console.log("good");
+			ctx.drawImage(image,0,0,1600,900);
+			buildCheck=true;		
+		}
+		document.onmousedown = menu;
+	}
+	else
+	{	
+		if(regExpScreen == true)
+		{
+			regExpScreen = false;
+		}
+		else if(buildCheck==false)
+		{
+			ctx.drawImage(cutscene,0,0,1600,900);
+			buildCheck = true;
+			gameover = false;
+			window.setTimeout(gameStart,5000);		
+		}
+	}
 }
 function endGame()
 {
-menuCheck = true;
-buildCheck = false;
-creditsScreen = true;
-optionsScreen = false;
-loadHandler();
+	menuCheck = true;
+	buildCheck = false;
+	creditsScreen = true;
+	optionsScreen = false;
+	loadHandler();
 }
 
 function gameStart()
 {
-intialize();
-var game = setInterval(gameScreen, 1000/50);
+	intialize();
+	var game = setInterval(gameScreen, 1000/50);
 }
 function intialize()
 {
-sheepPoints = 0;
-
-playerObj.posX = 100;
-playerObj.posY = 600;	
-
-miniGame.x = 4500
-miniGame.y = 637
-
-cougar.posX = 6100;
-cougar.posY = 667;
-
-lg_obj[0].posX=2600;
-lg_obj[0].posY=547;
-
-sm_obj[0].posX=3600;
-sm_obj[0].posY=547;
-
-sm_obj[2].posX=4950;
-sm_obj[2].posY=647;
-sm_obj[1].posX=5100;
-sm_obj[1].posY=577;
-lg_obj[1].posX=5375;
-lg_obj[1].posY=577;
-
-    
-sheep[0].posX =600;
-sheep[0].posY =640;
-sheep[0].saved = false;
-
-sheep[1].posX =1100 ;
-sheep[1].posY =640;
-sheep[1].saved = false;
-
-sheep[2].posX =2100 ;
-sheep[2].posY =640;
-sheep[2].saved = false;
-
-sheep[3].posX =3100;
-sheep[3].posY =640;
-sheep[3].saved = false;
-
-sheep[4].posX =4000;
-sheep[4].posY =640;
-sheep[4].saved = false;
-
-sheep[5].posX =5700;
-sheep[5].posY =640;
-sheep[5].saved = false;
-
-//sm_obj[1].posX =2400;
-//sm_obj[1].posY =637;
-breakables[0].posX =1600;
-breakables[0].posY =600;
-breakables[0].broken=false;
-
-breakables[1].posX =3600;
-breakables[1].posY =640;
-breakables[1].broken=false;
-
-signs[0].posX = 100;
-signs[0].posY = 623;
-signs[0].active = true;
-signs[1].posX = 850;
-signs[1].posY = 623;
-signs[2].posX = 1400;
-signs[2].posY = 623;
-signs[3].posX = 2400;
-signs[3].posY = 623;
-signs[4].posX = 3800;
-signs[4].posY = 623;
-signs[5].posX = 4300;
-signs[5].posY = 623;
-signs[6].posX = 4750;
-signs[6].posY = 623;
-signs[7].posX = 5375;
-signs[7].posY = 500;
-signs[8].posX = 5800;
-signs[8].posY = 623;
-
-/*sm_obj[2].posX =3900 ;
-sm_obj[2].posY =557 ;
-sm_obj[3].posX =3900 ;
-sm_obj[3].posY =557 ;*/
-/*
-breakables[2].posX =1000;
-breakables[2].posY =487;
-breakables[2].broken=false;
-breakables[3].posX =1100;
-breakables[3].posY =487;
-breakables[3].broken=false;
-breakables[4].posX =1200;
-breakables[4].posY =487;
-breakables[4].broken=false;
-breakables[5].posX =1300;
-breakables[5].posY =420;
-breakables[5].broken=false;
-breakables[6].posX =1700;
-breakables[6].posY =537;
-breakables[6].broken=false;
-
-breakables[7].posX =2300;
-breakables[7].posY =637;
-breakables[7].broken=false;
-breakables[8].posX =2400;
-breakables[8].posY =637;
-breakables[8].broken=false;
-breakables[9].posX =2400;
-breakables[9].posY =537;
-breakables[9].broken=false;
-breakables[10].posX =2400;
-breakables[10].posY =310;
-breakables[10].broken=false;
-breakables[11].posX =2500;
-breakables[11].posY =310;
-breakables[11].broken=false;
-breakables[12].posX =2600;
-breakables[13].posX =2600;
-breakables[13].posY =637;
-breakables[13].broken=false;
-breakables[14].posX =2700;
-breakables[14].posY =637;
-breakables[14].broken=false;
-breakables[15].posX =2700;
-breakables[15].posY =537;
-breakables[15].broken=false;
-breakables[16].posX =2700;
-breakables[16].posY =310;
-breakables[16].broken=false;
-
-breakables[17].posX =5350;
-breakables[17].posY =637;
-breakables[17].broken=false;
-breakables[18].posX =5450;
-breakables[18].posY =537;
-breakables[18].broken=false;
-breakables[19].posX =5560;
-breakables[19].posY =637;
-breakables[19].broken=false;*/
+	sheepPoints = 0;
+	
+	playerObj.posX = 100;
+	playerObj.posY = 600;	
+	
+	miniGame.x = 4500
+	miniGame.y = 637
+	
+	cougar.posX = 6100;
+	cougar.posY = 667;
+	
+	lg_obj[0].posX=2600;
+	lg_obj[0].posY=547;
+	
+	sm_obj[0].posX=3600;
+	sm_obj[0].posY=547;
+	
+	sm_obj[2].posX=4950;
+	sm_obj[2].posY=647;
+	sm_obj[1].posX=5100;
+	sm_obj[1].posY=577;
+	lg_obj[1].posX=5375;
+	lg_obj[1].posY=577;
+	
+		
+	sheep[0].posX =600;
+	sheep[0].posY =640;
+	sheep[0].saved = false;
+	
+	sheep[1].posX =1100 ;
+	sheep[1].posY =640;
+	sheep[1].saved = false;
+	
+	sheep[2].posX =2100 ;
+	sheep[2].posY =640;
+	sheep[2].saved = false;
+	
+	sheep[3].posX =3100;
+	sheep[3].posY =640;
+	sheep[3].saved = false;
+	
+	sheep[4].posX =4000;
+	sheep[4].posY =640;
+	sheep[4].saved = false;
+	
+	sheep[5].posX =5700;
+	sheep[5].posY =640;
+	sheep[5].saved = false;
+	
+	//sm_obj[1].posX =2400;
+	//sm_obj[1].posY =637;
+	breakables[0].posX =1600;
+	breakables[0].posY =600;
+	breakables[0].broken=false;
+	
+	breakables[1].posX =3600;
+	breakables[1].posY =640;
+	breakables[1].broken=false;
+	
+	signs[0].posX = 100;
+	signs[0].posY = 623;
+	signs[0].active = true;
+	signs[1].posX = 850;
+	signs[1].posY = 623;
+	signs[2].posX = 1400;
+	signs[2].posY = 623;
+	signs[3].posX = 2400;
+	signs[3].posY = 623;
+	signs[4].posX = 3800;
+	signs[4].posY = 623;
+	signs[5].posX = 4300;
+	signs[5].posY = 623;
+	signs[6].posX = 4750;
+	signs[6].posY = 623;
+	signs[7].posX = 5375;
+	signs[7].posY = 500;
+	signs[8].posX = 5800;
+	signs[8].posY = 623;
+	
+	/*sm_obj[2].posX =3900 ;
+	sm_obj[2].posY =557 ;
+	sm_obj[3].posX =3900 ;
+	sm_obj[3].posY =557 ;*/
+	/*
+	breakables[2].posX =1000;
+	breakables[2].posY =487;
+	breakables[2].broken=false;
+	breakables[3].posX =1100;
+	breakables[3].posY =487;
+	breakables[3].broken=false;
+	breakables[4].posX =1200;
+	breakables[4].posY =487;
+	breakables[4].broken=false;
+	breakables[5].posX =1300;
+	breakables[5].posY =420;
+	breakables[5].broken=false;
+	breakables[6].posX =1700;
+	breakables[6].posY =537;
+	breakables[6].broken=false;
+	
+	breakables[7].posX =2300;
+	breakables[7].posY =637;
+	breakables[7].broken=false;
+	breakables[8].posX =2400;
+	breakables[8].posY =637;
+	breakables[8].broken=false;
+	breakables[9].posX =2400;
+	breakables[9].posY =537;
+	breakables[9].broken=false;
+	breakables[10].posX =2400;
+	breakables[10].posY =310;
+	breakables[10].broken=false;
+	breakables[11].posX =2500;
+	breakables[11].posY =310;
+	breakables[11].broken=false;
+	breakables[12].posX =2600;
+	breakables[13].posX =2600;
+	breakables[13].posY =637;
+	breakables[13].broken=false;
+	breakables[14].posX =2700;
+	breakables[14].posY =637;
+	breakables[14].broken=false;
+	breakables[15].posX =2700;
+	breakables[15].posY =537;
+	breakables[15].broken=false;
+	breakables[16].posX =2700;
+	breakables[16].posY =310;
+	breakables[16].broken=false;
+	
+	breakables[17].posX =5350;
+	breakables[17].posY =637;
+	breakables[17].broken=false;
+	breakables[18].posX =5450;
+	breakables[18].posY =537;
+	breakables[18].broken=false;
+	breakables[19].posX =5560;
+	breakables[19].posY =637;
+	breakables[19].broken=false;*/
 
 }
 
@@ -879,7 +880,7 @@ breakables[19].broken=false;*/
 function setPositionLvl2() {
 lvlFlag = false;
 lastLevel = true;
-
+	
 playerObj.posX = 200;
 playerObj.posY = 600;
 
@@ -891,7 +892,7 @@ aBranch[0].posY = 580;
 
 aBranch[1].posX = 300;
 aBranch[1].posY = 400;
-
+	
 aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
 
@@ -978,52 +979,53 @@ miniGame.y = 0;
 
 function gameScreen()
 {
-update();
-
-side_scroller();
-
-//render();
+	update();
+	
+	side_scroller();
+	
+	//render();
 }
 
 function side_scroller(){
-playerObj.posX = Math.max(0, Math.min(playerObj.posX, gameWorld.width - playerObj.width));
-    
-camera.x = Math.floor(playerObj.posX + (playerObj.width/2) - (camera.width/2));
-camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
+	playerObj.posX = Math.max(0, Math.min(playerObj.posX, gameWorld.width - playerObj.width));
+		
+	camera.x = Math.floor(playerObj.posX + (playerObj.width/2) - (camera.width/2));
+	camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
+	
 
-if (playerObj.posX < camera.leftInnerBoundary()){
-    camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));	
-}
-if (playerObj.posY < camera.topInnerBoundary()){
-    camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
-}
-if (playerObj.posX + playerObj.width > camera.rightInnerBoundary()){
-    camera.x = Math.floor(playerObj.posX + playerObj.width - (camera.width *0.75));	
-}
-if (playerObj.posY + playerObj.height > camera.bottomInnerBoundary()){
-    camera.y = Math.floor(playerObj.posY + playerObj.height - (camera.height * 0.75));
-}
-
-if (camera.x < gameWorld.x){
-    camera.x = gameWorld.x;	
-}
-if (camera.y < gameWorld.y){
-    camera.y = gameWorld.y;	
-}
-if (camera.x + camera.width > gameWorld.x + gameWorld.width){
-    camera.x = gameWorld.x + gameWorld.width - camera.width;	
-}
-if (camera.y + camera.height > gameWorld.heigth){
-    camera.y = gameWorld.heigth - camera.height;	
-}
-
-camera.vx = camera.x - camera.previousX;
-
-distantBackground.x += camera.vx / 4;
-//foregroundBackground.x += camera.vx / 2;
-//foreground2Background.x += camera.vx / 2;
-
-camera.previousX = camera.x;
+	if (playerObj.posX < camera.leftInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));	
+	}
+	if (playerObj.posY < camera.topInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
+	}
+	if (playerObj.posX + playerObj.width > camera.rightInnerBoundary()){
+		camera.x = Math.floor(playerObj.posX + playerObj.width - (camera.width *0.75));	
+	}
+	if (playerObj.posY + playerObj.height > camera.bottomInnerBoundary()){
+		camera.y = Math.floor(playerObj.posY + playerObj.height - (camera.height * 0.75));
+	}
+	
+	if (camera.x < gameWorld.x){
+		camera.x = gameWorld.x;	
+	}
+	if (camera.y < gameWorld.y){
+		camera.y = gameWorld.y;	
+	}
+	if (camera.x + camera.width > gameWorld.x + gameWorld.width){
+		camera.x = gameWorld.x + gameWorld.width - camera.width;	
+	}
+	if (camera.y + camera.height > gameWorld.heigth){
+		camera.y = gameWorld.heigth - camera.height;	
+	}
+	
+	camera.vx = camera.x - camera.previousX;
+	
+	distantBackground.x += camera.vx / 4;
+	//foregroundBackground.x += camera.vx / 2;
+	//foreground2Background.x += camera.vx / 2;
+	
+	camera.previousX = camera.x;
 }
 
 collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
@@ -1031,1618 +1033,1629 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
-if(gameOver==false)
-    {
-    
-    collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
-    if (isMoveRight){
-        collisionObj.x = playerObj.posX+10;
-    }
-    else if (isMoveLeft){
-        collisionObj.x = playerObj.posX+53;	
-    }
-    
-    //SpaceBar
-    if(key[32])
-    {
-        if(attackable){
-            if (countA >= 0 && countA < 10){
-                isAttack = true;
-            }
-            else{
-                isAttack = false;
-            }
-            playerObj.stopped = false;
-            if (signIndex != -1){
-                signs[signIndex].active = false;
-            }
-            countA++;
-        }
-    }
-    //W
-    if(key[38])
-    {
-        if(!isJump&&jumpable)
-        {
-            playerObj.posY = playerObj.posY-1;
-            isJump = true;
-        }	
-    }
-    //A
-    if(key[37])
-    {
-        if(playerObj.stopped){
-            isMoveLeft = false;
-        }
-        else{
-            if (signs[0].active){
-                signs[0].active = false;	
-            }
-            isMoveLeft = true;
-            playerObj.state = 1;
-            movingRight = false;
-        }
-    }
-    //S
-    if(key[40])
-    {
-        if(playerObj.stopped){
-            isDucking = false;
-        }
-        else{
-            if(crouchable){
-                isDucking = true;
-            }
-        }
-    }
-    //D
-    if(key[39])
-    {
-        if (playerObj.stopped){
-            isMoveRight = false;
-        }
-        else{
-            if (signs[0].active){
-                signs[0].active = false;	
-            }
-            isMoveRight = true;
-            playerObj.state = 0;
-            movingRight = true;
-        }
-    }
-    
-    //SpaceBar
-    if(!key[32])
-    {
-        isAttack = false;
-        countA = 0;
-    }
-    //W
-    
-    //A 
-    if(!key[37])
-    {
-        isMoveLeft = false;
-    }
-    //S
-    if(!key[40])
-    {
-        isDucking = false;
-    }
-    //D
-    if(!key[39])
-    {
-        isMoveRight = false;
-    }
-    
-    for(var i =0; i<signs.length; i++)
-    {
-        if(playerObj.posX+40 === signs[i].posX)
-        {
-            if (!signs[i].read){
-				//console.log("collsion with sign");
-            	playerObj.stopped = true;
-            	signs[i].active = true;
-				signs[i].read = true;
-            	signIndex = i;
+	if(gameOver==false)
+		{
+		
+		collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+		if (isMoveRight){
+			collisionObj.x = playerObj.posX+10;
+		}
+		else if (isMoveLeft){
+			collisionObj.x = playerObj.posX+53;	
+		}
+		
+		//SpaceBar
+		if(key[32])
+		{
+			if(attackable){
+				if (countA >= 0 && countA < 10){
+					isAttack = true;
+				}
+				else{
+					isAttack = false;
+				}
+				playerObj.stopped = false;
+				if (signIndex != -1 && !signs[signIndex].read){
+					signs[signIndex].active = false;
+					signs[signIndex].read = true;
+					signs[signIndex].timesRead = 0;
+				}
+				countA++;
 			}
-        }
-        else
-        {
-            //signs[i].active = false;
-        }
-            
-    }
-    
-    collision=false;
-    // Preform actions
-    if(isJump)
-    {
-        if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
-            {
-                playerObj.jumpDecay = .5;
-                playerObj.jumpStrength = 18;
-                playerObj.posY = (floorLvl-playerObj.height);
-                playerDirec = 0;
-                isJump = false;
-                //falling = true;
-            }
-            
-            //Gravity equation...
-            else if(playerObj.posY != floorLvl)
-            {
-                playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
-                //collide = false;
-                if (playerDirec < 0 ){ //caindo
-                    for (var i = 0; i< breakables.length; i++){
-                        if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
-                                floorLvl = breakables[i].posY;
-                                playerObj.posY =breakables[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                    for (var i = 0; i< sm_obj.length; i++){
-                        if (hitTest(collisionObj,sm_obj[i])){
-                                floorLvl = sm_obj[i].posY;
-                                playerObj.posY =sm_obj[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                    for (var i = 0; i< lg_obj.length; i++){
-                        if (hitTest(collisionObj,lg_obj[i])){
-                                floorLvl = lg_obj[i].posY;
-                                playerObj.posY =lg_obj[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                }
-                /*else{
-                    for (var i = 0; i< breakables.length; i++){
-                        if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
-                            console.log("bateu");
-                                playerObj.posY = breakables[i].posY+breakables[i].height+1;
-                                //playerDirec= 0;
-                                falling = true;
-                        }
-                    }
-                }*/
-                if(!collision)
-                {
-                    floorLvl = 737;
-                    // constantly updates playerOne's Y position
-                    playerObj.posY -= playerDirec;
-                    // constantly increases the amount of pull downwards by one. 
-                    playerObj.jumpDecay += 1;
-                }
-            }
-    }
-    
-    collide=false;
-    for (var i = 0; i< aBranch.length; i++){
-        if (hitTest(collisionObj,aBranch[i])){
-                collide = true;	
-                falling = false;
-                collisionIndex = i;
-                //floorLvl = aBranch[i].posY;
-        }
-    }
-    
-    if (!collide&&!isJump){
-        floorLvl=737;
-        
-        if (playerObj.posY<floorLvl)
-        {
-            if(!falling)
-            {		
-                playerObj.jumpDecay = 0.5;
-                falling = true;
-            }
-            else
-            {
-                for(var i=0; i<breakables.length; i++)
-                {
-                    if(hitTest(breakables[i],playerObj))
-                    {
-                        if(!breakables[i].broken)
-                        {
-                            collision=true;
-                            if (playerObj.posY+playerObj.height > breakables[i].posY)
-                                playerObj.posY = breakables[i].posY-playerObj.height+.5;
-                                falling = false;
-                        }
-                    }
-                }
-                for(var i=0; i<sm_obj.length; i++)
-                {
-                    if(hitTest(sm_obj[i],playerObj))
-                    {
-                        collision=true;
-                        if (playerObj.posY+playerObj.height > sm_obj[i].posY)
-                            playerObj.posY = sm_obj[i].posY-playerObj.height+.5;
-                            falling = false;
-                    }
-                }
-                for(var i=0; i<lg_obj.length; i++)
-                {
-                    if(hitTest(lg_obj[i],playerObj))
-                    {
-                        collision=true;
-                        if (playerObj.posY+playerObj.height > lg_obj[i].posY)
-                            playerObj.posY = lg_obj[i].posY-playerObj.height+.5;
-                            falling = false;
-                    }
-                }
-                if(!collision)
-                {
-                    playerObj.posY+= playerObj.jumpDecay;
-                    playerObj.jumpDecay += 1;
-                    if(!isDucking)
-                    {
-                        if (playerObj.posY >600){
-                            playerObj.posY = 600;	
-                        }
-                    }
-                    else
-                    {
-                            if (playerObj.posY >650)
-                            {
-                                playerObj.posY = 650;
-                            }
-                    }
-                }
-            }
-        }
-        else{
-            falling = false;
+		}
+		//W
+		if(key[38])
+		{
+			if(!isJump&&jumpable)
+			{
+				playerObj.posY = playerObj.posY-1;
+				isJump = true;
+			}	
+		}
+		//A
+		if(key[37])
+		{
+			if(playerObj.stopped){
+				isMoveLeft = false;
+			}
+			else{
+				if (signs[0].active){
+					signs[0].active = false;	
+				}
+				isMoveLeft = true;
+				playerObj.state = 1;
+				movingRight = false;
+			}
+		}
+		//S
+		if(key[40])
+		{
+			if(playerObj.stopped){
+				isDucking = false;
+			}
+			else{
+				if(crouchable){
+					isDucking = true;
+				}
+			}
+		}
+		//D
+		if(key[39])
+		{
+			if (playerObj.stopped){
+				isMoveRight = false;
+			}
+			else{
+				if (signs[0].active){
+					signs[0].active = false;	
+				}
+				isMoveRight = true;
+				playerObj.state = 0;
+				movingRight = true;
+			}
+		}
+		
+		//SpaceBar
+		if(!key[32])
+		{
+			isAttack = false;
+			countA = 0;
+		}
+		//W
+		
+		//A 
+		if(!key[37])
+		{
+			isMoveLeft = false;
+		}
+		//S
+		if(!key[40])
+		{
+			isDucking = false;
+		}
+		//D
+		if(!key[39])
+		{
+			isMoveRight = false;
+		}
+		
+		for(var i =0; i<signs.length; i++)
+		{
+			if(playerObj.posX+40 === signs[i].posX)
+       		{
+            	if (!signs[i].read){
+					//console.log("collsion with sign");
+            		playerObj.stopped = true;
+            		signs[i].active = true;
+            		signIndex = i;
+				}
+        	}
+			else if( (hitTest(playerObj, signs[i]) && signs[i].read) && signs[i].timesRead !=0){
+				signs[i].active = true;
+			}
+			else if( (!hitTest(playerObj,signs[i])) && signs[i].timesRead === 0){
+				signs[i].timesRead++;
+			}
+			else if (signs[i].timesRead > 0){
+				signs[i].active = false;	
+			}
+			else
+			{
+					//signs[i].active = false;
+			}
+				
+		}
+		
+		collision=false;
+		// Preform actions
+		if(isJump)
+		{
+			if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+				{
+					playerObj.jumpDecay = .5;
+					playerObj.jumpStrength = 18;
+					playerObj.posY = (floorLvl-playerObj.height);
+					playerDirec = 0;
+					isJump = false;
+					//falling = true;
+				}
+				
+				//Gravity equation...
+				else if(playerObj.posY != floorLvl)
+				{
+					playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+					//collide = false;
+					if (playerDirec < 0 ){ //caindo
+						for (var i = 0; i< breakables.length; i++){
+							if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
+									floorLvl = breakables[i].posY;
+									playerObj.posY =breakables[i].posY-playerObj.height;
+									collision = true;
+									
+									//console.log("top of box:"+breakables[i].posY);
+									//collide = true;	
+									//falling = false;
+							}
+						}
+						for (var i = 0; i< sm_obj.length; i++){
+							if (hitTest(collisionObj,sm_obj[i])){
+									floorLvl = sm_obj[i].posY;
+									playerObj.posY =sm_obj[i].posY-playerObj.height;
+									collision = true;
+									
+									//console.log("top of box:"+breakables[i].posY);
+									//collide = true;	
+									//falling = false;
+							}
+						}
+						for (var i = 0; i< lg_obj.length; i++){
+							if (hitTest(collisionObj,lg_obj[i])){
+									floorLvl = lg_obj[i].posY;
+									playerObj.posY =lg_obj[i].posY-playerObj.height;
+									collision = true;
+									
+									//console.log("top of box:"+breakables[i].posY);
+									//collide = true;	
+									//falling = false;
+							}
+						}
+					}
+					/*else{
+						for (var i = 0; i< breakables.length; i++){
+							if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
+								console.log("bateu");
+									playerObj.posY = breakables[i].posY+breakables[i].height+1;
+									//playerDirec= 0;
+									falling = true;
+							}
+						}
+					}*/
+					if(!collision)
+					{
+						floorLvl = 737;
+						// constantly updates playerOne's Y position
+						playerObj.posY -= playerDirec;
+						// constantly increases the amount of pull downwards by one. 
+						playerObj.jumpDecay += 1;
+					}
+				}
+		}
+		
+		collide=false;
+		for (var i = 0; i< aBranch.length; i++){
+			if (hitTest(collisionObj,aBranch[i])){
+					collide = true;	
+					falling = false;
+					collisionIndex = i;
+					//floorLvl = aBranch[i].posY;
+			}
+		}
+		
+		if (!collide&&!isJump){
+			floorLvl=737;
+			
+			if (playerObj.posY<floorLvl)
+			{
+				if(!falling)
+				{		
+					playerObj.jumpDecay = 0.5;
+					falling = true;
+				}
+				else
+				{
+					for(var i=0; i<breakables.length; i++)
+					{
+						if(hitTest(breakables[i],playerObj))
+						{
+							if(!breakables[i].broken)
+							{
+								collision=true;
+								if (playerObj.posY+playerObj.height > breakables[i].posY)
+									playerObj.posY = breakables[i].posY-playerObj.height+.5;
+									falling = false;
+							}
+						}
+					}
+					for(var i=0; i<sm_obj.length; i++)
+					{
+						if(hitTest(sm_obj[i],playerObj))
+						{
+							collision=true;
+							if (playerObj.posY+playerObj.height > sm_obj[i].posY)
+								playerObj.posY = sm_obj[i].posY-playerObj.height+.5;
+								falling = false;
+						}
+					}
+					for(var i=0; i<lg_obj.length; i++)
+					{
+						if(hitTest(lg_obj[i],playerObj))
+						{
+							collision=true;
+							if (playerObj.posY+playerObj.height > lg_obj[i].posY)
+								playerObj.posY = lg_obj[i].posY-playerObj.height+.5;
+								falling = false;
+						}
+					}
+					if(!collision)
+					{
+						playerObj.posY+= playerObj.jumpDecay;
+						playerObj.jumpDecay += 1;
+						if(!isDucking)
+						{
+							if (playerObj.posY >600){
+								playerObj.posY = 600;	
+							}
+						}
+						else
+						{
+								if (playerObj.posY >650)
+								{
+									playerObj.posY = 650;
+								}
+						}
+					}
+				}
+			}
+			else{
+				falling = false;
+	
+			}
+		}
+		collision = false;
+		if(isMoveLeft)
+		{
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			for(var i=0; i<sm_obj.length; i++)
+			{
+				if(hitTest(sm_obj[i],playerObj))
+				{
+					if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			for(var i=0; i<lg_obj.length; i++)
+			{
+				if(hitTest(lg_obj[i],playerObj))
+				{
+					if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			if (collision == false)
+			{
+				playerObj.posX -= playerObj.speed;
+			}
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken)
+					{
+						if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+						{
+							collision = true;
+						}
+					}
+				}
+			}
+			for(var i=0; i<sm_obj.length; i++)
+			{
+				if(hitTest(sm_obj[i],playerObj))
+				{
+						if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+						{
+							collision = true;
+						}
+				}
+			}
+			for(var i=0; i<lg_obj.length; i++)
+			{
+				if(hitTest(lg_obj[i],playerObj))
+				{
+						if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+						{
+							collision = true;
+						}
+				}
+			}
+			if(collision == true)
+			{
+				playerObj.posX+= 20;	
+			}
+		}
+		
+		collision = false;
+		if(isMoveRight)
+		{
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			for(var i=0; i<sm_obj.length; i++)
+			{
+				if(hitTest(sm_obj[i],playerObj))
+				{
+					if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			for(var i=0; i<lg_obj.length; i++)
+			{
+				if(hitTest(lg_obj[i],playerObj))
+				{
+					if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
+					{
+						console.log("hit");
+						collision=true;
+					}
+				}
+			}
+			if (collision == false)
+			{
+				playerObj.posX += playerObj.speed;
+			}
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(breakables[i],playerObj))
+				{
+					if(!breakables[i].broken)
+					{
+						if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+						{
+							collision = true;
+						}
+					}
+				}
+			}
+			for(var i=0; i<sm_obj.length; i++)
+			{
+				if(hitTest(sm_obj[i],playerObj))
+				{
+					if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+					{
+						collision = true;
+					}
+				}
+			}
+			for(var i=0; i<lg_obj.length; i++)
+			{
+				if(hitTest(lg_obj[i],playerObj))
+				{
 
-        }
-    }
-    collision = false;
-    if(isMoveLeft)
-    {
-        for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(breakables[i],playerObj))
-            {
-                if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        for(var i=0; i<sm_obj.length; i++)
-        {
-            if(hitTest(sm_obj[i],playerObj))
-            {
-                if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        for(var i=0; i<lg_obj.length; i++)
-        {
-            if(hitTest(lg_obj[i],playerObj))
-            {
-                if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        if (collision == false)
-        {
-            playerObj.posX -= playerObj.speed;
-        }
-        
-        for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(breakables[i],playerObj))
-            {
-                if(!breakables[i].broken)
-                {
-                    if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
-                }
-            }
-        }
-        for(var i=0; i<sm_obj.length; i++)
-        {
-            if(hitTest(sm_obj[i],playerObj))
-            {
-                    if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
-            }
-        }
-        for(var i=0; i<lg_obj.length; i++)
-        {
-            if(hitTest(lg_obj[i],playerObj))
-            {
-                    if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
-            }
-        }
-        if(collision == true)
-        {
-            playerObj.posX+= 20;	
-        }
-    }
-    
-    collision = false;
-    if(isMoveRight)
-    {
-        
-        for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(breakables[i],playerObj))
-            {
-                if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        for(var i=0; i<sm_obj.length; i++)
-        {
-            if(hitTest(sm_obj[i],playerObj))
-            {
-                if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        for(var i=0; i<lg_obj.length; i++)
-        {
-            if(hitTest(lg_obj[i],playerObj))
-            {
-                if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
-                {
-                    console.log("hit");
-                    collision=true;
-                }
-            }
-        }
-        if (collision == false)
-        {
-            playerObj.posX += playerObj.speed;
-        }
-        
-        for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(breakables[i],playerObj))
-            {
-                if(!breakables[i].broken)
-                {
-                    if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
-                }
-            }
-        }
-        for(var i=0; i<sm_obj.length; i++)
-        {
-            if(hitTest(sm_obj[i],playerObj))
-            {
-                if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                {
-                    collision = true;
-                }
-            }
-        }
-        for(var i=0; i<lg_obj.length; i++)
-        {
-            if(hitTest(lg_obj[i],playerObj))
-            {
+					if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+					{
+						collision = true;
+					}
 
-                if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                {
-                    collision = true;
-                }
+				}
+			}
+			if(collision == true)
+			{
+				playerObj.posX-= 20;	
+			}
+		}
+		
+		if(isDucking)
+		{
+			isStanding = false;
+			if (isDucked == false)
+			{
+				isDucked = true;	
+				playerObj.height = 88;
+				playerObj.posY = playerObj.posY+50;
+				floorlvl = floorlvl+50;
+			}
+		}
+		if(!isDucking)
+		{
+			/*for(var i=0; i<breakables.length; i++)
+			{
+				if(hitTest(playerObj,breakables[i]))
+				{
+					isDucking = true;
+					playerObj.posY = breakables[i].posY+breakables[i].height;
+					//collide = false;
+					//collision = false;
+					//falling=true;
+				}
+			}
+			if(!isDucking)
+			{*/
+				isDucked = false;
+				if(isStanding == false)
+				{
+					isStanding = true;
+					playerObj.height = 138;	
+					playerObj.posY = playerObj.posY-50;
+					floorlvl = floorlvl-50;
+				}
+			//}
+		}
+		
+		for(var i=0; i<sheep.length; i++)
+		{
+			if(hitTest(playerObj,sheep[i]))
+			{
+				if(!sheep[i].saved==true)
+				{
+					sheep[i].saved=true;
+					sheepPoints++;
+				}
+			}
+			if(sheep[i].saved)
+			{
+				sheep[i].posX--;	
+			}
+		}
+		
+		sheepSaved = 0;
+		if(cougar.saved==false)
+		{
+			for(var i=0; i<sheep.length; i++)
+			{
+				if(sheep[i].saved)
+					{
+						sheepSaved++;
+					}
+			}
+		}
+		if(sheepSaved>5)
+		{
+			cougar.posX = cougar.posX+5;	
+		}
+	
+		if(isAttack)
+		{
+			
+			for(var i=0; i<breakables.length; i++)
+			{
+				
+				if(hitTest(attackBox,breakables[i]))
+				{
+					breakables[i].broken = true;
+				}
+			}
+		}
+	
+		if(movingRight)
+		{
+			attackBox.posX = playerObj.posX+playerObj.width;
+			attackBox.posY = playerObj.posY;
+		}
+		else
+		{
+			attackBox.posX = playerObj.posX-45;
+			attackBox.posY = playerObj.posY;
+		}
+		
+		if(hitTest(playerObj,miniGame))
+		{
+			if(currentLvl==1)
+			{
+				ctx.fillStyle = 'black';
+				ctx.font = "50px Arial";
+				
+				textOpen = true;
 
-            }
-        }
-        if(collision == true)
-        {
-            playerObj.posX-= 20;	
-        }
-    }
-    
-    if(isDucking)
-    {
-        isStanding = false;
-        if (isDucked == false)
-        {
-            isDucked = true;	
-            playerObj.height = 88;
-            playerObj.posY = playerObj.posY+50;
-            floorlvl = floorlvl+50;
-        }
-    }
-    if(!isDucking)
-    {
-        /*for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(playerObj,breakables[i]))
-            {
-                isDucking = true;
-                playerObj.posY = breakables[i].posY+breakables[i].height;
-                //collide = false;
-                //collision = false;
-                //falling=true;
-            }
-        }
-        if(!isDucking)
-        {*/
-            isDucked = false;
-            if(isStanding == false)
-            {
-                isStanding = true;
-                playerObj.height = 138;	
-                playerObj.posY = playerObj.posY-50;
-                floorlvl = floorlvl-50;
-            }
-        //}
-    }
-    
-    for(var i=0; i<sheep.length; i++)
-    {
-        if(hitTest(playerObj,sheep[i]))
-        {
-            if(!sheep[i].saved==true)
-            {
-                sheep[i].saved=true;
-                sheepPoints++;
-            }
-        }
-        if(sheep[i].saved)
-        {
-            sheep[i].posX--;	
-        }
-    }
-    
-    sheepSaved = 0;
-    if(cougar.saved==false)
-    {
-        for(var i=0; i<sheep.length; i++)
-        {
-            if(sheep[i].saved)
-                {
-                    sheepSaved++;
-                }
-        }
-    }
-    if(sheepSaved>5)
-    {
-        cougar.posX = cougar.posX+5;	
-    }
+				writeText();
+				ctx.clearRect(0,0,1600,900);
+				ctx.drawImage(regExp,0,0,1600,900);
+				ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+				ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+				ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+				
+				for(i = 0; i < jumpWords.length; i++)
+				{
+					var coordX;
+					if(i < 3)
+					{
+						coordX = 150;
+						if(regExp3.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#00BC9F"; // blue
+						}
+						else if(regExp2.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#FEA301"; // yellow
+						}
+						else if(regExp1.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#F2561A"; // red
+						}
+						ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 300);
+						ctx.fillStyle = 'black';
+					}
+					else if(i < 6)
+					{
+						coordX = 600;
+						if(regExp3.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#00BC9F"; // blue
+						}
+						else if(regExp2.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#FEA301"; // yellow
+						}
+						ctx.fillText(jumpWords[i], coordX, (i - 3)*100 + 400);
+						ctx.fillStyle = 'black';
+					}
+					else if(i < 9)
+					{
+						coordX = 1065;
+						if(regExp3.test(jumpWords[i]))
+						{
+							ctx.fillStyle = "#00BC9F"; // blue
+						}
+						ctx.fillText(jumpWords[i], coordX, (i - 6)*100 + 400);
+						ctx.fillStyle = 'black';
+					}
+				}
+				
+				ctx.drawImage(submitImg,submitButtonArray[0].posX, submitButtonArray[0].posY);
+				ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
+				ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
+				ctx.fillText(sheepPoints+"/6",240,125,50);
+				ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
+				ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 25, 25);
+				ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 25, 25);
+				ctx.fillRect(characterBoxArray[3].posX, characterBoxArray[3].posY, 25, 25);
+				ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 25, 25);
+			}
+		}
+		else
+		{
+			currentTextBox = null;
+			textOpen = false;
+			render();
+		}
+		
+		if (playerObj.posX > 6000){
+			currentLvl = 2;
+			lvlFlag = true;	
+		}
+		
+		if (currentLvl === 2 && lvlFlag){
+			if(lastLevel==false)
+			{
+				ctx.drawImage(cutscene,0,0,1600,900);
+				window.setTimeout(setPositionLvl2,5000);
+			}
+			else
+			{
+				ctx.drawImage(endScene,0,0,1600,900);
+				gameOver = true;
+				setTimeout(endGame,5000);
+			}
+		}
 
-    if(isAttack)
-    {
-        
-        for(var i=0; i<breakables.length; i++)
-        {
-            
-            if(hitTest(attackBox,breakables[i]))
-            {
-                breakables[i].broken = true;
-            }
-        }
-    }
-
-    if(movingRight)
-    {
-        attackBox.posX = playerObj.posX+playerObj.width;
-        attackBox.posY = playerObj.posY;
-    }
-    else
-    {
-        attackBox.posX = playerObj.posX-45;
-        attackBox.posY = playerObj.posY;
-    }
-    
-    if(hitTest(playerObj,miniGame))
-    {
-        if(currentLvl==1)
-        {
-            ctx.fillStyle = 'black';
-            ctx.font = "50px Arial";
-            
-            textOpen = true;
-            writeText();
-            ctx.clearRect(0,0,1600,900);
-            ctx.drawImage(regExp,0,0,1600,900);
-            ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
-            ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
-            ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
-            
-            for(i = 0; i < jumpWords.length; i++)
-            {
-                var coordX;
-                if(i < 3)
-                {
-                    coordX = 150;
-                    if(regExp3.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#00BC9F"; // blue
-                    }
-                    else if(regExp2.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#FEA301"; // yellow
-                    }
-                    else if(regExp1.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#F2561A"; // red
-                    }
-                    ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 300);
-                    ctx.fillStyle = 'black';
-                }
-                else if(i < 6)
-                {
-                    coordX = 600;
-                    if(regExp3.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#00BC9F"; // blue
-                    }
-                    else if(regExp2.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#FEA301"; // yellow
-                    }
-                    ctx.fillText(jumpWords[i], coordX, (i - 3)*100 + 400);
-                    ctx.fillStyle = 'black';
-                }
-                else if(i < 9)
-                {
-                    coordX = 1065;
-                    if(regExp3.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#00BC9F"; // blue
-                    }
-                    ctx.fillText(jumpWords[i], coordX, (i - 6)*100 + 400);
-                    ctx.fillStyle = 'black';
-                }
-            }
-            
-            ctx.drawImage(submitImg,submitButtonArray[0].posX, submitButtonArray[0].posY);
-            ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
-            ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
-            ctx.fillText(sheepPoints+"/6",240,125,50);
-            ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 25, 25);
-            ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 25, 25);
-            ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 25, 25);
-            ctx.fillRect(characterBoxArray[3].posX, characterBoxArray[3].posY, 25, 25);
-            ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 25, 25);
-        }
-    }
-    else
-    {
-        currentTextBox = null;
-        textOpen = false;
-        render();
-    }
-    
-    if (playerObj.posX > 6000){
-        currentLvl = 2;
-        lvlFlag = true;	
-    }
-    
-    if (currentLvl === 2 && lvlFlag){
-        if(lastLevel==false)
-        {
-            ctx.drawImage(cutscene,0,0,1600,900);
-            window.setTimeout(setPositionLvl2,5000);
-        }
-        else
-        {
-            ctx.drawImage(endScene,0,0,1600,900);
-            gameOver = true;
-            setTimeout(endGame,5000);
-        }
-    }
-
-    if(!regExp1.test(jumpWords[0]) && !regExp1.test(jumpWords[1]) && regExp1.test(jumpWords[2]) 
-    && !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && !regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
-    && !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && !regExp3.test(jumpWords[2]) && !regExp3.test(jumpWords[3]) 
-    && !regExp3.test(jumpWords[4]) && !regExp3.test(jumpWords[5]) && !regExp3.test(jumpWords[6]) && regExp3.test(jumpWords[7]) && !regExp3.test(jumpWords[8]))
-    {
-        jumpable =true;
-    }
-    //Could Be tutorial Text
-    /*ctx.fillText("Welcome to Sheep! Heard Dan.");
-    ctx.fillText("Use Arrow Keys to move <- Left and Right ->");
-    ctx.fillText("Oh! Looks like that mean coguar drop one of your sheep, better send him home where it's safe");
-    ctx.filltext("<-------- This is your sheep counter, it shows how many sheep are on this level and how many you have collected");
-    ctx.fillText("That ridge over there seems likes it's to high to jump over, try talking to that gold sheep he'll help you out")
-    ctx.fillText("Welcome to the RegExp Screen, using regular expressions unlock a new ability to help you further your quest to heard sheep");
-    ctx.fillText("Using regular expressions try to get the words in each column closest to the ability your trying to unlock");
-    ctx.fillText("This first text box is your first regular expression, words matching this expression will show up in orange. Try typing 'O' to see");
-    ctx.filltext("As you can see all words with letter 'O' will highlight in orange, now try typing in 'OP'")
-    ctx.fillText("Notice that only 'HOP' turned orange even though both 'COUP' and 'BUMP' have either an 'O' or a 'P' in it, this is because you typed 'OP' which means it will only match words with an 'O' followed by a 'P'")
-    ctx.fillText("Be carful though, you can only right as many letters as sheep you have...");
-    ctx.fillText("Now try writing 'P' in the middle box")
-    ctx.fillText("This is your second Regular Expression, all words matching thisreg")*/
-}
+		if(!regExp1.test(jumpWords[0]) && !regExp1.test(jumpWords[1]) && regExp1.test(jumpWords[2]) 
+		&& !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && !regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
+		&& !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && !regExp3.test(jumpWords[2]) && !regExp3.test(jumpWords[3]) 
+		&& !regExp3.test(jumpWords[4]) && !regExp3.test(jumpWords[5]) && !regExp3.test(jumpWords[6]) && regExp3.test(jumpWords[7]) && !regExp3.test(jumpWords[8]))
+		{
+			jumpable =true;
+		}
+		//Could Be tutorial Text
+		/*ctx.fillText("Welcome to Sheep! Heard Dan.");
+		ctx.fillText("Use Arrow Keys to move <- Left and Right ->");
+		ctx.fillText("Oh! Looks like that mean coguar drop one of your sheep, better send him home where it's safe");
+		ctx.filltext("<-------- This is your sheep counter, it shows how many sheep are on this level and how many you have collected");
+		ctx.fillText("That ridge over there seems likes it's to high to jump over, try talking to that gold sheep he'll help you out")
+		ctx.fillText("Welcome to the RegExp Screen, using regular expressions unlock a new ability to help you further your quest to heard sheep");
+		ctx.fillText("Using regular expressions try to get the words in each column closest to the ability your trying to unlock");
+		ctx.fillText("This first text box is your first regular expression, words matching this expression will show up in orange. Try typing 'O' to see");
+		ctx.filltext("As you can see all words with letter 'O' will highlight in orange, now try typing in 'OP'")
+		ctx.fillText("Notice that only 'HOP' turned orange even though both 'COUP' and 'BUMP' have either an 'O' or a 'P' in it, this is because you typed 'OP' which means it will only match words with an 'O' followed by a 'P'")
+		ctx.fillText("Be carful though, you can only right as many letters as sheep you have...");
+		ctx.fillText("Now try writing 'P' in the middle box")
+		ctx.fillText("This is your second Regular Expression, all words matching thisreg")*/
+	}
 }
 
 function hitTest(r1,r2){
-return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
+	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
 }
 
 function render()
 {
-if(gameOver==false)
-{
-    ctx.clearRect(0,0,1600,900);
-    
-    ctx.save();
-    ctx.translate(-camera.x, -camera.y);
-    if (currentLvl === 2 && lvlFlag)
-        ctx.drawImage(cutscene,0,0,1600,900);
-    if (currentLvl === 2 && lvlFlag && lastLevel)
-        ctx.drawImage(endScene,0,0,1600,900);
-    
-    if (currentLvl === 1){
-        ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
-    
-        ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
-        
-        for(var i =0; i<signs.length; i++)
-        {
-            ctx.drawImage(sign,signs[i].posX,signs[i].posY);
-            
-            if(signs[i].active)
-            {
-                if(i==0)
-                    ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==1)
-                    ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==2)
-                    ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==3)
-                    ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==4)
-                {
-                    ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
-                    ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
-                }
-                else if(i==5)
-                {
-                    ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
-                    ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
-                }
-                else if(i==6)
-                    ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==7)
-                    ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==8)
-                    ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);
+	if(gameOver==false)
+	{
+		ctx.clearRect(0,0,1600,900);
+		
+		ctx.save();
+		ctx.translate(-camera.x, -camera.y);
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
+		
+		if (currentLvl === 1){
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+			ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+			ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+			ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+		
+			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+			
+			for(var i =0; i<signs.length; i++)
+			{
+				ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+				
+				if(signs[i].active)
+				{
+					if(i==0)
+						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==1)
+						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==2)
+						ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==3)
+						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==4)
+					{
+						ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
+						ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
+					}
+					else if(i==5)
+					{
+						ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
+						ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
+					}
+					else if(i==6)
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==7)
+						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==8)
+						ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);
+	
+						
+	
+				}
+			}
+		}
+		else if (currentLvl === 2){
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+			ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+			ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+			ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+			
+			ctx.drawImage(sign,signs[9].posX,signs[9].posY);
+			ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
 
-                    
+		}
+		
+		
+		ctx.drawImage(sheepIcon,camera.x,0);
+		ctx.fillStyle = 'black';
+		ctx.font = "50px Arial";
+		ctx.fillText(sheepSaved+"/6",camera.x+50,50,50);
+		
+		if(playerObj.state == 0){ //right
+			 if(isJump){
+				if (isDucking){
+					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+				} 
+				else{
+					if (playerDirec < 0){
+						ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else{
+					 	if (count >= 0 && count <20){
+							ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+					  	}
+					  	else if (count>=20 && count <=40){
+							ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					 	}
+				  	}
+				}
+			}
+			else if(isMoveRight){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+				}
+			}
+			else{
+				if(isDucking){
+					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
+				}
+			}
+		}
+		if(playerObj.state == 1){ //left
+			if(isJump){
+				if (isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);	
+				}
+				else{
+					if (playerDirec < 0){
+						ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else{
+						if (count >= 0 && count <20){
+						  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+						}
+						else if (count>=20 && count <=40){
+						  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+						}
+					}
+				}
+			}
+			else if (isMoveLeft){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
 
-            }
-        }
-    }
-    else if (currentLvl === 2){
-        ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
-        
-        ctx.drawImage(sign,signs[9].posX,signs[9].posY);
-        ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
-
-    }
-    
-    
-    ctx.drawImage(sheepIcon,camera.x,0);
-    ctx.fillStyle = 'black';
-    ctx.font = "50px Arial";
-    ctx.fillText(sheepSaved+"/6",camera.x+50,50,50);
-    
-    if(playerObj.state == 0){ //right
-         if(isJump){
-            if (isDucking){
-                ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
-            } 
-            else{
-                if (playerDirec < 0){
-                    ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else{
-                    if (count >= 0 && count <20){
-                        ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-                    }
-                    else if (count>=20 && count <=40){
-                        ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                    }
-                }
-            }
-        }
-        else if(isMoveRight){
-            if (isDucking){
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_duck_sprite, 141, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_duck_sprite, 564, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
-            }
-            else{
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-            }
-        }
-        else{
-            if(isDucking){
-                ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
-            }
-            else{
-                ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
-            }
-        }
-    }
-    if(playerObj.state == 1){ //left
-        if(isJump){
-            if (isDucking){
-                ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);	
-            }
-            else{
-                if (playerDirec < 0){
-                    ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else{
-                    if (count >= 0 && count <20){
-                      ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-                    }
-                    else if (count>=20 && count <=40){
-                      ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                    }
-                }
-            }
-        }
-        else if (isMoveLeft){
-            if (isDucking){
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_duck_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_duck_sprite, 423, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_duck_sprite, 564, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
-            }
-            else{
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }	
-            }
-        }
-        else
-            if(isDucking){
-                ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
-            }
-            else{
-                ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
-            }
-        }	
-    
-    for (var i=0; i<sheep.length;i++)
-    {
-        if(sheep[i].saved==false)
-        {
-            ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
-        }
-        else
-        {
-            ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
-        }
-    }
-        
-    if(sheepSaved==6)
-    {
-        ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
-    }
-    else
-    {
-        ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
-    }
-    
-    for(var i=0; i<breakables.length; i++)
-    {
-        if(!breakables[i].broken)
-        {
-            ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
-        }
-    }
-    for(var i=0; i<sm_obj.length; i++)
-    {
-        ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY);	
-    }
-    for(var i=0; i<lg_obj.length; i++)
-    {
-        ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-20);	
-    }
-    
-    
-    count++;
-    if (count ==40){
-        count = 0;	
-    }
-    countR++;
-    if (countR ==30){
-        countR = 0;	
-    }
-    if (currentLvl === 2 && lvlFlag)
-        ctx.drawImage(cutscene,0,0,1600,900);
-    if (currentLvl === 2 && lvlFlag && lastLevel)
-        ctx.drawImage(endScene,0,0,1600,900);
-        
-    ctx.drawImage(restart,1534+camera.x,10);
-        
-    if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
-    {
-        intialize();
-    }
-        
-    ctx.restore();
-}
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}	
+				}
+			}
+			else
+				if(isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
+				}
+			}	
+		
+		for (var i=0; i<sheep.length;i++)
+		{
+			if(sheep[i].saved==false)
+			{
+				ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+			}
+			else
+			{
+				ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+			}
+		}
+			
+		if(sheepSaved==6)
+		{
+			ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
+		}
+		else
+		{
+			ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
+		}
+		
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(!breakables[i].broken)
+			{
+				ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+			}
+		}
+		for(var i=0; i<sm_obj.length; i++)
+		{
+			ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY);	
+		}
+		for(var i=0; i<lg_obj.length; i++)
+		{
+			ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-20);	
+		}
+		
+		
+		count++;
+		if (count ==40){
+			count = 0;	
+		}
+		countR++;
+		if (countR ==30){
+			countR = 0;	
+		}
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
+			
+		ctx.drawImage(restart,1534+camera.x,10);
+			
+		if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
+		{
+			intialize();
+		}
+			
+		ctx.restore();
+	}
 }
 
 function keyDown(e)
 {
-    key[e.keyCode] = true;
+		key[e.keyCode] = true;
 }
 
 function keyUp(e)
 {
-    delete key[e.keyCode];
+		delete key[e.keyCode];
 }
 
 function writeText()
 {
-if(textOpen)
-{
-    document.onmousedown = function(e)
-    {
-        mouse.x = e.pageX - cv.offsetLeft;
-        mouse.y = e.pageY - cv.offsetTop;
-        
-        console.log(mouse.x);
-        console.log(mouse.y);
-        console.log(textBoxArray[0].xCoord);
-        console.log(textBoxArray[1].xCoord);
-        console.log(textBoxArray[2].xCoord);
-        console.log(currentTextBox);
-        
-        for(i = 0; i < textBoxArray.length; i++)
-        {
-            if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
-            {
-                if(currentTextBox == null)
-                {
-                    currentTextBox = textBoxArray[i];
-                    currentTextBox.canWrite = true;
-                }
-                else
-                {
-                    currentTextBox.canWrite = false;
-                    currentTextBox = textBoxArray[i];
-                    currentTextBox.canWrite = true;
-                }
-            }	
-        }
-        
-        if(mouse.x >= submitButtonArray[0].posX && mouse.x <= submitButtonArray[0].posX + 50 && mouse.y >= submitButtonArray[0].posY && mouse.y <= submitButtonArray[0].posY + 50)
-        {
-            regExp1 = new RegExp(regExpOne);
-            console.log(regExp1);
-            submitButtonArray[0].clicked = true;
-        }
-        if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 50 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 50 && submitButtonArray[0].clicked)
-        {
-            regExp2 = new RegExp(regExpTwo);
-            console.log(regExp2);
-            submitButtonArray[1].clicked = true;
-        }
-        if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 50 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 50 && submitButtonArray[1].clicked)
-        {
-            regExp3 = new RegExp(regExpThree);
-            console.log(regExp3);
-            submitButtonArray[2].clicked = true;
-        }
-        //TODO: Finish this shit up
-        if(sheepPoints > 0)
-        {
-            //?
-            if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 25 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 25)
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "?";
-                    sheepPoints --;
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "?";
-                    sheepPoints --;
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "?";
-                    sheepPoints --;
-                }
-            }
-            //[^]
-            if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 25 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 25)
-            {
-                if(sheepPoints > 1)
-                {
-                    if(currentTextBox == textBoxArray[0])
-                    {
-                        regExpOne = "[^" + regExpOne + "]";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[1])
-                    {
-                        regExpTwo = "[^" + regExpTwo + "]";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[2])
-                    {
-                        regExpThree = "[^" + regExpThree + "]";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                }
-            }
-            //^
-            if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 25 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 25)
-            {
-                console.log("WE R Here");
-                if(sheepPoints > 1)
-                {
-                    if(currentTextBox == textBoxArray[0])
-                    {
-                        regExpOne = "^" + regExpOne;
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[1])
-                    {
-                        regExpTwo = "^" + regExpTwo;
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[2])
-                    {
-                        regExpThree = "^" + regExpThree;
-                        sheepPoints = sheepPoints - 2;
-                    }
-                }
-            }
-            //$
-            if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 25 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 25)
-            {
-                if(sheepPoints > 1)
-                {
-                    if(currentTextBox == textBoxArray[0])
-                    {
-                        regExpOne = regExpOne + "$";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[1])
-                    {
-                        regExpTwo = regExpTwo + "$";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                    if(currentTextBox == textBoxArray[2])
-                    {
-                        regExpThree = regExpThree + "$";
-                        sheepPoints = sheepPoints - 2;
-                    }
-                }
-            }
-            //|
-            if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 25 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 25)
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "|";
-                    sheepPoints--;
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "|";
-                    sheepPoints--;
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "|";
-                    sheepPoints--;
-                }
-            }
-        }
-    }
-}
-
-document.onkeydown = function(e)
-{
-    key[e.keyCode] = true;
-    if(currentTextBox != null && sheepPoints != 0)
-    {
-        if(currentTextBox.canWrite == true)
-        {
-            ctx.fillStyle = 'black';
-            ctx.font = "50px Arial";
-            if(key[65]) // a
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "A";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "A";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "A"; 
-                }
-                sheepPoints--;
-            }
-            if(key[66]) // b
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "B";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "B";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "B"; 
-                }
-                sheepPoints--;
-            }
-            if(key[67]) // c
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "C";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "C";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "C"; 
-                }
-                sheepPoints--;
-            }
-            if(key[68]) // d
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "D";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "D";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "D"; 
-                }
-                sheepPoints--;
-            }
-            if(key[69]) // e
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "E";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "E";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "E"; 
-                }
-                sheepPoints--;
-            }
-            if(key[70]) // f
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "F";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "F";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "F"; 
-                }
-                sheepPoints--;
-            }
-            if(key[71]) // g
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "G";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "G";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "G"; 
-                }
-                sheepPoints--;
-            }
-            if(key[72]) // h
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "H";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "H";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "H"; 
-                }
-                sheepPoints--;
-            }
-            if(key[73]) // i
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "I";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "I";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "I"; 
-                }
-                sheepPoints--;
-            }
-            if(key[74]) // j
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "J";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "J";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "J"; 
-                }
-                sheepPoints--;
-            }
-            if(key[75]) // k
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "K";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "K";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "K"; 
-                }
-                sheepPoints--;
-            }
-            if(key[76]) // l
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "L";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "L";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "L"; 
-                }
-                sheepPoints--;
-            }
-            if(key[77]) // m
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "M";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "M";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "M"; 
-                }
-                sheepPoints--;
-            }
-            if(key[78]) // n
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "N";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "N";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "N"; 
-                }
-                sheepPoints--;
-            }
-            if(key[79]) // o
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "O";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "O";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "O"; 
-                }
-                sheepPoints--;
-            }
-            if(key[80]) // p
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "P";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "P";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "P"; 
-                }
-                sheepPoints--;
-            }
-            if(key[81]) // q
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "Q";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "Q";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "Q"; 
-                }
-                sheepPoints--;
-            }
-            if(key[82]) // r
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "R";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "R";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "R"; 
-                }
-                sheepPoints--;
-            }
-            if(key[83]) // s
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "S";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "S";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "S"; 
-                }
-                sheepPoints--;
-            }
-            if(key[84]) // t
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "T";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "T";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "T"; 
-                }
-                sheepPoints--;
-            }
-            if(key[85]) // u
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "U";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "U";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "U"; 
-                }
-                sheepPoints--;
-            }
-            if(key[86]) // v
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "V";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "V";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "V"; 
-                }
-                sheepPoints--;
-            }
-            if(key[87]) // w
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "W";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "W";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "W"; 
-                }
-                sheepPoints--;
-            }
-            if(key[88]) // x
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "X";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "X";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "X"; 
-                }
-                sheepPoints--;
-            }
-            if(key[89]) // y
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "Y";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "Y";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "Y"; 
-                }
-                sheepPoints--;
-            }
-            if(key[90]) // z
-            {
-                if(currentTextBox == textBoxArray[0])
-                {
-                    regExpOne = regExpOne + "Z";
-                }
-                if(currentTextBox == textBoxArray[1])
-                {
-                    regExpTwo = regExpTwo + "Z";
-                }
-                if(currentTextBox == textBoxArray[2])
-                {
-                    regExpThree = regExpThree + "Z"; 
-                }
-                sheepPoints--;
-            }
-        }
-    }
-    if(key[8]) //delete button
-    {
-        if(currentTextBox == textBoxArray[0] && regExpOne.length != 0)
-        {
-            if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "]")
-            {
-                regExpOne = regExpOne.substr(0, regExpOne.length - 1);
-                regExpOne = regExpOne.substr(2, regExpOne.length);
-                sheepPoints = sheepPoints + 2;
-            }
-            else if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "^" || regExpOne.substr(regExpOne.length-1, regExpOne.length) == "$")
-            {
-                regExpOne = regExpOne.substr(0, regExpOne.length - 1);
-                sheepPoints = sheepPoints + 2;
-            }
-            else
-            {
-                regExpOne = regExpOne.substr(0, regExpOne.length - 1);
-                sheepPoints++;
-            }
-        }
-        if(currentTextBox == textBoxArray[1] && regExpTwo.length != 0)
-        {
-            if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "]")
-            {
-                regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
-                regExpTwo = regExpTwo.substr(2, regExpTwo.length);
-                sheepPoints = sheepPoints + 2;
-            }
-            else if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "^" || regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "$")
-            {
-                regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
-                sheepPoints = sheepPoints + 2;
-            }
-            else
-            {
-                regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
-                sheepPoints++;
-            }
-        }
-        if(currentTextBox == textBoxArray[2] && regExpThree.length != 0)
-        {
-            if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "]")
-            {
-                regExpThree = regExpThree.substr(0, regExpThree.length - 1);
-                regExpThree = regExpThree.substr(2, regExpThree.length);
-                sheepPoints = sheepPoints + 2;
-            }
-            else if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "^" || regExpThree.substr(regExpThree.length-1, regExpThree.length) == "$")
-            {
-                regExpThree = regExpThree.substr(0, regExpThree.length - 1);
-                sheepPoints = sheepPoints + 2;
-            }
-            else
-            {
-                regExpThree = regExpThree.substr(0, regExpThree.length - 1);
-                sheepPoints++;
-            }	
-        }
-    }
-}
+	if(textOpen)
+	{
+		document.onmousedown = function(e)
+		{
+			mouse.x = e.pageX - cv.offsetLeft;
+			mouse.y = e.pageY - cv.offsetTop;
+			
+			console.log(mouse.x);
+			console.log(mouse.y);
+			console.log(textBoxArray[0].xCoord);
+			console.log(textBoxArray[1].xCoord);
+			console.log(textBoxArray[2].xCoord);
+			console.log(currentTextBox);
+			
+			for(i = 0; i < textBoxArray.length; i++)
+			{
+				if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
+				{
+					if(currentTextBox == null)
+					{
+						currentTextBox = textBoxArray[i];
+						currentTextBox.canWrite = true;
+					}
+					else
+					{
+						currentTextBox.canWrite = false;
+						currentTextBox = textBoxArray[i];
+						currentTextBox.canWrite = true;
+					}
+				}	
+			}
+			
+			if(mouse.x >= submitButtonArray[0].posX && mouse.x <= submitButtonArray[0].posX + 50 && mouse.y >= submitButtonArray[0].posY && mouse.y <= submitButtonArray[0].posY + 50)
+			{
+				regExp1 = new RegExp(regExpOne);
+				console.log(regExp1);
+				submitButtonArray[0].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 50 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 50 && submitButtonArray[0].clicked)
+			{
+				regExp2 = new RegExp(regExpTwo);
+				console.log(regExp2);
+				submitButtonArray[1].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 50 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 50 && submitButtonArray[1].clicked)
+			{
+				regExp3 = new RegExp(regExpThree);
+				console.log(regExp3);
+				submitButtonArray[2].clicked = true;
+			}
+			//TODO: Finish this shit up
+			if(sheepPoints > 0)
+			{
+				//?
+				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 25 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 25)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "?";
+						sheepPoints --;
+					}
+				}
+				//[^]
+				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 25 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 25)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "[^" + regExpOne + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "[^" + regExpTwo + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "[^" + regExpThree + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//^
+				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 25 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 25)
+				{
+					console.log("WE R Here");
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "^" + regExpOne;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "^" + regExpTwo;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "^" + regExpThree;
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//$
+				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 25 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 25)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = regExpOne + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = regExpTwo + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = regExpThree + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//|
+				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 25 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 25)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "|";
+						sheepPoints--;
+					}
+				}
+			}
+		}
+	}
+	
+	document.onkeydown = function(e)
+	{
+		key[e.keyCode] = true;
+		if(currentTextBox != null && sheepPoints != 0)
+		{
+			if(currentTextBox.canWrite == true)
+			{
+				ctx.fillStyle = 'black';
+				ctx.font = "50px Arial";
+				if(key[65]) // a
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "A";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "A";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "A"; 
+					}
+					sheepPoints--;
+				}
+				if(key[66]) // b
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "B";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "B";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "B"; 
+					}
+					sheepPoints--;
+				}
+				if(key[67]) // c
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "C";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "C";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "C"; 
+					}
+					sheepPoints--;
+				}
+				if(key[68]) // d
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "D";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "D";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "D"; 
+					}
+					sheepPoints--;
+				}
+				if(key[69]) // e
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "E";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "E";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "E"; 
+					}
+					sheepPoints--;
+				}
+				if(key[70]) // f
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "F";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "F";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "F"; 
+					}
+					sheepPoints--;
+				}
+				if(key[71]) // g
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "G";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "G";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "G"; 
+					}
+					sheepPoints--;
+				}
+				if(key[72]) // h
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "H";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "H";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "H"; 
+					}
+					sheepPoints--;
+				}
+				if(key[73]) // i
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "I";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "I";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "I"; 
+					}
+					sheepPoints--;
+				}
+				if(key[74]) // j
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "J";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "J";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "J"; 
+					}
+					sheepPoints--;
+				}
+				if(key[75]) // k
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "K";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "K";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "K"; 
+					}
+					sheepPoints--;
+				}
+				if(key[76]) // l
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "L";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "L";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "L"; 
+					}
+					sheepPoints--;
+				}
+				if(key[77]) // m
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "M";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "M";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "M"; 
+					}
+					sheepPoints--;
+				}
+				if(key[78]) // n
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "N";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "N";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "N"; 
+					}
+					sheepPoints--;
+				}
+				if(key[79]) // o
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "O";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "O";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "O"; 
+					}
+					sheepPoints--;
+				}
+				if(key[80]) // p
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "P";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "P";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "P"; 
+					}
+					sheepPoints--;
+				}
+				if(key[81]) // q
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Q";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Q";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Q"; 
+					}
+					sheepPoints--;
+				}
+				if(key[82]) // r
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "R";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "R";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "R"; 
+					}
+					sheepPoints--;
+				}
+				if(key[83]) // s
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "S";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "S";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "S"; 
+					}
+					sheepPoints--;
+				}
+				if(key[84]) // t
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "T";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "T";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "T"; 
+					}
+					sheepPoints--;
+				}
+				if(key[85]) // u
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "U";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "U";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "U"; 
+					}
+					sheepPoints--;
+				}
+				if(key[86]) // v
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "V";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "V";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "V"; 
+					}
+					sheepPoints--;
+				}
+				if(key[87]) // w
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "W";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "W";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "W"; 
+					}
+					sheepPoints--;
+				}
+				if(key[88]) // x
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "X";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "X";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "X"; 
+					}
+					sheepPoints--;
+				}
+				if(key[89]) // y
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Y";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Y";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Y"; 
+					}
+					sheepPoints--;
+				}
+				if(key[90]) // z
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Z";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Z";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Z"; 
+					}
+					sheepPoints--;
+				}
+			}
+		}
+		if(key[8]) //delete button
+		{
+			if(currentTextBox == textBoxArray[0] && regExpOne.length != 0)
+			{
+				if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "]")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					regExpOne = regExpOne.substr(2, regExpOne.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "^" || regExpOne.substr(regExpOne.length-1, regExpOne.length) == "$")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints++;
+				}
+			}
+			if(currentTextBox == textBoxArray[1] && regExpTwo.length != 0)
+			{
+				if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "]")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					regExpTwo = regExpTwo.substr(2, regExpTwo.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "^" || regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "$")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints++;
+				}
+			}
+			if(currentTextBox == textBoxArray[2] && regExpThree.length != 0)
+			{
+				if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "]")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					regExpThree = regExpThree.substr(2, regExpThree.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "^" || regExpThree.substr(regExpThree.length-1, regExpThree.length) == "$")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints++;
+				}	
+			}
+		}
+	}
 }
 </script>
 </body>
