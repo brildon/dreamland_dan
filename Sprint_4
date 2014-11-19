@@ -1635,7 +1635,7 @@ if(gameOver==false)
         if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
-            ctx.font = "50px Arial";
+            ctx.font = "50px Helvetica";
             
             textOpen = true;
             writeText();
@@ -1655,31 +1655,47 @@ if(gameOver==false)
                 if(i < 3)
                 {
                     coordX = 235;
-                    if(regExp3.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#00BC9F"; // blue
-                    }
-                    else if(regExp2.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#F2561A"; // red
-                    }
-                    else if(regExp1.test(jumpWords[i]))
+                    if(regExp1.test(jumpWords[i]))
                     {
                         ctx.fillStyle = "#FEA301"; // yellow
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 75);
+						ctx.fillStyle = 'black';
                     }
-                    ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 200);
-                    ctx.fillStyle = 'black';
+					if(regExp2.test(jumpWords[i]))
+                    {
+						ctx.fillStyle = "#F2561A"; // red
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 10);
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 210, 394, 10);
+						ctx.fillStyle = 'black';
+                    }
+					if(regExp3.test(jumpWords[i]))
+                    {
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(jumpWords[i], coordX, (i + 1)*100 + 200);
+						ctx.fillStyle = "#00BC9F"; // blue
+                    }
+					ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 200);
+					ctx.fillStyle = 'black';
                 }
                 else if(i < 6)
                 {
                     coordX = 675;
-                    if(regExp3.test(jumpWords[i]))
-                    {
-                        ctx.fillStyle = "#00BC9F"; // blue
-                    }
-                    else if(regExp2.test(jumpWords[i]))
+                    if(regExp2.test(jumpWords[i]))
                     {
                         ctx.fillStyle = "#F2561A"; // red
+						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 145, 394, 10);
+						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 210, 394, 10);
+						ctx.fillStyle = 'black';
+                    }
+					if(regExp3.test(jumpWords[i]))
+                    {
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(jumpWords[i], coordX, (i - 3 + 1)*100 + 200);
+						ctx.fillStyle = "#00BC9F"; // blue
                     }
                     ctx.fillText(jumpWords[i], coordX, (i - 3)*100 + 300);
                     ctx.fillStyle = 'black';
@@ -1689,7 +1705,11 @@ if(gameOver==false)
                     coordX = 1140;
                     if(regExp3.test(jumpWords[i]))
                     {
-                        ctx.fillStyle = "#00BC9F"; // blue
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(jumpWords[i], coordX, (i - 6)*100 + 300);
+						ctx.fillStyle = "#00BC9F"; // blue
                     }
                     ctx.fillText(jumpWords[i], coordX, (i - 6)*100 + 300);
                     ctx.fillStyle = 'black';
@@ -1836,26 +1856,12 @@ if(gameOver==false)
     }
 
     if(!regExp1.test(jumpWords[0]) && !regExp1.test(jumpWords[1]) && regExp1.test(jumpWords[2]) 
-    && !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && !regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
-    && !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && !regExp3.test(jumpWords[2]) && !regExp3.test(jumpWords[3]) 
+    && !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
+    && !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && regExp3.test(jumpWords[2]) && regExp3.test(jumpWords[3]) 
     && !regExp3.test(jumpWords[4]) && !regExp3.test(jumpWords[5]) && !regExp3.test(jumpWords[6]) && regExp3.test(jumpWords[7]) && !regExp3.test(jumpWords[8]))
     {
         jumpable =true;
     }
-    //Could Be tutorial Text
-    /*ctx.fillText("Welcome to Sheep! Heard Dan.");
-    ctx.fillText("Use Arrow Keys to move <- Left and Right ->");
-    ctx.fillText("Oh! Looks like that mean coguar drop one of your sheep, better send him home where it's safe");
-    ctx.filltext("<-------- This is your sheep counter, it shows how many sheep are on this level and how many you have collected");
-    ctx.fillText("That ridge over there seems likes it's to high to jump over, try talking to that gold sheep he'll help you out")
-    ctx.fillText("Welcome to the RegExp Screen, using regular expressions unlock a new ability to help you further your quest to heard sheep");
-    ctx.fillText("Using regular expressions try to get the words in each column closest to the ability your trying to unlock");
-    ctx.fillText("This first text box is your first regular expression, words matching this expression will show up in orange. Try typing 'O' to see");
-    ctx.filltext("As you can see all words with letter 'O' will highlight in orange, now try typing in 'OP'")
-    ctx.fillText("Notice that only 'HOP' turned orange even though both 'COUP' and 'BUMP' have either an 'O' or a 'P' in it, this is because you typed 'OP' which means it will only match words with an 'O' followed by a 'P'")
-    ctx.fillText("Be carful though, you can only right as many letters as sheep you have...");
-    ctx.fillText("Now try writing 'P' in the middle box")
-    ctx.fillText("This is your second Regular Expression, all words matching thisreg")*/
 }
 }
 
@@ -2214,7 +2220,6 @@ if(textOpen)
             console.log(regExp3);
             submitButtonArray[2].clicked = true;
         }
-        //TODO: Finish this shit up
         if(sheepPoints > 0)
         {
             //?
@@ -2261,7 +2266,6 @@ if(textOpen)
             //^
             if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59)
             {
-                console.log("WE R Here");
                 if(sheepPoints > 1)
                 {
                     if(currentTextBox == textBoxArray[0])
@@ -2818,4 +2822,3 @@ document.onkeydown = function(e)
 </script>
 </body>
 </html>
- 
