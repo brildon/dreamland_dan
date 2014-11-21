@@ -2436,6 +2436,9 @@ function writeText()
 			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
 			{
 				closeWindow = true;
+				textBoxArray[0].canWrite = false;
+				textBoxArray[1].canWrite = false;
+				textBoxArray[2].canWrite = false;
 			}
 		}
 	}
