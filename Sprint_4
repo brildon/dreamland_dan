@@ -5,7 +5,7 @@
 </head>
 <body>
 <div id="container" style="width:1500px; height:500px; position:relative;" >
-    <canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 
 </div>
 <audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" preload="auto" loop></audio>
@@ -20,22 +20,25 @@ document.getElementById('music').play();
 var sheepPoints = 0;	
 var levelAt = 0;
 
-var jumpWords = new Array(9);
+var levelWords = new Array(9);
 
-jumpWords[0] = "CONE";
-jumpWords[1] = "BOO";
-jumpWords[2] = "HOP";
+levelWords[0] = "CONE";
+levelWords[1] = "BOO";
+levelWords[2] = "HOP";
 
-jumpWords[3] = "LEAP";
-jumpWords[4] = "SLEEP";
-jumpWords[5] = "EAT";
+levelWords[3] = "LEAP";
+levelWords[4] = "SLEEP";
+levelWords[5] = "EAT";
 
-jumpWords[6] = "STUNT";
-jumpWords[7] = "JUMP";
-jumpWords[8] = "JACK";
+levelWords[6] = "STUNT";
+levelWords[7] = "JUMP";
+levelWords[8] = "JACK";
 
-var crouchWords = [];
-var attackWords = [];
+var correctWords = new Array(3);
+
+correctWords[0] = levelWords[2];
+correctWords[1] = levelWords[3];
+correctWords[2] = levelWords[7];
 
 var menuCheck = true;
 var buildCheck = false;
@@ -1649,69 +1652,90 @@ if(gameOver==false)
             ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
             ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
             
-            for(i = 0; i < jumpWords.length; i++)
+            for(i = 0; i < levelWords.length; i++)
             {
                 var coordX;
                 if(i < 3)
                 {
                     coordX = 235;
-                    if(regExp1.test(jumpWords[i]))
+                    if(regExp1.test(levelWords[i]))
                     {
                         ctx.fillStyle = "#FEA301"; // yellow
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 75);
 						ctx.fillStyle = 'black';
                     }
-					if(regExp2.test(jumpWords[i]))
+					if(levelWords[i] == correctWords[0])
+					{
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit = 2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
+					}
+					if(regExp2.test(levelWords[i]))
                     {
 						ctx.fillStyle = "#F2561A"; // red
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 10);
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 210, 394, 10);
 						ctx.fillStyle = 'black';
                     }
-					if(regExp3.test(jumpWords[i]))
+					if(regExp3.test(levelWords[i]))
                     {
 						ctx.strokeStyle = 'black';
 						ctx.miterLimit=2;
 						ctx.lineWidth = 6;
-						ctx.strokeText(jumpWords[i], coordX, (i + 1)*100 + 200);
+						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
 						ctx.fillStyle = "#00BC9F"; // blue
                     }
-					ctx.fillText(jumpWords[i], coordX, (i + 1)*100 + 200);
+					ctx.fillText(levelWords[i], coordX, (i + 1)*100 + 200);
 					ctx.fillStyle = 'black';
                 }
                 else if(i < 6)
                 {
                     coordX = 675;
-                    if(regExp2.test(jumpWords[i]))
+					if(levelWords[i] == correctWords[1])
+					{
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
+					}
+                    if(regExp2.test(levelWords[i]))
                     {
                         ctx.fillStyle = "#F2561A"; // red
 						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 145, 394, 10);
 						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 210, 394, 10);
 						ctx.fillStyle = 'black';
                     }
-					if(regExp3.test(jumpWords[i]))
+					if(regExp3.test(levelWords[i]))
                     {
 						ctx.strokeStyle = 'black';
 						ctx.miterLimit=2;
 						ctx.lineWidth = 6;
-						ctx.strokeText(jumpWords[i], coordX, (i - 3 + 1)*100 + 200);
+						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
 						ctx.fillStyle = "#00BC9F"; // blue
                     }
-                    ctx.fillText(jumpWords[i], coordX, (i - 3)*100 + 300);
+                    ctx.fillText(levelWords[i], coordX, (i - 3)*100 + 300);
                     ctx.fillStyle = 'black';
                 }
                 else if(i < 9)
                 {
                     coordX = 1140;
-                    if(regExp3.test(jumpWords[i]))
+					if(levelWords[i] == correctWords[2])
+					{
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit= 2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
+					}
+                    if(regExp3.test(levelWords[i]))
                     {
 						ctx.strokeStyle = 'black';
-						ctx.miterLimit=2;
+						ctx.miterLimit= 2;
 						ctx.lineWidth = 6;
-						ctx.strokeText(jumpWords[i], coordX, (i - 6)*100 + 300);
+						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
 						ctx.fillStyle = "#00BC9F"; // blue
                     }
-                    ctx.fillText(jumpWords[i], coordX, (i - 6)*100 + 300);
+                    ctx.fillText(levelWords[i], coordX, (i - 6)*100 + 300);
                     ctx.fillStyle = 'black';
                 }
             }
@@ -1855,10 +1879,10 @@ if(gameOver==false)
         }
     }
 
-    if(!regExp1.test(jumpWords[0]) && !regExp1.test(jumpWords[1]) && regExp1.test(jumpWords[2]) 
-    && !regExp2.test(jumpWords[0])&& !regExp2.test(jumpWords[1]) && regExp2.test(jumpWords[2]) && regExp2.test(jumpWords[3]) && !regExp2.test(jumpWords[4]) && !regExp2.test(jumpWords[5]) 
-    && !regExp3.test(jumpWords[0])&& !regExp3.test(jumpWords[1]) && regExp3.test(jumpWords[2]) && regExp3.test(jumpWords[3]) 
-    && !regExp3.test(jumpWords[4]) && !regExp3.test(jumpWords[5]) && !regExp3.test(jumpWords[6]) && regExp3.test(jumpWords[7]) && !regExp3.test(jumpWords[8]))
+    if(!regExp1.test(levelWords[0]) && !regExp1.test(levelWords[1]) && regExp1.test(levelWords[2]) 
+    && !regExp2.test(levelWords[0])&& !regExp2.test(levelWords[1]) && regExp2.test(levelWords[2]) && regExp2.test(levelWords[3]) && !regExp2.test(levelWords[4]) && !regExp2.test(levelWords[5]) 
+    && !regExp3.test(levelWords[0])&& !regExp3.test(levelWords[1]) && regExp3.test(levelWords[2]) && regExp3.test(levelWords[3]) 
+    && !regExp3.test(levelWords[4]) && !regExp3.test(levelWords[5]) && !regExp3.test(levelWords[6]) && regExp3.test(levelWords[7]) && !regExp3.test(levelWords[8]))
     {
         jumpable =true;
     }
