@@ -22,6 +22,9 @@ var levelAt = 0;
 
 var levelWords = new Array(9);
 
+var flashCounter = 0;
+var closeWindow = false;
+
 levelWords[0] = "CONE";
 levelWords[1] = "BOO";
 levelWords[2] = "HOP";
@@ -1651,7 +1654,11 @@ if(gameOver==false)
         attackBox.posY = playerObj.posY;
     }
     
-    if(hitTest(playerObj,miniGame))
+    if(!hitTest(playerObj, miniGame))
+	{
+		closeWindow = false;
+	}
+    if(hitTest(playerObj,miniGame) && closeWindow == false)
     {
         if(currentLvl==1)
         {
@@ -1664,7 +1671,54 @@ if(gameOver==false)
 			
 			ctx.drawImage(regScreen,0,0);
             
-			
+			if(textBoxArray[0].canWrite)
+			{
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpOne + "|", textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+			}
+			if(textBoxArray[1].canWrite)
+			{
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpTwo + "|", textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+			}
+			if(textBoxArray[2].canWrite)
+			{
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpThree + "|", textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+		}
 			
             ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
             ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
@@ -2378,6 +2432,10 @@ if(textOpen)
                     sheepPoints--;
                 }
             }
+            if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
+	    {
+		    closeWindow = true;
+	    }
         }
     }
 }
