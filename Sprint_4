@@ -392,7 +392,7 @@ var attackBox = Object.create(hitBox);
 
 var cougar = Object.create(cougarObj);
 
-var signs = new Array(9);
+var signs = new Array(7);
 for(var i =0; i<signs.length; i++)
 {
 signs[i] = Object.create(signObj);
@@ -418,7 +418,7 @@ lg_obj[i]=Object.create(largeObj);
 }
 
 
-var sheep = new Array (6);
+var sheep = new Array (10);
 for (var i=0; i<sheep.length; i++)
 {
 sheep[i]=Object.create(sheepObj);
@@ -657,7 +657,7 @@ sign.src = "https://cloud.githubusercontent.com/assets/8864180/5041650/9957a1ee-
 smBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041651/995b5e74-6b8c-11e4-82b2-04469c5f78a3.png";
 medBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041648/9951b5f4-6b8c-11e4-80c0-edfef849f7e6.png";
 lgBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041649/9956489e-6b8c-11e4-9888-9308c77c6744.png";
-moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048074/9b779624-6be0-11e4-8d71-dc58e708ed0c.png";
+moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5136531/321f83b2-70ef-11e4-9b06-37b4a7cd52b9.png";
 jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048073/9b747eda-6be0-11e4-90c4-a691835d6cbb.png";
 crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048076/9b795180-6be0-11e4-9ded-4b3400e4e3ca.png";
 atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048071/9b73d4f8-6be0-11e4-8057-e4904aa96f88.png";
@@ -841,6 +841,24 @@ sheep[5].posX =5700;
 sheep[5].posY =640;
 sheep[5].saved = false;
 
+
+
+sheep[6].posX =1750;
+sheep[6].posY =640;
+sheep[6].saved = false;
+
+sheep[7].posX =2625;
+sheep[7].posY =640;
+sheep[7].saved = false;
+
+sheep[8].posX =3500;
+sheep[8].posY =640;
+sheep[8].saved = false;
+
+sheep[9].posX =4850;
+sheep[9].posY =640;
+sheep[9].saved = false;
+
 //sm_obj[1].posX =2400;
 //sm_obj[1].posY =637;
 breakables[0].posX =1600;
@@ -860,19 +878,19 @@ signs[2].posX = 1400;
 signs[2].posY = 623;
 signs[3].posX = 2400;
 signs[3].posY = 623;
-signs[4].posX = 3800;
+//signs[4].posX = 3800;
+//signs[4].posY = 623;
+//signs[5].posX = 4300;
+//signs[5].posY = 623;
+signs[4].posX = 4750;
 signs[4].posY = 623;
-signs[5].posX = 4300;
-signs[5].posY = 623;
-signs[6].posX = 4750;
+signs[5].posX = 5100;
+signs[5].posY = 500;
+signs[6].posX = 5800;
 signs[6].posY = 623;
-signs[7].posX = 5375;
-signs[7].posY = 500;
-signs[8].posX = 5800;
-signs[8].posY = 623;
 
 /*sm_obj[2].posX =3900 ;
-sm_obj[2].posY =557 ;
+sm_obj[2].posY =557 ; 
 sm_obj[3].posX =3900 ;
 sm_obj[3].posY =557 ;*/
 /*
@@ -941,8 +959,8 @@ lastLevel = true;
 playerObj.posX = 200;
 playerObj.posY = 600;
 
-signs[9].posX = 100;
-signs[9].posY = 623;
+//signs[9].posX = 100;
+//signs[9].posY = 623;
 
 aBranch[0].posX = 150;
 aBranch[0].posY = 580;
@@ -1730,7 +1748,7 @@ if(gameOver==false)
                     if(regExp3.test(levelWords[i]))
                     {
 						ctx.strokeStyle = 'black';
-						ctx.miterLimit= 2;
+						ctx.miterLimit=2;
 						ctx.lineWidth = 6;
 						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
 						ctx.fillStyle = "#00BC9F"; // blue
@@ -1743,7 +1761,7 @@ if(gameOver==false)
             //ctx.drawImage(submitImg,submitButtonArray[0].posX, submitButtonArray[0].posY);
            // ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
            // ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
-            ctx.fillText(sheepPoints+"/6",210,100,50);
+            ctx.fillText(sheepPoints,210,100,50);
             //ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 98, 54);
            // ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 98, 54);
            // ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 98, 54);
@@ -1847,7 +1865,17 @@ if(gameOver==false)
 			}
 			this.onmouseup = function()
 			{
-				counter++;
+				//counter++;
+			}
+
+			document.onkeyup = function(e)
+			{
+   				key[e.keyCode] = true;
+            	if(key[32]) // spacebar
+           		{
+					counter++;
+				}
+				
 			}
 
 			
@@ -1928,7 +1956,7 @@ if(gameOver==false)
                     ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
                 else if(i==3)
                     ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==4)
+               /* else if(i==4)
                 {
                     ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
                     ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
@@ -1937,12 +1965,12 @@ if(gameOver==false)
                 {
                     ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
                     ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
-                }
-                else if(i==6)
+                }*/
+                else if(i==4)
                     ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==7)
+                else if(i==5)
                     ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==8)
+                else if(i==6)
                     ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);
 
                     
@@ -1956,8 +1984,8 @@ if(gameOver==false)
         ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
         ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
         
-        ctx.drawImage(sign,signs[9].posX,signs[9].posY);
-        ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
+        //ctx.drawImage(sign,signs[9].posX,signs[9].posY);
+       // ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
 
     }
     
@@ -1965,7 +1993,7 @@ if(gameOver==false)
     ctx.drawImage(sheepIcon,camera.x,0);
     ctx.fillStyle = 'black';
     ctx.font = "50px Arial";
-    ctx.fillText(sheepSaved+"/6",camera.x+50,50,50);
+    ctx.fillText(sheepPoints,camera.x+50,50,50);
     
     if(playerObj.state == 0){ //right
          if(isJump){
