@@ -2166,7 +2166,7 @@ if(gameOver==false)
                     ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
                 }
                 else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_duck_sprite, 141, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+                    ctx.drawImage(llama_duck_sprite, 141, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
                 }
                 else if (countR >= 10 && countR<15){
                     ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
@@ -2175,7 +2175,7 @@ if(gameOver==false)
                     ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
                 }
                 else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_duck_sprite, 564, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+                    ctx.drawImage(llama_duck_sprite, 564, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
                 }
                 else if (countR >= 25 && countR<=30){
                     ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
