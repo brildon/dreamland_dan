@@ -19,12 +19,13 @@ document.getElementById('music').play();
 
 var sheepPoints = 0;	
 var levelAt = 0;
-
+var tempX = 0;
+var tempY = 0;
 var levelWords = new Array(9);
 
 var flashCounter = 0;
 var closeWindow = false;
-
+var mousePos = {x:0, y:0}
 levelWords[0] = "CONE";
 levelWords[1] = "BOO";
 levelWords[2] = "HOP";
@@ -64,7 +65,7 @@ var jumpable = false;
 var crouchable = true;
 var attackable = true;
 var counter = 1;
-
+var helpActive = false;
 var regExpOne = "";
 var regExpTwo = "";
 var regExpThree = "";
@@ -218,7 +219,7 @@ wMask: 75,
 jumpStrength: 18,
 jumpDecay: 0.5,
 fallStrengh: 0,
-speed: 5,
+speed: 35,
 state: 0,
 
 centerX: function (){
@@ -604,28 +605,45 @@ var expInstr22 = new Image();
 var expInstr23 = new Image();
 var expInstr24 = new Image();
 
+var carrotHelp = new Image();
+var carrotBracketHelp = new Image();
+var helpHover = new Image();
+var helpScreen = new Image();
+var lineHelp = new Image();
+var moneyHelp = new Image();
+var questionHelp = new Image();
+var submitHover = new Image();
 
-expInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5101605/742ddd7c-6f81-11e4-82d5-9c8477a9b733.png";
-expInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5101456/9bd0065a-6f7e-11e4-89e4-d033424b55dc.png";
-expInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5101457/9bd451a6-6f7e-11e4-9d13-e4e961406c25.png";
-expInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5101461/9bd9bf56-6f7e-11e4-8039-22fab23df9ac.png";
+carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
+carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143412/91bfe4c2-7155-11e4-81dc-6de2dc261be0.png";
+helpHover.src = "https://cloud.githubusercontent.com/assets/8864180/5143414/91c43fc2-7155-11e4-894a-84590dc4a31a.png";
+helpScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5143413/91c32632-7155-11e4-94dc-3e33fbca0d4f.png";
+lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c324-7155-11e4-879a-7536fe03767d.png";
+moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
+questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
+submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
+
+expInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5143296/220a5d2a-7154-11e4-837c-ef4f6bec3107.png";
+expInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5143297/2215129c-7154-11e4-9997-7720a0ee1349.png";
+expInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5143298/2215cafc-7154-11e4-9a6c-4f629f436acd.png";
+expInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5143299/222157f0-7154-11e4-8ffd-13ba8c1f1921.png";
 expInstr5.src = "https://cloud.githubusercontent.com/assets/8864180/5101458/9bd56d20-6f7e-11e4-8a87-cc6feb5b30f0.png";
 expInstr6.src = "https://cloud.githubusercontent.com/assets/8864180/5101462/9bdb0bfe-6f7e-11e4-995f-a9b664adfbec.png";
-expInstr7.src = "https://cloud.githubusercontent.com/assets/8864180/5101459/9bd6484e-6f7e-11e4-8949-019fdfb90c32.png";
-expInstr8.src = "https://cloud.githubusercontent.com/assets/8864180/5101460/9bd8e9f0-6f7e-11e4-9e72-6089facd55ec.png";
-expInstr9.src = "https://cloud.githubusercontent.com/assets/8864180/5101464/9be182b8-6f7e-11e4-891b-bc3631c98477.png";
-expInstr10.src = "https://cloud.githubusercontent.com/assets/8864180/5101463/9bdfbd34-6f7e-11e4-9a38-28a011547f91.png";
+expInstr7.src = "https://cloud.githubusercontent.com/assets/8864180/5143307/23030236-7154-11e4-84d0-bcd65e6f4f01.png";
+expInstr8.src = "https://cloud.githubusercontent.com/assets/8864180/5143300/226c0a34-7154-11e4-921d-0d7606329407.png";
+expInstr9.src = "https://cloud.githubusercontent.com/assets/8864180/5143301/227834f8-7154-11e4-80ca-c344a63e336a.png";
+expInstr10.src = "https://cloud.githubusercontent.com/assets/8864180/5143302/22c189e6-7154-11e4-88e5-ec00483e0a63.png";
 expInstr11.src = "https://cloud.githubusercontent.com/assets/8864180/5101838/5196e1be-6f86-11e4-8c0c-2254e24e2bbe.png";
-expInstr12.src = "https://cloud.githubusercontent.com/assets/8864180/5101841/51991650-6f86-11e4-9bf4-9673b8b150fd.png";
+expInstr12.src = "https://cloud.githubusercontent.com/assets/8864180/5143303/22d204f6-7154-11e4-96ed-9962d61893cb.png";
 expInstr13.src = "https://cloud.githubusercontent.com/assets/8864180/5101839/519840fe-6f86-11e4-854f-ccd6ea9a8ac3.png";
 expInstr14.src = "https://cloud.githubusercontent.com/assets/8864180/5101837/519535bc-6f86-11e4-939d-b492fc1a4f95.png";
-expInstr15.src = "https://cloud.githubusercontent.com/assets/8864180/5101836/51952f22-6f86-11e4-8490-e68ac3be2759.png";
+expInstr15.src = "https://cloud.githubusercontent.com/assets/8864180/5143304/22da5156-7154-11e4-9171-f2aa858947ea.png";
 expInstr16.src = "https://cloud.githubusercontent.com/assets/8864180/5101840/519c3a7e-6f86-11e4-89f7-45ac9070d783.png";
 expInstr17.src = "https://cloud.githubusercontent.com/assets/8864180/5101843/51a35610-6f86-11e4-8b45-8635b1f6da8e.png";
-expInstr18.src = "https://cloud.githubusercontent.com/assets/8864180/5101842/51a3023c-6f86-11e4-89e1-ab66d41c6c0b.png";
-expInstr19.src = "https://cloud.githubusercontent.com/assets/8864180/5101844/51a3823e-6f86-11e4-81ba-874b8e13f53e.png";
-expInstr20.src = "https://cloud.githubusercontent.com/assets/8864180/5101845/51a513a6-6f86-11e4-8bf3-2a32571111c1.png";
-expInstr21.src = "https://cloud.githubusercontent.com/assets/8864180/5101846/51a9c748-6f86-11e4-9cf4-3f43cb630ac9.png";
+expInstr18.src = "https://cloud.githubusercontent.com/assets/8864180/5143305/22eab0d2-7154-11e4-9bf8-5b1c9f9fc385.png";
+expInstr19.src = "https://cloud.githubusercontent.com/assets/8864180/5143306/22f93b70-7154-11e4-9665-0870ddece88e.png";
+expInstr20.src = "https://cloud.githubusercontent.com/assets/8864180/5143308/230c39fa-7154-11e4-8fda-026cff9c308c.png";
+expInstr21.src = "https://cloud.githubusercontent.com/assets/8864180/5143309/23175a9c-7154-11e4-84cc-3eac984cc4e6.png";
 expInstr22.src = "https://cloud.githubusercontent.com/assets/8864180/5101847/51aaabea-6f86-11e4-8c8f-7fae059fbb5f.png";
 expInstr23.src = "https://cloud.githubusercontent.com/assets/8864180/5101848/51afb4b4-6f86-11e4-849a-9a1b1a92db66.png";
 expInstr24.src = "https://cloud.githubusercontent.com/assets/8864180/5101849/51b1185e-6f86-11e4-8784-3b5122a4e83a.png";
@@ -1110,7 +1128,7 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
-if(gameOver==false)
+	if(gameOver==false)
     {
     
     collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
@@ -1121,6 +1139,9 @@ if(gameOver==false)
         collisionObj.x = playerObj.posX+53;	
     }
     
+    //grrr
+	//console.log(tempX);
+	
     //SpaceBar
 		if(key[32])
 		{
@@ -1659,7 +1680,7 @@ if(gameOver==false)
 		closeWindow = false;
 	}
     if(hitTest(playerObj,miniGame) && closeWindow == false)
-    {
+    {		
         if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
@@ -1922,17 +1943,88 @@ if(gameOver==false)
 				//counter++;
 			}
 
+
+			document.captureEvents(Event.MOUSEMOVE);
+			document.onmousemove = getMouseXY;
+
+			function getMouseXY(e) 
+			{
+				tempX = e.pageX
+				tempY = e.pageY
+				if (tempX < 0){tempX = 0}
+				if (tempY < 0){tempY = 0}  
+				//document.Show.MouseX.value = tempX
+				//document.Show.MouseY.value = tempY
+				/*console.log(tempX);
+				console.log(tempY);
+				if(tempX >800)
+				{
+					ctx.drawImage(expInstr24,0,0);	
+				}
+				*/
+				return true;
+			}  
+			console.log("x: "+tempX);
+			console.log("y: "+tempY);
+			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(questionHelp,0,0);	
+			}
+			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(lineHelp,0,0);	
+			}
+			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(carrotHelp,0,0);	
+			}
+			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(carrotBracketHelp,0,0);	
+			}
+			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(moneyHelp,0,0);	
+			}
+			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100)
+			{
+				ctx.drawImage(helpHover,0,0);	
+			}
+			if(tempX>240 && tempX<435 && tempY>795 && tempY<835)
+			{
+				ctx.drawImage(submitHover,200,770);	
+			}
+			if(tempX>690 && tempX<890 && tempY>795 && tempY<835)
+			{
+				ctx.drawImage(submitHover,658,770);	
+			}
+			if(tempX>1160 && tempX<1360 && tempY>795 && tempY<835)
+			{
+				ctx.drawImage(submitHover,1112,770);	
+			}
+
+			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100)
+			{
+				helpActive = true;	
+			}
+			if(helpActive)
+			{
+				console.log("test 1: " +helpActive);
+				ctx.drawImage(helpScreen,0,0);	
+			}
 			document.onkeyup = function(e)
 			{
    				key[e.keyCode] = true;
             	if(key[32]) // spacebar
            		{
 					counter++;
+					helpActive = false;
 				}
 				
 			}
-
-			
+			mouse.x = 0;
+			mouse.y = 0;
+			console.log("test 2: " +helpActive);
         }
     }
     else
@@ -2932,6 +3024,9 @@ function writeText()
 		}
 	}
 }
+
+
+
 </script>
 </body>
 </html>
