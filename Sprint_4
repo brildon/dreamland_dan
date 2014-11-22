@@ -2426,19 +2426,19 @@ function writeText()
 			if(mouse.x >= submitButtonArray[0].posX && mouse.x <= submitButtonArray[0].posX + 254 && mouse.y >= submitButtonArray[0].posY && mouse.y <= submitButtonArray[0].posY + 70)
 			{
 				regExp1 = new RegExp(regExpOne);
-				console.log(regExp1);
 				submitButtonArray[0].clicked = true;
 			}
 			if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 254 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 70 && submitButtonArray[0].clicked)
 			{
+				regExp1 = new RegExp(regExpOne);
 				regExp2 = new RegExp(regExpTwo);
-				console.log(regExp2);
 				submitButtonArray[1].clicked = true;
 			}
 			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 254 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 70 && submitButtonArray[1].clicked)
 			{
+				regExp1 = new RegExp(regExpOne);
+				regExp2 = new RegExp(regExpTwo);
 				regExp3 = new RegExp(regExpThree);
-				console.log(regExp3);
 				submitButtonArray[2].clicked = true;
 			}
 			if(sheepPoints > 0)
