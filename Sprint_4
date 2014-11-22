@@ -44,6 +44,15 @@ correctWords[0] = levelWords[2];
 correctWords[1] = levelWords[3];
 correctWords[2] = levelWords[7];
 
+var incorrectWords = new Array(6);
+
+incorrectWords[0] = levelWords[0];
+incorrectWords[1] = levelWords[1];
+incorrectWords[2] = levelWords[4];
+incorrectWords[3] = levelWords[5];
+incorrectWords[4] = levelWords[6];
+incorrectWords[5] = levelWords[8];
+
 var menuCheck = true;
 var buildCheck = false;
 var creditsScreen = false;
@@ -532,14 +541,12 @@ mainScreen.addEventListener("load", loadHandler, false);
 mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5153155/95f78944-71de-11e4-89ef-be0679abb6a1.png";
 
 var credits = new Image();
-//credits.addEventListener("loard", loadHandler, false);
 credits.src = "https://cloud.githubusercontent.com/assets/8864180/4948999/ec74fcfe-6610-11e4-8b38-ed50a396dea8.png";
 
 var lvl1_background = new Image();	
 lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/4923079/a12690e0-6517-11e4-9492-2fe66469f118.png";
 
 var regExp = new Image();
-//regExp.addEventListener("load", loadHandler, false);
 regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
 
 var llama_left = new Image();	
@@ -718,51 +725,42 @@ function menu(e)
     	menuCheck=false;
 		mainCheck=false;
 		cancelRequestAnimFrame(loadHandler);
-    	//loadHandler();
 	}
 	if(1046<mouse.x && mouse.x<1331 && 686<mouse.y && mouse.y<749 && optionsScreen == false) //enter credits screen
 	{
 		creditsScreen = true;
     	buildCheck=false;
-		mainCheck=false;
-		//loadHandler();	
+		mainCheck=false;	
 	}
 	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true) //out credits screen
 	{
 		creditsScreen = false;
 		menuFlag = 1;
 		mainCheck=true;
-    	//loadHandler();
 	}
 	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true) //out options screen
 	{
 		optionsScreen = false;
 		mainCheck=true;
-    	//loadHandler();
 	}
 	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
 	{
 		mainCheck=false;
-		//loadHandler();
 	}
 	if(753<mouse.x && mouse.x<1054 && mouse.y>537 && 614 > mouse.y && creditsScreen == false)  //enter options screen
 	{
 		optionsScreen = true;
     	buildCheck=false;
 		mainCheck=false;
-    	//loadHandler();
 	}
 	if(optionsScreen && mouse.x>795 && mouse.x<925 && mouse.y >385 && mouse.y<484) //deactivate sound
 	{
     	soundOn = false;
-    	//loadHandler();
 	}
 	if(optionsScreen && mouse.x>575 && mouse.x<705 && mouse.y >385 && mouse.y<484) //activate sound
 	{
 		soundOn = true;
-    	//loadHandler();
 	}
-
 }
 
 window.cancelRequestAnimFrame = ( function() {
@@ -818,10 +816,9 @@ function renderMenu (){
 				
 				return true;
 			} 
-			//console.log(" main menu");
-			if ( temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484){
-		 			ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
-					//console.log("start");
+			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484)
+			{
+		 		ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
 			}
 			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
 				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
@@ -888,7 +885,6 @@ function intialize()
 	lg_obj[1].posX=5375;
 	lg_obj[1].posY=577;
 	
-		
 	sheep[0].posX =600;
 	sheep[0].posY =640;
 	sheep[0].saved = false;
@@ -912,8 +908,6 @@ function intialize()
 	sheep[5].posX =5700;
 	sheep[5].posY =640;
 	sheep[5].saved = false;
-	
-	
 	
 	sheep[6].posX =1750;
 	sheep[6].posY =640;
@@ -1127,10 +1121,7 @@ function setPositionLvl2() {
 function gameScreen()
 {
 	update();
-	
 	side_scroller();
-	
-	//render();
 }
 
 function side_scroller(){
@@ -1168,8 +1159,6 @@ function side_scroller(){
 	camera.vx = camera.x - camera.previousX;
 
 	distantBackground.x += camera.vx / 4;
-	//foregroundBackground.x += camera.vx / 2;
-	//foreground2Background.x += camera.vx / 2;
 
 	camera.previousX = camera.x;
 }
@@ -1190,9 +1179,6 @@ function update()
         collisionObj.x = playerObj.posX+53;	
     }
     
-    //grrr
-	//console.log(tempX);
-	
     //SpaceBar
 		if(key[32])
 		{
@@ -1307,11 +1293,6 @@ function update()
 			else if (signs[i].timesRead > 0){
 				signs[i].active = false;	
 			}
-			else
-			{
-					//signs[i].active = false;
-			}
-				
 		}
     
     collision=false;
@@ -1744,7 +1725,16 @@ function update()
             //ctx.clearRect(0,0,1600,900);
 			
 			ctx.drawImage(regScreen,0,0);
-            
+      
+			/*TODO: finish ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 100, textBoxArray[0].yCoord);
+			
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 100, textBoxArray[1].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 150, textBoxArray[1].yCoord);
+			
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 100, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 150, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 200, textBoxArray[2].yCoord);*/
+			
 			if(textBoxArray[0].canWrite)
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
@@ -1812,10 +1802,7 @@ function update()
                     }
 					if(levelWords[i] == correctWords[0])
 					{
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit = 2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
+//TODO:Finish or un-comment						ctx.drawImage(correctWordStar, coordX, (i + 1)*100 + 200);
 					}
 					if(regExp2.test(levelWords[i]))
                     {
@@ -1840,10 +1827,7 @@ function update()
                     coordX = 675;
 					if(levelWords[i] == correctWords[1])
 					{
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit=2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
+//TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 3 + 1)*100 + 200);
 					}
                     if(regExp2.test(levelWords[i]))
                     {
@@ -1868,10 +1852,7 @@ function update()
                     coordX = 1140;
 					if(levelWords[i] == correctWords[2])
 					{
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit= 2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
+//TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 6)*100 + 300);
 					}
                     if(regExp3.test(levelWords[i]))
                     {
@@ -1885,16 +1866,33 @@ function update()
                     ctx.fillStyle = 'black';
                 }
             }
+			/*TODO : finish if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 100, textBoxArray[0].yCoord);
+			}
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 100, textBoxArray[1].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 100, textBoxArray[2].yCoord);
+			}
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+			{
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 150, textBoxArray[1].yCoord);
+			}
+			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
+			{
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 150, textBoxArray[2].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
+			{
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 200, textBoxArray[2].yCoord);
+			}*/
             
-            //ctx.drawImage(submitImg,submitButtonArray[0].posX, submitButtonArray[0].posY);
-           // ctx.drawImage(submitImg,submitButtonArray[1].posX, submitButtonArray[1].posY, 50, 50);
-           // ctx.drawImage(submitImg,submitButtonArray[2].posX, submitButtonArray[2].posY, 50, 50);
-            ctx.fillText(sheepPoints,210,100,50);
-            //ctx.fillRect(characterBoxArray[0].posX, characterBoxArray[0].posY, 98, 54);
-           // ctx.fillRect(characterBoxArray[1].posX, characterBoxArray[1].posY, 98, 54);
-           // ctx.fillRect(characterBoxArray[2].posX, characterBoxArray[2].posY, 98, 54);
-           // ctx.fillRect(characterBoxArray[3].posX, characterBoxArray[3].posY, 98, 54);
-           // ctx.fillRect(characterBoxArray[4].posX, characterBoxArray[4].posY, 98, 54);
+			ctx.fillText(sheepPoints,210,100,50);
+			
 		   	if(counter==1)
 			{
 		   		ctx.drawImage(expInstr1,0,0); //help me
@@ -1991,7 +1989,7 @@ function update()
 			{
 				ctx.drawImage(expInstr24,0,0);
 			}
-
+			
 			document.captureEvents(Event.MOUSEMOVE);
 			document.onmousemove = getMouseXY;
 
@@ -2001,15 +1999,7 @@ function update()
 				tempY = e.pageY
 				if (tempX < 0){tempX = 0}
 				if (tempY < 0){tempY = 0}  
-				//document.Show.MouseX.value = tempX
-				//document.Show.MouseY.value = tempY
-				/*console.log(tempX);
-				console.log(tempY);
-				if(tempX >800)
-				{
-					ctx.drawImage(expInstr24,0,0);	
-				}
-				*/
+				
 				return true;
 			}  
 			console.log("x: "+tempX);
@@ -2101,18 +2091,19 @@ function update()
         }
     }
 
-    if(!regExp1.test(levelWords[0]) && !regExp1.test(levelWords[1]) && regExp1.test(levelWords[2]) 
-    && !regExp2.test(levelWords[0])&& !regExp2.test(levelWords[1]) && regExp2.test(levelWords[2]) && regExp2.test(levelWords[3]) && !regExp2.test(levelWords[4]) && !regExp2.test(levelWords[5]) 
-    && !regExp3.test(levelWords[0])&& !regExp3.test(levelWords[1]) && regExp3.test(levelWords[2]) && regExp3.test(levelWords[3]) 
-    && !regExp3.test(levelWords[4]) && !regExp3.test(levelWords[5]) && !regExp3.test(levelWords[6]) && regExp3.test(levelWords[7]) && !regExp3.test(levelWords[8]))
+    if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+    && !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) 
+    && !regExp3.test(incorrectWords[0])&& !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]) && regExp3.test(correctWords[1]) 
+    && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
         jumpable =true;
     }
 }
 }
 
-function hitTest(r1,r2){
-return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
+function hitTest(r1,r2)
+{
+	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
 }
 
 function render()
@@ -2160,16 +2151,6 @@ function render()
                     	ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==3)
                     	ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
-				   /* else if(i==4)
-					{
-						ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
-						ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
-					}
-					else if(i==5)
-					{
-						ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
-						ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
-					}*/
 					else if(i==4)
 						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
 					else if(i==5)
@@ -2179,18 +2160,13 @@ function render()
 				}
         	}
     	}
-    	else if (currentLvl === 2){
+    	else if (currentLvl === 2)
+		{
         	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
         	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
         	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
         	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
-        
-        	//ctx.drawImage(sign,signs[9].posX,signs[9].posY);
-       		// ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
 		}
-    
-	
-		//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
 		
     	ctx.drawImage(sheepIcon,camera.x,0);
     	ctx.fillStyle = 'black';
@@ -3071,8 +3047,6 @@ function writeText()
 		}
 	}
 }
-
-
 
 </script>
 </body>
