@@ -818,10 +818,10 @@ function renderMenu (){
 				
 				return true;
 			} 
-			console.log(" main menu");
+			//console.log(" main menu");
 			if ( temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484){
 		 			ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
-					console.log("start");
+					//console.log("start");
 			}
 			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
 				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
@@ -1640,8 +1640,9 @@ function update()
         {
             isDucked = true;	
             playerObj.height = 88;
+			attackBox.height = playerObj.height;
             playerObj.posY = playerObj.posY+50;
-            floorlvl = floorlvl+50;
+            //floorlvl = floorlvl+50;
         }
     }
     if(!isDucking)
@@ -1662,10 +1663,11 @@ function update()
             isDucked = false;
             if(isStanding == false)
             {
-                isStanding = true;
+				isStanding = true;
                 playerObj.height = 138;	
+				attackBox.height = playerObj.height;
                 playerObj.posY = playerObj.posY-50;
-                floorlvl = floorlvl-50;
+                //floorlvl = floorlvl-50;
             }
         //}
     }
@@ -2115,248 +2117,249 @@ return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() &
 
 function render()
 {
-if(gameOver==false)
-{
-    ctx.clearRect(0,0,1600,900);
+	if(gameOver==false)
+	{
+    	ctx.clearRect(0,0,1600,900);
     
-    ctx.save();
-    ctx.translate(-camera.x, -camera.y);
-    if (currentLvl === 2 && lvlFlag)
-        ctx.drawImage(cutscene,0,0,1600,900);
-    if (currentLvl === 2 && lvlFlag && lastLevel)
-        ctx.drawImage(endScene,0,0,1600,900);
+    	ctx.save();
+    	ctx.translate(-camera.x, -camera.y);
+    	if (currentLvl === 2 && lvlFlag)
+        	ctx.drawImage(cutscene,0,0,1600,900);
+    	if (currentLvl === 2 && lvlFlag && lastLevel)
+        	ctx.drawImage(endScene,0,0,1600,900);
     
-    if (currentLvl === 1){
-        ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+    	if (currentLvl === 1){
+        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+        	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
     
-        ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+        	ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
         
-	for(var i=0; i<sm_obj.length; i++)
-    {
-        ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
-    }
-    for(var i=0; i<lg_obj.length; i++)
-    {
-        ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-30);	
-    }
+			for(var i=0; i<sm_obj.length; i++)
+    		{
+        		ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+    		}
+			for(var i=0; i<lg_obj.length; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-30);	
+			}
     //work here
 		
-        for(var i =0; i<signs.length; i++)
-        {
-            ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+        	for(var i =0; i<signs.length; i++)
+        	{
+            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
             
-            if(signs[i].active)
-            {
-                if(i==0)
-                    ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==1)
-                    ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==2)
-                    ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==3)
-                    ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
-               /* else if(i==4)
-                {
-                    ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
-                    ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
-                }
-                else if(i==5)
-                {
-                    ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
-                    ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
-                }*/
-                else if(i==4)
-                    ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==5)
-                    ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
-                else if(i==6)
-                    ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);        
-            }
-        }
-    }
-    else if (currentLvl === 2){
-        ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+            	if(signs[i].active)
+            	{
+                	if(i==0)
+						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
+                	else if(i==1)
+						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
+                	else if(i==2)
+                    	ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
+                	else if(i==3)
+                    	ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
+				   /* else if(i==4)
+					{
+						ctx.drawImage(regInstr2,signs[i].posX+70,signs[i].posY-250);
+						ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250-265);
+					}
+					else if(i==5)
+					{
+						ctx.drawImage(regInstr4,signs[i].posX+70,signs[i].posY-250);
+						ctx.drawImage(regInstr3,signs[i].posX+70,signs[i].posY-250-265);
+					}*/
+					else if(i==4)
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==5)
+						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
+					else if(i==6)
+						ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);        
+				}
+        	}
+    	}
+    	else if (currentLvl === 2){
+        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
+        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
+        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
+        	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
         
-        //ctx.drawImage(sign,signs[9].posX,signs[9].posY);
-       // ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
-
-    }
+        	//ctx.drawImage(sign,signs[9].posX,signs[9].posY);
+       		// ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
+		}
     
-    ctx.drawImage(sheepIcon,camera.x,0);
-    ctx.fillStyle = 'black';
-    ctx.font = "50px Arial";
-    ctx.fillText(sheepPoints,camera.x+50,50,50);
+	
+		//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+		
+    	ctx.drawImage(sheepIcon,camera.x,0);
+    	ctx.fillStyle = 'black';
+    	ctx.font = "50px Arial";
+    	ctx.fillText(sheepPoints,camera.x+50,50,50);
     
-    if(playerObj.state == 0){ //right
-         if(isJump){
-            if (isDucking){
-                ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
-            } 
-            else{
-                if (playerDirec < 0){
-                    ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else{
-                    if (count >= 0 && count <20){
-                        ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-                    }
-                    else if (count>=20 && count <=40){
-                        ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                    }
-                }
-            }
-        }
-        else if(isMoveRight){
-            if (isDucking){
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_duck_sprite, 141, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_duck_sprite, 564, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
-            }
-            else{
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-            }
-        }
-        else{
-            if(isDucking){
-                ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
-            }
-            else{
-                ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
-            }
-        }
-    }
-    if(playerObj.state == 1){ //left
-        if(isJump){
-            if (isDucking){
-                ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);	
-            }
-            else{
-                if (playerDirec < 0){
-                    ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else{
-                    if (count >= 0 && count <20){
-                      ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
-                    }
-                    else if (count>=20 && count <=40){
-                      ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                    }
-                }
-            }
-        }
-        else if (isMoveLeft){
-            if (isDucking){
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_duck_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
-
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_duck_sprite, 423, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_duck_sprite, 564, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
-                }
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
-            }
-            else{
-                if (countR >= 0 && countR<5){
-                    ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 5 && countR<10){
-                    ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
-                }
-                else if (countR >= 10 && countR<15){
-                    ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 15 && countR<20){
-                    ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 20 && countR<25){
-                    ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }
-                else if (countR >= 25 && countR<=30){
-                    ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
-                }	
-            }
-        }
-        else
-            if(isDucking){
-                ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
-            }
-            else if (isAttack){
-                ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
-            }
-            else{
-                ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
-            }
-        }	
-    
-    for (var i=0; i<sheep.length;i++)
-    {
-        if(sheep[i].saved==false)
-        {
-            ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
-        }
-        else
-        {
-            ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
-        }
-    }
+    	if(playerObj.state == 0){ //right
+			if(isJump){
+            	if (isDucking){
+                	ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+            	} 
+            	else{
+                	if (playerDirec < 0){
+                    	ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+                	}
+                	else{
+                    	if (count >= 0 && count <20){
+                        	ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+                    	}
+                    	else if (count>=20 && count <=40){
+                        	ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+                    	}
+                	}
+            	}
+        	}
+			else if(isMoveRight){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+				}
+			}
+			else{
+				if(isDucking){
+					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
+				}
+			}
+		}
+		if(playerObj.state == 1){ //left
+			if(isJump){
+				if (isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);	
+				}
+				else{
+					if (playerDirec < 0){
+						ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else{
+						if (count >= 0 && count <20){
+						  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+						}
+						else if (count>=20 && count <=40){
+						  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+						}
+					}
+				}
+			}
+			else if (isMoveLeft){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}	
+				}
+			}
+			else
+				if(isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
+				}
+			}	
+			for (var i=0; i<sheep.length;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+				}
+    	}
         
     if(sheepSaved==6)
     {
