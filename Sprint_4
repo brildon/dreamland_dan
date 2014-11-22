@@ -1722,7 +1722,7 @@ function update()
     }
     else
     {
-        attackBox.posX = playerObj.posX-45;
+        attackBox.posX = playerObj.posX;
         attackBox.posY = playerObj.posY;
     }
     
@@ -2163,10 +2163,7 @@ if(gameOver==false)
                 else if(i==5)
                     ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
                 else if(i==6)
-                    ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);
-
-                    
-
+                    ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);        
             }
         }
     }
@@ -2180,7 +2177,6 @@ if(gameOver==false)
        // ctx.drawImage(finishInstr,signs[9].posX+70,signs[9].posY-250);
 
     }
-    
     
     ctx.drawImage(sheepIcon,camera.x,0);
     ctx.fillStyle = 'black';
