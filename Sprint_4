@@ -2134,6 +2134,16 @@ if(gameOver==false)
     
         ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
         
+	for(var i=0; i<sm_obj.length; i++)
+    {
+        ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+    }
+    for(var i=0; i<lg_obj.length; i++)
+    {
+        ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-30);	
+    }
+    //work here
+		
         for(var i =0; i<signs.length; i++)
         {
             ctx.drawImage(sign,signs[i].posX,signs[i].posY);
@@ -2364,15 +2374,7 @@ if(gameOver==false)
             ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
         }
     }
-    for(var i=0; i<sm_obj.length; i++)
-    {
-        ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY);	
-    }
-    for(var i=0; i<lg_obj.length; i++)
-    {
-        ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-20);	
-    }
-    
+
     
     count++;
     if (count ==40){
