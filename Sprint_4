@@ -864,273 +864,273 @@ function gameStart()
 }
 function intialize()
 {
-sheepPoints = 0;
-
-playerObj.posX = 100;
-playerObj.posY = 600;	
-
-miniGame.x = 4500
-miniGame.y = 637
-
-cougar.posX = 6100;
-cougar.posY = 667;
-
-lg_obj[0].posX=2600;
-lg_obj[0].posY=547;
-
-sm_obj[0].posX=3600;
-sm_obj[0].posY=547;
-
-sm_obj[2].posX=4950;
-sm_obj[2].posY=647;
-sm_obj[1].posX=5100;
-sm_obj[1].posY=577;
-lg_obj[1].posX=5375;
-lg_obj[1].posY=577;
-
-    
-sheep[0].posX =600;
-sheep[0].posY =640;
-sheep[0].saved = false;
-
-sheep[1].posX =1100 ;
-sheep[1].posY =640;
-sheep[1].saved = false;
-
-sheep[2].posX =2100 ;
-sheep[2].posY =640;
-sheep[2].saved = false;
-
-sheep[3].posX =3100;
-sheep[3].posY =640;
-sheep[3].saved = false;
-
-sheep[4].posX =4000;
-sheep[4].posY =640;
-sheep[4].saved = false;
-
-sheep[5].posX =5700;
-sheep[5].posY =640;
-sheep[5].saved = false;
-
-
-
-sheep[6].posX =1750;
-sheep[6].posY =640;
-sheep[6].saved = false;
-
-sheep[7].posX =2625;
-sheep[7].posY =640;
-sheep[7].saved = false;
-
-sheep[8].posX =3500;
-sheep[8].posY =640;
-sheep[8].saved = false;
-
-sheep[9].posX =4850;
-sheep[9].posY =640;
-sheep[9].saved = false;
-
-//sm_obj[1].posX =2400;
-//sm_obj[1].posY =637;
-breakables[0].posX =1600;
-breakables[0].posY =600;
-breakables[0].broken=false;
-
-breakables[1].posX =3600;
-breakables[1].posY =640;
-breakables[1].broken=false;
-
-signs[0].posX = 100;
-signs[0].posY = 623;
-signs[0].active = true;
-signs[1].posX = 850;
-signs[1].posY = 623;
-signs[2].posX = 1400;
-signs[2].posY = 623;
-signs[3].posX = 2400;
-signs[3].posY = 623;
-//signs[4].posX = 3800;
-//signs[4].posY = 623;
-//signs[5].posX = 4300;
-//signs[5].posY = 623;
-signs[4].posX = 4750;
-signs[4].posY = 623;
-signs[5].posX = 5100;
-signs[5].posY = 500;
-signs[6].posX = 5800;
-signs[6].posY = 623;
-
-/*sm_obj[2].posX =3900 ;
-sm_obj[2].posY =557 ; 
-sm_obj[3].posX =3900 ;
-sm_obj[3].posY =557 ;*/
-/*
-breakables[2].posX =1000;
-breakables[2].posY =487;
-breakables[2].broken=false;
-breakables[3].posX =1100;
-breakables[3].posY =487;
-breakables[3].broken=false;
-breakables[4].posX =1200;
-breakables[4].posY =487;
-breakables[4].broken=false;
-breakables[5].posX =1300;
-breakables[5].posY =420;
-breakables[5].broken=false;
-breakables[6].posX =1700;
-breakables[6].posY =537;
-breakables[6].broken=false;
-
-breakables[7].posX =2300;
-breakables[7].posY =637;
-breakables[7].broken=false;
-breakables[8].posX =2400;
-breakables[8].posY =637;
-breakables[8].broken=false;
-breakables[9].posX =2400;
-breakables[9].posY =537;
-breakables[9].broken=false;
-breakables[10].posX =2400;
-breakables[10].posY =310;
-breakables[10].broken=false;
-breakables[11].posX =2500;
-breakables[11].posY =310;
-breakables[11].broken=false;
-breakables[12].posX =2600;
-breakables[13].posX =2600;
-breakables[13].posY =637;
-breakables[13].broken=false;
-breakables[14].posX =2700;
-breakables[14].posY =637;
-breakables[14].broken=false;
-breakables[15].posX =2700;
-breakables[15].posY =537;
-breakables[15].broken=false;
-breakables[16].posX =2700;
-breakables[16].posY =310;
-breakables[16].broken=false;
-
-breakables[17].posX =5350;
-breakables[17].posY =637;
-breakables[17].broken=false;
-breakables[18].posX =5450;
-breakables[18].posY =537;
-breakables[18].broken=false;
-breakables[19].posX =5560;
-breakables[19].posY =637;
-breakables[19].broken=false;*/
+	sheepPoints = 0;
+	
+	playerObj.posX = 100;
+	playerObj.posY = 600;	
+	
+	miniGame.x = 4500
+	miniGame.y = 637
+	
+	cougar.posX = 6100;
+	cougar.posY = 667;
+	
+	lg_obj[0].posX=2600;
+	lg_obj[0].posY=547;
+	
+	sm_obj[0].posX=3600;
+	sm_obj[0].posY=547;
+	
+	sm_obj[2].posX=4950;
+	sm_obj[2].posY=647;
+	sm_obj[1].posX=5100;
+	sm_obj[1].posY=577;
+	lg_obj[1].posX=5375;
+	lg_obj[1].posY=577;
+	
+		
+	sheep[0].posX =600;
+	sheep[0].posY =640;
+	sheep[0].saved = false;
+	
+	sheep[1].posX =1100 ;
+	sheep[1].posY =640;
+	sheep[1].saved = false;
+	
+	sheep[2].posX =2100 ;
+	sheep[2].posY =640;
+	sheep[2].saved = false;
+	
+	sheep[3].posX =3100;
+	sheep[3].posY =640;
+	sheep[3].saved = false;
+	
+	sheep[4].posX =4000;
+	sheep[4].posY =640;
+	sheep[4].saved = false;
+	
+	sheep[5].posX =5700;
+	sheep[5].posY =640;
+	sheep[5].saved = false;
+	
+	
+	
+	sheep[6].posX =1750;
+	sheep[6].posY =640;
+	sheep[6].saved = false;
+	
+	sheep[7].posX =2625;
+	sheep[7].posY =640;
+	sheep[7].saved = false;
+	
+	sheep[8].posX =3500;
+	sheep[8].posY =640;
+	sheep[8].saved = false;
+	
+	sheep[9].posX =4850;
+	sheep[9].posY =640;
+	sheep[9].saved = false;
+	
+	//sm_obj[1].posX =2400;
+	//sm_obj[1].posY =637;
+	breakables[0].posX =1600;
+	breakables[0].posY =600;
+	breakables[0].broken=false;
+	
+	breakables[1].posX =3600;
+	breakables[1].posY =640;
+	breakables[1].broken=false;
+	
+	signs[0].posX = 100;
+	signs[0].posY = 623;
+	signs[0].active = true;
+	signs[1].posX = 850;
+	signs[1].posY = 623;
+	signs[2].posX = 1400;
+	signs[2].posY = 623;
+	signs[3].posX = 2400;
+	signs[3].posY = 623;
+	//signs[4].posX = 3800;
+	//signs[4].posY = 623;
+	//signs[5].posX = 4300;
+	//signs[5].posY = 623;
+	signs[4].posX = 4750;
+	signs[4].posY = 623;
+	signs[5].posX = 5100;
+	signs[5].posY = 500;
+	signs[6].posX = 5800;
+	signs[6].posY = 623;
+	
+	/*sm_obj[2].posX =3900 ;
+	sm_obj[2].posY =557 ; 
+	sm_obj[3].posX =3900 ;
+	sm_obj[3].posY =557 ;*/
+	/*
+	breakables[2].posX =1000;
+	breakables[2].posY =487;
+	breakables[2].broken=false;
+	breakables[3].posX =1100;
+	breakables[3].posY =487;
+	breakables[3].broken=false;
+	breakables[4].posX =1200;
+	breakables[4].posY =487;
+	breakables[4].broken=false;
+	breakables[5].posX =1300;
+	breakables[5].posY =420;
+	breakables[5].broken=false;
+	breakables[6].posX =1700;
+	breakables[6].posY =537;
+	breakables[6].broken=false;
+	
+	breakables[7].posX =2300;
+	breakables[7].posY =637;
+	breakables[7].broken=false;
+	breakables[8].posX =2400;
+	breakables[8].posY =637;
+	breakables[8].broken=false;
+	breakables[9].posX =2400;
+	breakables[9].posY =537;
+	breakables[9].broken=false;
+	breakables[10].posX =2400;
+	breakables[10].posY =310;
+	breakables[10].broken=false;
+	breakables[11].posX =2500;
+	breakables[11].posY =310;
+	breakables[11].broken=false;
+	breakables[12].posX =2600;
+	breakables[13].posX =2600;
+	breakables[13].posY =637;
+	breakables[13].broken=false;
+	breakables[14].posX =2700;
+	breakables[14].posY =637;
+	breakables[14].broken=false;
+	breakables[15].posX =2700;
+	breakables[15].posY =537;
+	breakables[15].broken=false;
+	breakables[16].posX =2700;
+	breakables[16].posY =310;
+	breakables[16].broken=false;
+	
+	breakables[17].posX =5350;
+	breakables[17].posY =637;
+	breakables[17].broken=false;
+	breakables[18].posX =5450;
+	breakables[18].posY =537;
+	breakables[18].broken=false;
+	breakables[19].posX =5560;
+	breakables[19].posY =637;
+	breakables[19].broken=false;*/
 
 }
 
 
 function setPositionLvl2() {
-lvlFlag = false;
-lastLevel = true;
-
-playerObj.posX = 200;
-playerObj.posY = 600;
-
-//signs[9].posX = 100;
-//signs[9].posY = 623;
-
-aBranch[0].posX = 150;
-aBranch[0].posY = 580;
-
-aBranch[1].posX = 300;
-aBranch[1].posY = 400;
-
-aBranch[2].posX = 2450;
-aBranch[2].posY = 580;
-
-aBranch[3].posX = 750;
-aBranch[3].posY = 737;
-aBranch[3].width = gameWorld.width;
-
-aBranch[4].posX = 150;
-aBranch[4].posY = 220;
-
-aBranch[5].posX = 500;
-aBranch[5].posY = 450;
-
-//cougar.posX = 200;
-//cougar.posY = 667;
-
-/*breakables[0].posX =100;
-breakables[0].posY =637;
-breakables[0].broken=false;
-breakables[1].posX =200;
-breakables[1].posY =537;
-breakables[1].broken=false;
-breakables[2].posX =300;
-breakables[2].posY =487;
-breakables[2].broken=false;
-breakables[3].posX =400;
-breakables[3].posY =487;
-breakables[3].broken=false;
-
-breakables[4].posX =500;
-breakables[4].posY =487;
-breakables[4].broken=false;
-breakables[5].posX =600;
-breakables[5].posY =420;
-breakables[5].broken=false;
-breakables[6].posX =700;
-breakables[6].posY =537;
-breakables[6].broken=false;
-
-breakables[7].posX =800;
-breakables[7].posY =637;
-breakables[7].broken=false;
-breakables[8].posX =900;
-breakables[8].posY =637;
-breakables[8].broken=false;
-breakables[9].posX =1000;
-breakables[9].posY =537;
-breakables[9].broken=false;
-breakables[10].posX =1100;
-breakables[10].posY =310;
-breakables[10].broken=false;
-breakables[11].posX =1200;
-breakables[11].posY =310;
-breakables[11].broken=false;*/
-
-sheep[0].posX =20;
-sheep[0].posY =1640;
-sheep[0].saved = false;
-
-sheep[1].posX =300 ;
-sheep[1].posY =2640;
-sheep[1].saved = false;
-
-sheep[2].posX =500 ;
-sheep[2].posY =3640;
-sheep[2].saved = false;
-
-sheep[3].posX =750;
-sheep[3].posY =4640;
-sheep[3].saved = false;
-
-sheep[4].posX =600;
-sheep[4].posY =5640;
-sheep[4].saved = false;
-
-sheep[5].posX =50;
-sheep[5].posY =4000;
-sheep[5].saved = false;
-
-miniGame.x = 0;
-miniGame.y = 0;
+	lvlFlag = false;
+	lastLevel = true;
+	
+	playerObj.posX = 200;
+	playerObj.posY = 600;
+	
+	//signs[9].posX = 100;
+	//signs[9].posY = 623;
+	
+	aBranch[0].posX = 150;
+	aBranch[0].posY = 580;
+	
+	aBranch[1].posX = 300;
+	aBranch[1].posY = 400;
+	
+	aBranch[2].posX = 2450;
+	aBranch[2].posY = 580;
+	
+	aBranch[3].posX = 750;
+	aBranch[3].posY = 737;
+	aBranch[3].width = gameWorld.width;
+	
+	aBranch[4].posX = 150;
+	aBranch[4].posY = 220;
+	
+	aBranch[5].posX = 500;
+	aBranch[5].posY = 450;
+	
+	//cougar.posX = 200;
+	//cougar.posY = 667;
+	
+	/*breakables[0].posX =100;
+	breakables[0].posY =637;
+	breakables[0].broken=false;
+	breakables[1].posX =200;
+	breakables[1].posY =537;
+	breakables[1].broken=false;
+	breakables[2].posX =300;
+	breakables[2].posY =487;
+	breakables[2].broken=false;
+	breakables[3].posX =400;
+	breakables[3].posY =487;
+	breakables[3].broken=false;
+	
+	breakables[4].posX =500;
+	breakables[4].posY =487;
+	breakables[4].broken=false;
+	breakables[5].posX =600;
+	breakables[5].posY =420;
+	breakables[5].broken=false;
+	breakables[6].posX =700;
+	breakables[6].posY =537;
+	breakables[6].broken=false;
+	
+	breakables[7].posX =800;
+	breakables[7].posY =637;
+	breakables[7].broken=false;
+	breakables[8].posX =900;
+	breakables[8].posY =637;
+	breakables[8].broken=false;
+	breakables[9].posX =1000;
+	breakables[9].posY =537;
+	breakables[9].broken=false;
+	breakables[10].posX =1100;
+	breakables[10].posY =310;
+	breakables[10].broken=false;
+	breakables[11].posX =1200;
+	breakables[11].posY =310;
+	breakables[11].broken=false;*/
+	
+	sheep[0].posX =20;
+	sheep[0].posY =1640;
+	sheep[0].saved = false;
+	
+	sheep[1].posX =300 ;
+	sheep[1].posY =2640;
+	sheep[1].saved = false;
+	
+	sheep[2].posX =500 ;
+	sheep[2].posY =3640;
+	sheep[2].saved = false;
+	
+	sheep[3].posX =750;
+	sheep[3].posY =4640;
+	sheep[3].saved = false;
+	
+	sheep[4].posX =600;
+	sheep[4].posY =5640;
+	sheep[4].saved = false;
+	
+	sheep[5].posX =50;
+	sheep[5].posY =4000;
+	sheep[5].saved = false;
+	
+	miniGame.x = 0;
+	miniGame.y = 0;
 
 }
 
 function gameScreen()
 {
-update();
-
-side_scroller();
-
-//render();
+	update();
+	
+	side_scroller();
+	
+	//render();
 }
 
 function side_scroller(){
@@ -1472,6 +1472,7 @@ function update()
     collision = false;
     if(isMoveLeft)
     {
+		var playerX = playerObj.posX;
         for(var i=0; i<breakables.length; i++)
         {
             if(hitTest(breakables[i],playerObj))
@@ -1545,14 +1546,14 @@ function update()
         }
         if(collision == true)
         {
-            playerObj.posX+= 20;	
+            playerObj.posX= playerX;	
         }
     }
     
     collision = false;
     if(isMoveRight)
     {
-        
+        var playerX = playerObj.posX;
         for(var i=0; i<breakables.length; i++)
         {
             if(hitTest(breakables[i],playerObj))
@@ -1628,7 +1629,7 @@ function update()
         }
         if(collision == true)
         {
-            playerObj.posX-= 20;	
+            playerObj.posX= playerX;	
         }
     }
     
@@ -1988,11 +1989,6 @@ function update()
 			{
 				ctx.drawImage(expInstr24,0,0);
 			}
-			this.onmouseup = function()
-			{
-				//counter++;
-			}
-
 
 			document.captureEvents(Event.MOUSEMOVE);
 			document.onmousemove = getMouseXY;
