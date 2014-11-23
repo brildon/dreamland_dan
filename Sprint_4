@@ -59,13 +59,11 @@ var creditsScreen = false;
 var optionsScreen = false;
 var collide = false;
 var falling = false;
-var fallingSheep = false;
 var isDucked = false;
 var isStanding = true;
 var sheepSaved = 0;
 var sheepTotal = 0;
 var collision = false;
-var collisionSheep = false;
 var movingRight = true;
 var regExpScreen = true;
 var soundOn = true;
@@ -1600,13 +1598,13 @@ function update()
 		
 			sheep[i].posX--;
 			
-			collisionSheep = false;
+			sheep[i].collision = false;
 			
 			for(var j=0; j<breakables.length; j++)
 			{
 				if(hitTest(breakables[j],sheep[i])){
-					//if(!breakables[i].broken){
-						collisionSheep=true;
+					//if(!breakables[j].broken){
+						sheep[i].collision=true;
 					//}
 				}
 			}
@@ -1614,37 +1612,37 @@ function update()
 			{
 				if(hitTest(sm_obj[j],sheep[i]))
 				{
-					collisionSheep=true;
+					sheep[i].collision=true;
 				}
 			}
 			for(var j=0; j<lg_obj.length; j++)
 			{
 				if(hitTest(lg_obj[j],sheep[i]))
 				{
-					collisionSheep=true;
+					sheep[i].collision=true;
 				}
 			}
 			
-			if(!collisionSheep){
+			if(!sheep[i].collision){
 				  floorLvlSheep=635;
 			  
 				  if (sheep[i].posY<floorLvlSheep)
 				  {
-					  if(!fallingSheep)
+					  if(!sheep[i].falling)
 					  {		
 						  sheep[i].jumpDecay = 0.5;
-						  fallingSheep = true;
+						  sheep[i].falling = true;
 					  }
 					  else
 					  {
 						  for(var j=0; j<breakables.length; j++)
 						  {
 							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[i].broken){
-									  collisionSheep=true;
+								  if(!breakables[j].broken){
+									  sheep[i].collision=true;
 									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
 										  sheep[i].posY = breakables[j].sheep[i].height+.5;
-										  fallingSheep = false;
+										  sheep[i].falling = false;
 									  }
 								  }
 							  }
@@ -1653,10 +1651,10 @@ function update()
 						  {
 							  if(hitTest(sm_obj[j],sheep[i]))
 							  {
-								  collisionSheep=true;
+								  sheep[i].collision=true;
 								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
 									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
-									  fallingSheep = false;
+									  sheep[i].falling = false;
 								  }
 							  }
 						  }
@@ -1664,21 +1662,24 @@ function update()
 						  {
 							  if(hitTest(lg_obj[j],sheep[i]))
 							  {
-								  collisionSheep=true;
+								  sheep[i].collision=true;
 								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
 									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
-									  fallingSheep = false;
+									  sheep[i].falling = false;
 							  }
 						  }
-						  if(!collisionSheep)
+						  if(!sheep[i].collision)
 						  {
 							  sheep[i].posY+= sheep[i].jumpDecay;
 							  sheep[i].jumpDecay += 1;
+							  if (sheep[i].posY > 640){
+							  		sheep[i].posY = 640;
+							  }
 						  }
 					  }
 				  }
 				  else{
-					  fallingSheep = false;
+					  sheep[i].falling = false;
 				  }
 			}
 
