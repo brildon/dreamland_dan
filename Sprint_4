@@ -359,6 +359,8 @@ var sheepObj = {
 	height: 100,
 	width : 80,
 	jumpDecay: 0.5,
+	collision: false,
+	falling: false,
 	saved: false,
 	
 	centerX: function (){
