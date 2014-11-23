@@ -1852,6 +1852,10 @@ function update()
 					if(levelWords[i] == correctWords[0])
 					{
 //TODO:Finish or un-comment						ctx.drawImage(correctWordStar, coordX, (i + 1)*100 + 200);
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
 					}
 					if(regExp2.test(levelWords[i]))
                     {
@@ -1877,6 +1881,11 @@ function update()
 					if(levelWords[i] == correctWords[1])
 					{
 //TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 3 + 1)*100 + 200);
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
+					
 					}
                     if(regExp2.test(levelWords[i]))
                     {
@@ -1902,6 +1911,10 @@ function update()
 					if(levelWords[i] == correctWords[2])
 					{
 //TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 6)*100 + 300);
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
 					}
                     if(regExp3.test(levelWords[i]))
                     {
