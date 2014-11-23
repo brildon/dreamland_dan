@@ -72,7 +72,7 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = false;
+var jumpable = true;
 var crouchable = true;
 var attackable = true;
 var counter = 1;
@@ -232,7 +232,7 @@ var playerObj = {
 	width: 140,
 	hMask: 10,
 	wMask: 75,
-	jumpStrength: 18,
+	jumpStrength: 38,
 	jumpDecay: 0.5,
 	fallStrengh: 0,
 	speed: 5,
@@ -418,14 +418,14 @@ for(var i =0; i<signs.length; i++)
 	signs[i] = Object.create(signObj);
 }
 
-var breakables = new Array (2);
+var breakables = new Array (10);
 
 for (var i =0; i<breakables.length; i++)
 {
 	breakables[i]=Object.create(breakObj);
 }
 
-var sm_obj = new Array (3);
+var sm_obj = new Array (5);
 for (var i =0; i<sm_obj.length; i++)
 {
 	sm_obj[i]=Object.create(smallObj);
@@ -632,6 +632,9 @@ var lineHelp = new Image();
 var moneyHelp = new Image();
 var questionHelp = new Image();
 var submitHover = new Image();
+
+var cloud = new Image();
+cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
 
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
 carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143412/91bfe4c2-7155-11e4-81dc-6de2dc261be0.png";
@@ -867,158 +870,127 @@ function intialize()
 {
 	sheepPoints = 0;
 	
-	playerObj.posX = 100;
+	playerObj.posX = 50;
 	playerObj.posY = 600;	
 	
-	miniGame.x = 4500
+	miniGame.x = 3400
 	miniGame.y = 637
 	
 	cougar.posX = 6100;
 	cougar.posY = 667;
-	
-	lg_obj[0].posX=2600;
-	lg_obj[0].posY=547;
-	
-	sm_obj[0].posX=3600;
-	sm_obj[0].posY=547;
-	
-	sm_obj[2].posX=4950;
-	sm_obj[2].posY=647;
-	sm_obj[1].posX=5100;
-	sm_obj[1].posY=577;
-	lg_obj[1].posX=5375;
-	lg_obj[1].posY=577;
-	
-	sheep[0].posX =600;
+		
+	sheep[0].posX =950;
 	sheep[0].posY =640;
 	sheep[0].saved = false;
 	
-	sheep[1].posX =1100 ;
+	sheep[1].posX =1250 ;
 	sheep[1].posY =640;
 	sheep[1].saved = false;
 	
-	sheep[2].posX =2100 ;
+	sheep[2].posX =1550 ;
 	sheep[2].posY =640;
 	sheep[2].saved = false;
 	
-	sheep[3].posX =3100;
+	sheep[3].posX =1850;
 	sheep[3].posY =640;
 	sheep[3].saved = false;
 	
-	sheep[4].posX =4000;
+	sheep[4].posX =2150;
 	sheep[4].posY =640;
 	sheep[4].saved = false;
 	
-	sheep[5].posX =5700;
+	sheep[5].posX =2450;
 	sheep[5].posY =640;
 	sheep[5].saved = false;
 	
-	sheep[6].posX =1750;
+	sheep[6].posX =2750;
 	sheep[6].posY =640;
 	sheep[6].saved = false;
 	
-	sheep[7].posX =2625;
+	sheep[7].posX =3050;
 	sheep[7].posY =640;
 	sheep[7].saved = false;
 	
-	sheep[8].posX =3500;
+	sheep[8].posX =3750;
 	sheep[8].posY =640;
 	sheep[8].saved = false;
 	
-	sheep[9].posX =4850;
-	sheep[9].posY =640;
+	sheep[9].posX =3200;
+	sheep[9].posY =260;
 	sheep[9].saved = false;
+		
+	signs[0].posX = 50;
+	signs[0].posY = 623;
+	signs[0].active = true;
+	signs[1].posX = 650;
+	signs[1].posY = 626;
+	signs[2].posX = 3250;
+	signs[2].posY = 626;
+	signs[3].posX = 4000;
+	signs[3].posY = 626;
+
+	signs[4].posX = 4525;
+	signs[4].posY = 455;
+	signs[5].posX = 5900;
+	signs[5].posY = 626;
 	
-	//sm_obj[1].posX =2400;
-	//sm_obj[1].posY =637;
-	breakables[0].posX =1600;
-	breakables[0].posY =600;
+	lg_obj[1].posX=3150;
+	lg_obj[1].posY=364;
+	
+	sm_obj[3].posX=3550;
+	sm_obj[3].posY=447;
+	
+	sm_obj[2].posX=3850;
+	sm_obj[2].posY=530;
+	
+	lg_obj[0].posX=4114;
+	lg_obj[0].posY=617;
+	
+	sm_obj[0].posX=4524;
+	sm_obj[0].posY=570;
+	
+	sm_obj[1].posX=4788;
+	sm_obj[1].posY=570;
+	
+	breakables[0].posX =5100;
+	breakables[0].posY =540;
 	breakables[0].broken=false;
 	
-	breakables[1].posX =3600;
+	breakables[1].posX =5100;
 	breakables[1].posY =640;
 	breakables[1].broken=false;
 	
-	signs[0].posX = 100;
-	signs[0].posY = 623;
-	signs[0].active = true;
-	signs[1].posX = 850;
-	signs[1].posY = 623;
-	signs[2].posX = 1400;
-	signs[2].posY = 623;
-	signs[3].posX = 2400;
-	signs[3].posY = 623;
-	//signs[4].posX = 3800;
-	//signs[4].posY = 623;
-	//signs[5].posX = 4300;
-	//signs[5].posY = 623;
-	signs[4].posX = 4750;
-	signs[4].posY = 623;
-	signs[5].posX = 5100;
-	signs[5].posY = 500;
-	signs[6].posX = 5800;
-	signs[6].posY = 623;
-	
-	/*sm_obj[2].posX =3900 ;
-	sm_obj[2].posY =557 ; 
-	sm_obj[3].posX =3900 ;
-	sm_obj[3].posY =557 ;*/
-	/*
-	breakables[2].posX =1000;
-	breakables[2].posY =487;
+	breakables[2].posX =5250;
+	breakables[2].posY =640;
 	breakables[2].broken=false;
-	breakables[3].posX =1100;
-	breakables[3].posY =487;
+	
+	breakables[3].posX =5400;
+	breakables[3].posY =540;
 	breakables[3].broken=false;
-	breakables[4].posX =1200;
-	breakables[4].posY =487;
+	
+	breakables[4].posX =5400;
+	breakables[4].posY =640;
 	breakables[4].broken=false;
-	breakables[5].posX =1300;
-	breakables[5].posY =420;
+	
+	breakables[5].posX =5500;
+	breakables[5].posY =640;
 	breakables[5].broken=false;
-	breakables[6].posX =1700;
-	breakables[6].posY =537;
+	
+	breakables[6].posX =5500;
+	breakables[6].posY =540;
 	breakables[6].broken=false;
 	
-	breakables[7].posX =2300;
-	breakables[7].posY =637;
+	breakables[7].posX =5500;
+	breakables[7].posY =440;
 	breakables[7].broken=false;
-	breakables[8].posX =2400;
-	breakables[8].posY =637;
-	breakables[8].broken=false;
-	breakables[9].posX =2400;
-	breakables[9].posY =537;
-	breakables[9].broken=false;
-	breakables[10].posX =2400;
-	breakables[10].posY =310;
-	breakables[10].broken=false;
-	breakables[11].posX =2500;
-	breakables[11].posY =310;
-	breakables[11].broken=false;
-	breakables[12].posX =2600;
-	breakables[13].posX =2600;
-	breakables[13].posY =637;
-	breakables[13].broken=false;
-	breakables[14].posX =2700;
-	breakables[14].posY =637;
-	breakables[14].broken=false;
-	breakables[15].posX =2700;
-	breakables[15].posY =537;
-	breakables[15].broken=false;
-	breakables[16].posX =2700;
-	breakables[16].posY =310;
-	breakables[16].broken=false;
 	
-	breakables[17].posX =5350;
-	breakables[17].posY =637;
-	breakables[17].broken=false;
-	breakables[18].posX =5450;
-	breakables[18].posY =537;
-	breakables[18].broken=false;
-	breakables[19].posX =5560;
-	breakables[19].posY =637;
-	breakables[19].broken=false;*/
-
+	breakables[8].posX =5600;
+	breakables[8].posY =640;
+	breakables[8].broken=false;
+	
+	breakables[9].posX =5700;
+	breakables[9].posY =640;
+	breakables[9].broken=false;
 }
 
 
@@ -1028,10 +1000,7 @@ function setPositionLvl2() {
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600;
-	
-	//signs[9].posX = 100;
-	//signs[9].posY = 623;
-	
+		
 	aBranch[0].posX = 150;
 	aBranch[0].posY = 580;
 	
@@ -1050,49 +1019,7 @@ function setPositionLvl2() {
 	
 	aBranch[5].posX = 500;
 	aBranch[5].posY = 450;
-	
-	//cougar.posX = 200;
-	//cougar.posY = 667;
-	
-	/*breakables[0].posX =100;
-	breakables[0].posY =637;
-	breakables[0].broken=false;
-	breakables[1].posX =200;
-	breakables[1].posY =537;
-	breakables[1].broken=false;
-	breakables[2].posX =300;
-	breakables[2].posY =487;
-	breakables[2].broken=false;
-	breakables[3].posX =400;
-	breakables[3].posY =487;
-	breakables[3].broken=false;
-	
-	breakables[4].posX =500;
-	breakables[4].posY =487;
-	breakables[4].broken=false;
-	breakables[5].posX =600;
-	breakables[5].posY =420;
-	breakables[5].broken=false;
-	breakables[6].posX =700;
-	breakables[6].posY =537;
-	breakables[6].broken=false;
-	
-	breakables[7].posX =800;
-	breakables[7].posY =637;
-	breakables[7].broken=false;
-	breakables[8].posX =900;
-	breakables[8].posY =637;
-	breakables[8].broken=false;
-	breakables[9].posX =1000;
-	breakables[9].posY =537;
-	breakables[9].broken=false;
-	breakables[10].posX =1100;
-	breakables[10].posY =310;
-	breakables[10].broken=false;
-	breakables[11].posX =1200;
-	breakables[11].posY =310;
-	breakables[11].broken=false;*/
-	
+		
 	sheep[0].posX =20;
 	sheep[0].posY =1640;
 	sheep[0].saved = false;
@@ -1657,7 +1584,7 @@ function update()
         //}
     }
     
-   for(var i=0; i<sheep.length; i++)
+    for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -1754,6 +1681,7 @@ function update()
 					  fallingSheep = false;
 				  }
 			}
+
         }
     }
     
@@ -2214,16 +2142,6 @@ function render()
         	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
     
         	ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
-        
-			for(var i=0; i<sm_obj.length; i++)
-    		{
-        		ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
-    		}
-			for(var i=0; i<lg_obj.length; i++)
-			{
-				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
-			}
-    //work here
 		
         	for(var i =0; i<signs.length; i++)
         	{
@@ -2231,6 +2149,7 @@ function render()
             
             	if(signs[i].active)
             	{
+					console.log(i);
                 	if(i==0)
 						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==1)
@@ -2254,6 +2173,15 @@ function render()
         	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
         	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
         	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+		}
+		
+		for(var i=0; i<sm_obj.length; i++)
+    	{
+        	ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+    	}
+		for(var i=0; i<lg_obj.length; i++)
+		{
+			ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
 		}
 		
     	ctx.drawImage(sheepIcon,camera.x,0);
@@ -2425,46 +2353,47 @@ function render()
 				}
     	}
         
-    if(sheepSaved==6)
-    {
-        ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
-    }
-    else
-    {
-        ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
-    }
+		if(sheepSaved==6)
+		{
+			ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
+		}
+		else
+		{
+			ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
+		}
     
-    for(var i=0; i<breakables.length; i++)
-    {
-        if(!breakables[i].broken)
-        {
-            ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
-        }
-    }
+		for(var i=0; i<breakables.length; i++)
+		{
+			if(!breakables[i].broken)
+			{
+				ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+			}
+		}
 
+		ctx.drawImage(cloud,3100,270);
     
-    count++;
-    if (count ==40){
-        count = 0;	
-    }
-    countR++;
-    if (countR ==30){
-        countR = 0;	
-    }
-    if (currentLvl === 2 && lvlFlag)
-        ctx.drawImage(cutscene,0,0,1600,900);
-    if (currentLvl === 2 && lvlFlag && lastLevel)
-        ctx.drawImage(endScene,0,0,1600,900);
+		count++;
+		if (count ==40){
+			count = 0;	
+		}
+		countR++;
+		if (countR ==30){
+			countR = 0;	
+		}
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
         
-    ctx.drawImage(restart,1534+camera.x,10);
+    	ctx.drawImage(restart,1534+camera.x,10);
         
-    if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
-    {
-        intialize();
-    }
+    	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
+    	{
+        	intialize();
+    	}
         
-    ctx.restore();
-}
+  		ctx.restore();
+	}
 }
 
 function keyDown(e)
