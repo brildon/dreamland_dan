@@ -59,11 +59,13 @@ var creditsScreen = false;
 var optionsScreen = false;
 var collide = false;
 var falling = false;
+var fallingSheep = false;
 var isDucked = false;
 var isStanding = true;
 var sheepSaved = 0;
 var sheepTotal = 0;
 var collision = false;
+var collisionSheep = false;
 var movingRight = true;
 var regExpScreen = true;
 var soundOn = true;
@@ -356,8 +358,9 @@ var smallObj = {
 var sheepObj = {
 	posX: 0,
 	posY: 0,
-	height: 69,
-	width : 124,
+	height: 100,
+	width : 80,
+	jumpDecay: 0.5,
 	saved: false,
 	
 	centerX: function (){
@@ -444,6 +447,7 @@ for (var i=0; i<sheep.length; i++)
 
 var hitVar = false;
 var floorLvl = 737;
+var floorLvlSheep = 737;
 
 camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
 camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
@@ -678,7 +682,7 @@ llama_attack_right.src = "https://cloud.githubusercontent.com/assets/8835208/506
 llama_attack_left.src = "https://cloud.githubusercontent.com/assets/8835208/5062957/a7aba7c8-6d98-11e4-81fb-78030bf9cdeb.png";
 llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
 llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
-llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5110802/1a6524c0-6fe1-11e4-8b7b-406931cf5301.png";
+llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156155/3bbf4364-7273-11e4-9a16-575aabe11b67.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
@@ -1653,7 +1657,7 @@ function update()
         //}
     }
     
-    for(var i=0; i<sheep.length; i++)
+   for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -1665,7 +1669,91 @@ function update()
         }
         if(sheep[i].saved)
         {
-            sheep[i].posX--;	
+            //changecode
+		
+			sheep[i].posX--;
+			
+			collisionSheep = false;
+			
+			for(var j=0; j<breakables.length; j++)
+			{
+				if(hitTest(breakables[j],sheep[i])){
+					//if(!breakables[i].broken){
+						collisionSheep=true;
+					//}
+				}
+			}
+			for(var j=0; j<sm_obj.length; j++)
+			{
+				if(hitTest(sm_obj[j],sheep[i]))
+				{
+					collisionSheep=true;
+				}
+			}
+			for(var j=0; j<lg_obj.length; j++)
+			{
+				if(hitTest(lg_obj[j],sheep[i]))
+				{
+					collisionSheep=true;
+				}
+			}
+			
+			if(!collisionSheep){
+				  floorLvlSheep=635;
+			  
+				  if (sheep[i].posY<floorLvlSheep)
+				  {
+					  if(!fallingSheep)
+					  {		
+						  sheep[i].jumpDecay = 0.5;
+						  fallingSheep = true;
+					  }
+					  else
+					  {
+						  for(var j=0; j<breakables.length; j++)
+						  {
+							  if(hitTest(breakables[j],sheep[i])){
+								  if(!breakables[i].broken){
+									  collisionSheep=true;
+									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+										  sheep[i].posY = breakables[j].sheep[i].height+.5;
+										  fallingSheep = false;
+									  }
+								  }
+							  }
+						  }
+						  for(var j=0; j<sm_obj.length; j++)
+						  {
+							  if(hitTest(sm_obj[j],sheep[i]))
+							  {
+								  collisionSheep=true;
+								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+									  fallingSheep = false;
+								  }
+							  }
+						  }
+						  for(var j=0; j<lg_obj.length; j++)
+						  {
+							  if(hitTest(lg_obj[j],sheep[i]))
+							  {
+								  collisionSheep=true;
+								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+									  fallingSheep = false;
+							  }
+						  }
+						  if(!collisionSheep)
+						  {
+							  sheep[i].posY+= sheep[i].jumpDecay;
+							  sheep[i].jumpDecay += 1;
+						  }
+					  }
+				  }
+				  else{
+					  fallingSheep = false;
+				  }
+			}
         }
     }
     
