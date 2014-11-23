@@ -1280,16 +1280,36 @@ function update()
                         }
                     }
                 }
-                /*else{
-                    for (var i = 0; i< breakables.length; i++){
-                        if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){
-                            console.log("bateu");
-                                playerObj.posY = breakables[i].posY+breakables[i].height+1;
-                                //playerDirec= 0;
-                                falling = true;
+                else
+				{
+                    for (var i = 0; i< breakables.length; i++)
+					{
+                        if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false)
+						{
+                            playerObj.posY = breakables[i].posY+breakables[i].height+1;
+                            playerObj.jumpStrength = 0;
+                            falling = true;
                         }
                     }
-                }*/
+					for (var i = 0; i< sm_obj.length; i++)
+					{
+                        if (hitTest(playerObj,sm_obj[i]))
+						{
+                            playerObj.posY = sm_obj[i].posY+sm_obj[i].height+1;
+                            playerObj.jumpStrength = 0;
+                            falling = true;
+                        }
+                    }
+					for (var i = 0; i< lg_obj.length; i++)
+					{
+                        if (hitTest(playerObj,lg_obj[i]))
+						{
+                            playerObj.posY = lg_obj[i].posY+lg_obj[i].height+1;
+                            playerObj.jumpStrength = 0;
+                            falling = true;
+                        }
+                    }
+                }
                 if(!collision)
                 {
                     floorLvl = 737;
@@ -1548,18 +1568,27 @@ function update()
     if(isDucking)
     {
         isStanding = false;
-        if (isDucked == false)
+		if (isDucked == false)
         {
             isDucked = true;	
             playerObj.height = 88;
 			attackBox.height = playerObj.height;
             playerObj.posY = playerObj.posY+50;
             //floorlvl = floorlvl+50;
-        }
+        }	
     }
     if(!isDucking)
     {
-        /*for(var i=0; i<breakables.length; i++)
+		//TODO: finish this junk yo
+        /*for(i = 0; i < sm_obj.length; i++)
+		{
+			if(playerObj.height = sm_obj[i]. && !isJump)
+			{
+				isDucking = true;
+				isStanding = false;
+			}
+		}*/
+		/*for(var i=0; i<breakables.length; i++)
         {
             if(hitTest(playerObj,breakables[i]))
             {
@@ -1605,8 +1634,8 @@ function update()
 			for(var j=0; j<breakables.length; j++)
 			{
 				if(hitTest(breakables[j],sheep[i])){
-					//if(!breakables[j].broken){
-						sheep[i].collision=true;
+					//if(!breakables[i].broken){
+						sheep[i].collision = true;
 					//}
 				}
 			}
@@ -1614,14 +1643,14 @@ function update()
 			{
 				if(hitTest(sm_obj[j],sheep[i]))
 				{
-					sheep[i].collision=true;
+					sheep[i].collision = true;
 				}
 			}
 			for(var j=0; j<lg_obj.length; j++)
 			{
 				if(hitTest(lg_obj[j],sheep[i]))
 				{
-					sheep[i].collision=true;
+					sheep[i].collision = true;
 				}
 			}
 			
@@ -1640,7 +1669,7 @@ function update()
 						  for(var j=0; j<breakables.length; j++)
 						  {
 							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[j].broken){
+								  if(!breakables[i].broken){
 									  sheep[i].collision=true;
 									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
 										  sheep[i].posY = breakables[j].sheep[i].height+.5;
@@ -1674,8 +1703,9 @@ function update()
 						  {
 							  sheep[i].posY+= sheep[i].jumpDecay;
 							  sheep[i].jumpDecay += 1;
-							  if (sheep[i].posY > 640){
-							  		sheep[i].posY = 640;
+							  if(sheep[i].posY > 640)
+							  {
+								sheep[i].posY = 640;
 							  }
 						  }
 					  }
