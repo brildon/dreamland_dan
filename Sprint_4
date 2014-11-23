@@ -1634,7 +1634,7 @@ function update()
 			for(var j=0; j<breakables.length; j++)
 			{
 				if(hitTest(breakables[j],sheep[i])){
-					//if(!breakables[i].broken){
+					//if(!breakables[j].broken){
 						sheep[i].collision = true;
 					//}
 				}
@@ -1669,7 +1669,7 @@ function update()
 						  for(var j=0; j<breakables.length; j++)
 						  {
 							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[i].broken){
+								  if(!breakables[j].broken){
 									  sheep[i].collision=true;
 									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
 										  sheep[i].posY = breakables[j].sheep[i].height+.5;
