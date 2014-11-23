@@ -232,7 +232,7 @@ var playerObj = {
 	width: 140,
 	hMask: 10,
 	wMask: 75,
-	jumpStrength: 38,
+	jumpStrength: 18,
 	jumpDecay: 0.5,
 	fallStrengh: 0,
 	speed: 5,
