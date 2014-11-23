@@ -319,8 +319,8 @@ var breakObj = {
 var largeObj = {
 	posX: 0,
 	posY: 0,
-	height: 93,
-	width: 220,
+	height: 63,
+	width: 213,
 	
 	centerX: function (){
 		return this.posX + (this.width / 2);
@@ -338,7 +338,7 @@ var largeObj = {
 var smallObj = {
 	posX: 0,
 	posY: 0,
-	height: 79,
+	height: 55,
 	width: 113,
 	
 	centerX: function (){
@@ -2221,7 +2221,7 @@ function render()
     		}
 			for(var i=0; i<lg_obj.length; i++)
 			{
-				ctx.drawImage(largePlatform,lg_obj[i].posX,lg_obj[i].posY-30);	
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
 			}
     //work here
 		
