@@ -87,6 +87,7 @@ var signIndex = -1;
 var count = 0;
 var countR = 0;
 var countA = 0;
+var countS = 0;
 var playerDirec = 0;
 var currentLvl = 1;
 var lvlFlag = false;
@@ -569,6 +570,7 @@ var cougar_left = new Image();
 var cougar_right = new Image();
 var box = new Image();
 var sheepIcon = new Image();
+var sheepSprite = new Image();
 var sheepWizard = new Image();
 var optionSoundOn = new Image();
 var endScene = new Image();
@@ -692,6 +694,7 @@ llama_attack_left.src = "https://cloud.githubusercontent.com/assets/8835208/5062
 llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
 llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
 llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156155/3bbf4364-7273-11e4-9a16-575aabe11b67.png";
+sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
@@ -2463,9 +2466,21 @@ function render()
 				{
 					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
 				}
-				else
+					else
 				{
-					ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					//ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
 				}
     	}
         
@@ -2495,6 +2510,10 @@ function render()
 		countR++;
 		if (countR ==30){
 			countR = 0;	
+		}
+		countS++;
+		if (countS ==20){
+			countS = 0;	
 		}
 		if (currentLvl === 2 && lvlFlag)
 			ctx.drawImage(cutscene,0,0,1600,900);
