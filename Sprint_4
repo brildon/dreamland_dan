@@ -71,7 +71,7 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = true;
+var jumpable = false;
 var crouchable = true;
 var attackable = true;
 var counter = 1;
@@ -414,7 +414,7 @@ var attackBox = Object.create(hitBox);
 
 var cougar = Object.create(cougarObj);
 
-var signs = new Array(7);
+var signs = new Array(6);
 for(var i =0; i<signs.length; i++)
 {
 	signs[i] = Object.create(signObj);
@@ -427,13 +427,13 @@ for (var i =0; i<breakables.length; i++)
 	breakables[i]=Object.create(breakObj);
 }
 
-var sm_obj = new Array (5);
+var sm_obj = new Array (8);
 for (var i =0; i<sm_obj.length; i++)
 {
 	sm_obj[i]=Object.create(smallObj);
 }
 
-var lg_obj = new Array (2);
+var lg_obj = new Array (5);
 for (var i =0; i<lg_obj.length; i++)
 {
 	lg_obj[i]=Object.create(largeObj);
@@ -570,8 +570,8 @@ var cougar_left = new Image();
 var cougar_right = new Image();
 var box = new Image();
 var sheepIcon = new Image();
-var sheepSprite = new Image();
 var sheepWizard = new Image();
+var sheepSprite = new Image();
 var optionSoundOn = new Image();
 var endScene = new Image();
 var optionSoundOff = new Image();
@@ -626,7 +626,6 @@ var expInstr21 = new Image();
 var expInstr22 = new Image();
 var expInstr23 = new Image();
 var expInstr24 = new Image();
-
 var carrotHelp = new Image();
 var carrotBracketHelp = new Image();
 var helpHover = new Image();
@@ -635,15 +634,16 @@ var lineHelp = new Image();
 var moneyHelp = new Image();
 var questionHelp = new Image();
 var submitHover = new Image();
-
+var cloud = new Image();
 var blueStar = new Image();
 var redStar = new Image();
 var orangeStar = new Image();
 var emptyStar = new Image();
-
-var cloud = new Image();
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
+emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
-
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
 carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143412/91bfe4c2-7155-11e4-81dc-6de2dc261be0.png";
 helpHover.src = "https://cloud.githubusercontent.com/assets/8864180/5143414/91c43fc2-7155-11e4-894a-84590dc4a31a.png";
@@ -652,7 +652,6 @@ lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c
 moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
 questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
 submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
-
 expInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5143296/220a5d2a-7154-11e4-837c-ef4f6bec3107.png";
 expInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5143297/2215129c-7154-11e4-9997-7720a0ee1349.png";
 expInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5143298/2215cafc-7154-11e4-9a6c-4f629f436acd.png";
@@ -677,11 +676,9 @@ expInstr21.src = "https://cloud.githubusercontent.com/assets/8864180/5143309/231
 expInstr22.src = "https://cloud.githubusercontent.com/assets/8864180/5101847/51aaabea-6f86-11e4-8c8f-7fae059fbb5f.png";
 expInstr23.src = "https://cloud.githubusercontent.com/assets/8864180/5101848/51afb4b4-6f86-11e4-849a-9a1b1a92db66.png";
 expInstr24.src = "https://cloud.githubusercontent.com/assets/8864180/5101849/51b1185e-6f86-11e4-8784-3b5122a4e83a.png";
-
 startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
 optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
 creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
-
 regScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5100959/980625da-6f75-11e4-818d-30b00f9e71bd.png";
 submitImg.src = "https://cloud.githubusercontent.com/assets/8864180/5049830/63f6826a-6bee-11e4-9d19-9048b8815500.png";
 endScene.src = "https://cloud.githubusercontent.com/assets/8864180/4950698/acadc788-665e-11e4-86e0-f0785f8c70ad.png";
@@ -694,9 +691,9 @@ llama_attack_left.src = "https://cloud.githubusercontent.com/assets/8835208/5062
 llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
 llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
 llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156155/3bbf4364-7273-11e4-9a16-575aabe11b67.png";
-sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
+sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/dd01743a-6608-11e4-979c-4dac571f3560.png";
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
@@ -724,11 +721,6 @@ regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5048077/9b7e
 regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84d280-6be0-11e4-872f-525fb0c44fa9.png";
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
-
-blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
-redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
-orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
-emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 
 function menu(e)
 {
@@ -884,7 +876,7 @@ function intialize()
 {
 	sheepPoints = 0;
 	
-	playerObj.posX = 50;
+	playerObj.posX = 50;  //50
 	playerObj.posY = 600;	
 	
 	miniGame.x = 3400
@@ -1005,6 +997,7 @@ function intialize()
 	breakables[9].posX =5700;
 	breakables[9].posY =640;
 	breakables[9].broken=false;
+	
 }
 
 
@@ -1014,8 +1007,8 @@ function setPositionLvl2() {
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600;
-		
-	aBranch[0].posX = 150;
+	
+	/*aBranch[0].posX = 150;
 	aBranch[0].posY = 580;
 	
 	aBranch[1].posX = 300;
@@ -1032,34 +1025,125 @@ function setPositionLvl2() {
 	aBranch[4].posY = 220;
 	
 	aBranch[5].posX = 500;
-	aBranch[5].posY = 450;
-		
-	sheep[0].posX =20;
-	sheep[0].posY =1640;
+	aBranch[5].posY = 450;*/
+
+	sheep[0].posX =1100;
+	sheep[0].posY =640;
 	sheep[0].saved = false;
-	
-	sheep[1].posX =300 ;
-	sheep[1].posY =2640;
+	sheep[1].posX =1100;
+	sheep[1].posY =440;
 	sheep[1].saved = false;
-	
-	sheep[2].posX =500 ;
-	sheep[2].posY =3640;
+	sheep[2].posX =1700;
+	sheep[2].posY =640;
 	sheep[2].saved = false;
-	
-	sheep[3].posX =750;
-	sheep[3].posY =4640;
+	sheep[3].posX =600;
+	sheep[3].posY =310;
 	sheep[3].saved = false;
+
+
+	sheep[7].posX =5700;
+	sheep[7].posY =640;
+	sheep[7].saved = false;
+	sheep[8].posX =5300;
+	sheep[8].posY =240;
+	sheep[8].saved = false;
 	
-	sheep[4].posX =600;
-	sheep[4].posY =5640;
+	breakables[0].posX =1000;
+	breakables[0].posY =640;
+	breakables[0].broken=false;
+	breakables[1].posX =1100;
+	breakables[1].posY =540;
+	breakables[1].broken=false;
+	breakables[2].posX =1200;
+	breakables[2].posY =640;
+	breakables[2].broken=false;
+	
+	breakables[6].posX =5800;
+	breakables[6].posY =640;
+	breakables[6].broken=false;
+	breakables[7].posX =5800;
+	breakables[7].posY =540;
+	breakables[7].broken=false;
+	
+	sm_obj[0].posX=740;
+	sm_obj[0].posY=530;
+	sm_obj[1].posX=600;
+	sm_obj[1].posY=410;
+
+	//lg_obj[4].posX=4200;
+	//lg_obj[4].posY=240;
+	
+	sm_obj[2].posX=2600;
+	sm_obj[2].posY=600;
+	sm_obj[3].posX=2300;
+	sm_obj[3].posY=500;
+	sm_obj[4].posX=2000;
+	sm_obj[4].posY=400;
+	sm_obj[5].posX=2900;
+	sm_obj[5].posY=500;
+	lg_obj[0].posX=1700;
+	lg_obj[0].posY=300;
+	lg_obj[1].posX=3200;
+	lg_obj[1].posY=400;
+	lg_obj[2].posX=3550;
+	lg_obj[2].posY=350;
+	breakables[3].posX =3300;
+	breakables[3].posY =300;
+	breakables[3].broken=false;
+	breakables[4].posX =3300;
+	breakables[4].posY =200;
+	breakables[4].broken=false;
+	sheep[4].posX =2600;
+	sheep[4].posY =500;
 	sheep[4].saved = false;
-	
-	sheep[5].posX =50;
-	sheep[5].posY =4000;
+	sheep[5].posX =1700;
+	sheep[5].posY =200;
 	sheep[5].saved = false;
+	sheep[6].posX =3650;
+	sheep[6].posY =250;
+	sheep[6].saved = false;
 	
-	miniGame.x = 0;
-	miniGame.y = 0;
+	miniGame.x = 4300
+	miniGame.y = 637
+	
+	signs[0].posX = 4500;
+	signs[0].posY = 623;
+	
+	breakables[5].posX =4600;
+	breakables[5].posY =640;
+	breakables[5].broken=false;
+	sm_obj[6].posX=4800;
+	sm_obj[6].posY=540;
+	sm_obj[7].posX=5000;
+	sm_obj[7].posY=440;
+	lg_obj[3].posX=5200;
+	lg_obj[3].posY=340;
+	
+	levelWords[0] = "CAKE";
+	levelWords[1] = "SMELL";
+	levelWords[2] = "SMACK";
+
+	levelWords[3] = "ATTACK";
+	levelWords[4] = "RACE";
+	levelWords[5] = "KITTEN";
+
+	levelWords[6] = "BREACH";
+	levelWords[7] = "BREAK";
+	levelWords[8] = "BAKED";
+	
+	//extra stuff from first lvl
+	sheep[9].posX =0;
+	sheep[9].posY =0;
+	sheep[9].saved = false;
+	breakables[8].posX =5800;
+	breakables[8].posY =540;
+	breakables[9].posX =5800;
+	breakables[9].posY =540;
+	signs[1].posX = 8200;
+	signs[2].posX = 8200;
+	signs[3].posX = 8200;
+	signs[4].posX = 8200;
+	signs[5].posX = 8200;
 
 }
 
@@ -1135,17 +1219,19 @@ function update()
 					isAttack = false;
 				}
 				playerObj.stopped = false;
-				if (signs[0].active){
-					signs[0].active = false;
-					signs[0].read = true;
-					signs[0].timesRead = 0;	
-				}
-				if (signIndex != -1 && !signs[signIndex].read){
-					signs[signIndex].active = false;
-					signs[signIndex].read = true;
-					signs[signIndex].timesRead = 0;
-				}
+
 				countA++;
+			}		
+			if (signs[0].active)
+			{
+				signs[0].active = false;
+				signs[0].read = true;
+				signs[0].timesRead = 0;	
+			}
+			if (signIndex != -1 && !signs[signIndex].read){
+				signs[signIndex].active = false;
+				signs[signIndex].read = true;
+				signs[signIndex].timesRead = 0;
 			}
 		}
     //W
@@ -1243,7 +1329,7 @@ function update()
     collision=false;
 	collision2=false;
     // Preform actions
-     if(isJump)
+    if(isJump)
     {
 		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
             {
@@ -1372,14 +1458,14 @@ function update()
     }
     
     collide=false;
-    for (var i = 0; i< aBranch.length; i++){
-        if (hitTest(collisionObj,aBranch[i])){
+   
+        if (hitTest(collisionObj,aBranch[3])){
                 collide = true;	
                 falling = false;
                 collisionIndex = i;
                 //floorLvl = aBranch[i].posY;
         }
-    }
+  
     
     if (!collide&&!isJump){
         floorLvl=737;
@@ -1678,15 +1764,16 @@ function update()
             //changecode
 		
 			sheep[i].posX--;
-			
+		
+		
 			sheep[i].collision = false;
 			
 			for(var j=0; j<breakables.length; j++)
 			{
 				if(hitTest(breakables[j],sheep[i])){
-					//if(!breakables[j].broken){
+					if(!breakables[j].broken){
 						sheep[i].collision = true;
-					//}
+					}
 				}
 			}
 			for(var j=0; j<sm_obj.length; j++)
@@ -1764,8 +1851,8 @@ function update()
 					  sheep[i].falling = false;
 				  }
 			}
-
-        }
+		}
+        
     }
     
     sheepSaved = 0;
@@ -1814,7 +1901,7 @@ function update()
 	}
     if(hitTest(playerObj,miniGame) && closeWindow == false)
     {		
-        if(currentLvl==1)
+        //if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
@@ -1825,24 +1912,14 @@ function update()
 			
 			ctx.drawImage(regScreen,0,0);
       
-			/*ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			
 			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
 			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);*/
-			
-			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
-			
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
-			
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
-			
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
 			
 			if(textBoxArray[0].canWrite)
 			{
@@ -1976,7 +2053,7 @@ function update()
                 }
             }
 			
-			/*if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
 			{
 				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			}
@@ -1999,31 +2076,6 @@ function update()
 			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
 			{
 				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
-			}*/
-			
-			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
-			{
-				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
-			}
-			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
-			{
-				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
-			}
-			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
-			{
-				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
-			}
-			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
-			{
-				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
-			}
-			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
-			{
-				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
-			}
-			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
-			{
-				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
 			}
             
 			ctx.fillText(sheepPoints,210,100,50);
@@ -2231,7 +2283,10 @@ function update()
     && !regExp3.test(incorrectWords[0])&& !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]) && regExp3.test(correctWords[1]) 
     && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
-        jumpable =true;
+		if(currentLvl==1)
+        	jumpable =true;
+		else if(currentLvl==2)
+			attackable =true;
     }
 }
 }
@@ -2265,7 +2320,48 @@ function render()
         	for(var i =0; i<signs.length; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
-            
+			}			
+			for(var i=0; i<10; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+				}
+			}
+			for(var i=0; i<4; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<2; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			
+			for (var i=0; i<10;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+				}
+    		}
+			ctx.drawImage(cloud,3100,270);
+			for(var i =0; i<signs.length; i++)  
+			{         
             	if(signs[i].active)
             	{
 					console.log(i);
@@ -2274,17 +2370,15 @@ function render()
                 	else if(i==1)
 						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==2)
-                    	ctx.drawImage(atkInstr,signs[i].posX+70,signs[i].posY-250);
+                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==3)
-                    	ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);
+                    	ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
 					else if(i==4)
-						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
-					else if(i==5)
 						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
-					else if(i==6)
+					else if(i==5)
 						ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);        
 				}
-        	}
+			}
     	}
     	else if (currentLvl === 2)
 		{
@@ -2292,16 +2386,40 @@ function render()
         	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
         	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
         	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+			
+			ctx.drawImage(sign,signs[0].posX,signs[0].posY);
+			for(var i=0; i<8; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+				}
+			}
+			for(var i=0; i<8; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<4; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}
+			for (var i=0; i<9;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
+				}
+    		}
+			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+			
+			if(signs[0].active)
+				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-250);
 		}
 		
-		for(var i=0; i<sm_obj.length; i++)
-    	{
-        	ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
-    	}
-		for(var i=0; i<lg_obj.length; i++)
-		{
-			ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
-		}
 		
     	ctx.drawImage(sheepIcon,camera.x,0);
     	ctx.fillStyle = 'black';
@@ -2460,29 +2578,6 @@ function render()
 					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 				}
 			}	
-			for (var i=0; i<sheep.length;i++)
-			{
-				if(sheep[i].saved==false)
-				{
-					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
-				}
-					else
-				{
-					if (countS >= 0 && countS <5){
-						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
-					}
-					else if (countS >= 5 && countS <10){
-						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
-					}
-					else if (countS >= 10 && countS < 15){
-						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
-					}
-					else if (countS >= 15 && countS <= 20){
-						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
-					}
-					//ctx.drawImage(sheep_left,sheep[i].posX, sheep[i].posY);
-				}
-    	}
         
 		if(sheepSaved==6)
 		{
@@ -2492,17 +2587,11 @@ function render()
 		{
 			ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
 		}
-    
-		for(var i=0; i<breakables.length; i++)
+		
+		if(currentLvl==1)
 		{
-			if(!breakables[i].broken)
-			{
-				ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
-			}
+			ctx.drawImage(cloud,3100,270);
 		}
-
-		ctx.drawImage(cloud,3100,270);
-    
 		count++;
 		if (count ==40){
 			count = 0;	
