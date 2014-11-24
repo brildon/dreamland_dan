@@ -639,9 +639,10 @@ var blueStar = new Image();
 var redStar = new Image();
 var orangeStar = new Image();
 var emptyStar = new Image();
-blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
-redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
-orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
+
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
@@ -876,7 +877,7 @@ function intialize()
 {
 	sheepPoints = 0;
 	
-	playerObj.posX = 50;  //50
+	playerObj.posX = 50;  
 	playerObj.posY = 600;	
 	
 	miniGame.x = 3400
@@ -1911,14 +1912,14 @@ function update()
 			
 			ctx.drawImage(regScreen,0,0);
       
-			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
 			
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
 			
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
 			
 			if(textBoxArray[0].canWrite)
 			{
@@ -2054,27 +2055,27 @@ function update()
 			
 			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
 			}
 			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
 			}
 			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
 			}
 			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
 			}
 			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
 			}
 			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
 			{
-				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
 			}
             
 			ctx.fillText(sheepPoints,210,100,50);
