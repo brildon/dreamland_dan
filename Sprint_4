@@ -73,7 +73,7 @@ var lastLevel = false;
 var gameOver = false;
 var jumpable = false;
 var crouchable = true;
-var attackable = true;
+var attackable = false;
 var counter = 1;
 var helpActive = false;
 var regExpOne = "";
@@ -1218,10 +1218,9 @@ function update()
 				else{
 					isAttack = false;
 				}
-				playerObj.stopped = false;
-
 				countA++;
-			}		
+			}
+			playerObj.stopped = false;		
 			if (signs[0].active)
 			{
 				signs[0].active = false;
