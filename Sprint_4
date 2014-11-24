@@ -634,6 +634,11 @@ var moneyHelp = new Image();
 var questionHelp = new Image();
 var submitHover = new Image();
 
+var blueStar = new Image();
+var redStar = new Image();
+var orangeStar = new Image();
+var emptyStar = new Image();
+
 var cloud = new Image();
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
 
@@ -716,6 +721,11 @@ regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5048077/9b7e
 regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84d280-6be0-11e4-872f-525fb0c44fa9.png";
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
+
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
+emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 
 function menu(e)
 {
@@ -1812,14 +1822,14 @@ function update()
 			
 			ctx.drawImage(regScreen,0,0);
       
-			/*TODO: finish ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 100, textBoxArray[0].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 100, textBoxArray[1].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 150, textBoxArray[1].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 100, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 150, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 200, textBoxArray[2].yCoord);*/
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
 			
 			if(textBoxArray[0].canWrite)
 			{
@@ -1888,11 +1898,7 @@ function update()
                     }
 					if(levelWords[i] == correctWords[0])
 					{
-//TODO:Finish or un-comment						ctx.drawImage(correctWordStar, coordX, (i + 1)*100 + 200);
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit=2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
+						ctx.drawImage(orangeStar, coordX - 100, (i + 1)*100 + 163);
 					}
 					if(regExp2.test(levelWords[i]))
                     {
@@ -1917,12 +1923,7 @@ function update()
                     coordX = 675;
 					if(levelWords[i] == correctWords[1])
 					{
-//TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 3 + 1)*100 + 200);
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit=2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
-					
+						ctx.drawImage(redStar, coordX - 85, (i - 3 + 1)*100 + 163);
 					}
                     if(regExp2.test(levelWords[i]))
                     {
@@ -1947,11 +1948,7 @@ function update()
                     coordX = 1140;
 					if(levelWords[i] == correctWords[2])
 					{
-//TODO:Finish or un-comment							ctx.drawImage(correctWordStar, coordX, (i - 6)*100 + 300);
-						ctx.strokeStyle = 'black';
-						ctx.miterLimit=2;
-						ctx.lineWidth = 6;
-						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
+						ctx.drawImage(blueStar, coordX - 95, (i - 6 + 1)*100 + 163);
 					}
                     if(regExp3.test(levelWords[i]))
                     {
@@ -1965,30 +1962,31 @@ function update()
                     ctx.fillStyle = 'black';
                 }
             }
-			/*TODO : finish if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			
+			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 100, textBoxArray[0].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			}
 			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 100, textBoxArray[1].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
 			}
 			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 100, textBoxArray[2].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
 			}
 			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[1].xCoord + 150, textBoxArray[1].yCoord);
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			}
 			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[2].xCoord + 150, textBoxArray[2].yCoord);
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
 			}
 			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
 			{
-				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 200, textBoxArray[2].yCoord);
-			}*/
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
+			}
             
 			ctx.fillText(sheepPoints,210,100,50);
 			
