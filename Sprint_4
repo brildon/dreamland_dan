@@ -393,7 +393,7 @@ var playerObj = Object.create(playerObj);
 var hitBox = {
 	posX: playerObj.posX+playerObj.width,
 	posY: playerObj.posY,
-	height: playerObj.height,
+	height: 50,
 	width : 5,
 	
 	centerX: function (){
@@ -1708,8 +1708,8 @@ function update()
         {
             isDucked = true;	
             playerObj.height = 88;
-			attackBox.height = playerObj.height;
             playerObj.posY = playerObj.posY+50;
+			attackBox.posY = playerObj.posY;
             //floorlvl = floorlvl+50;
         }	
     }
@@ -1742,8 +1742,8 @@ function update()
             {
 				isStanding = true;
                 playerObj.height = 138;	
-				attackBox.height = playerObj.height;
                 playerObj.posY = playerObj.posY-50;
+				attackBox.posY = playerObj.posY;
                 //floorlvl = floorlvl-50;
             }
         //}
@@ -1891,7 +1891,7 @@ function update()
     }
     else
     {
-        attackBox.posX = playerObj.posX;
+        attackBox.posX = playerObj.posX-3;
         attackBox.posY = playerObj.posY;
     }
     
@@ -2315,7 +2315,8 @@ function render()
         	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
         	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
     
-        	ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+        	//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
 		
         	for(var i =0; i<signs.length; i++)
         	{
@@ -2478,7 +2479,7 @@ function render()
 					}
 				}
 				else if (isAttack){
-					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+					ctx.drawImage(llama_attack_right, playerObj.posX+6, playerObj.posY);
 				}
 				else{
 					if (countR >= 0 && countR<5){
@@ -2506,7 +2507,7 @@ function render()
 					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
 				}
 				else if (isAttack){
-					ctx.drawImage(llama_attack_right, playerObj.posX, playerObj.posY);
+					ctx.drawImage(llama_attack_right, playerObj.posX+6, playerObj.posY);
 				}
 				else{
 					ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
@@ -2555,7 +2556,7 @@ function render()
 					}
 				}
 				else if (isAttack){
-					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+					ctx.drawImage(llama_attack_left, playerObj.posX-6, playerObj.posY);
 				}
 				else{
 					if (countR >= 0 && countR<5){
@@ -2583,7 +2584,7 @@ function render()
 					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
 				}
 				else if (isAttack){
-					ctx.drawImage(llama_attack_left, playerObj.posX, playerObj.posY);
+					ctx.drawImage(llama_attack_left, playerObj.posX-6, playerObj.posY);
 				}
 				else{
 					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
