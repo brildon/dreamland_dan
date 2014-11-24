@@ -64,6 +64,7 @@ var isStanding = true;
 var sheepSaved = 0;
 var sheepTotal = 0;
 var collision = false;
+var collision2 = false;
 var movingRight = true;
 var regExpScreen = true;
 var soundOn = true;
@@ -1206,7 +1207,7 @@ function update()
     
 		for(var i =0; i<signs.length; i++)
 		{
-			if(playerObj.posX+40 === signs[i].posX)
+			if(playerObj.posX+40 === signs[i].posX && signs[i].posY > playerObj.posY && playerObj.posY < playerObj.posY+playerObj.height)
        		{
             	if (!signs[i].read){
 					//console.log("collsion with sign");
@@ -1227,98 +1228,134 @@ function update()
 		}
     
     collision=false;
+	collision2=false;
     // Preform actions
-    if(isJump)
+     if(isJump)
     {
-        if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
             {
-                playerObj.jumpDecay = .5;
+				playerObj.jumpDecay = .5;
                 playerObj.jumpStrength = 18;
                 playerObj.posY = (floorLvl-playerObj.height);
                 playerDirec = 0;
                 isJump = false;
                 //falling = true;
             }
-            
-            //Gravity equation...
-            else if(playerObj.posY != floorLvl)
-            {
-                playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
-                //collide = false;
-                if (playerDirec < 0 ){ //caindo
-                    for (var i = 0; i< breakables.length; i++){
-                        if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
-                                floorLvl = breakables[i].posY;
-                                playerObj.posY =breakables[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                    for (var i = 0; i< sm_obj.length; i++){
-                        if (hitTest(collisionObj,sm_obj[i])){
-                                floorLvl = sm_obj[i].posY;
-                                playerObj.posY =sm_obj[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                    for (var i = 0; i< lg_obj.length; i++){
-                        if (hitTest(collisionObj,lg_obj[i])){
-                                floorLvl = lg_obj[i].posY;
-                                playerObj.posY =lg_obj[i].posY-playerObj.height;
-                                collision = true;
-                                
-                                //console.log("top of box:"+breakables[i].posY);
-                                //collide = true;	
-                                //falling = false;
-                        }
-                    }
-                }
-                else
+         
+        //Gravity equation...
+		
+		else if(playerObj.posY != floorLvl)
+		{
+			playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+			//collide = false;
+			if (playerDirec < 0 ){ //caindo
+				for (var i = 0; i< breakables.length; i++){
+					if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
+							floorLvl = breakables[i].posY;
+							playerObj.posY =breakables[i].posY-playerObj.height;
+							collision = true;
+							
+							//console.log("top of box:"+breakables[i].posY);
+							//collide = true;	
+							//falling = false;
+					}
+				}
+				for (var i = 0; i< sm_obj.length; i++){
+					if (hitTest(collisionObj,sm_obj[i])){
+							floorLvl = sm_obj[i].posY;
+							playerObj.posY =sm_obj[i].posY-playerObj.height;
+							collision = true;
+							
+							//console.log("top of box:"+breakables[i].posY);
+							//collide = true;	
+							//falling = false;
+					}
+				}
+				for (var i = 0; i< lg_obj.length; i++){
+					if (hitTest(collisionObj,lg_obj[i])){
+							floorLvl = lg_obj[i].posY;
+							playerObj.posY =lg_obj[i].posY-playerObj.height;
+							collision = true;
+							
+							//console.log("top of box:"+breakables[i].posY);
+							//collide = true;	
+							//falling = false;
+					}
+				}
+				
+				//change
+				
+				if (!collision){
+					for (var i = 0; i< breakables.length; i++){
+						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){    
+							collision2 = true;
+						}
+					}
+					for (var i = 0; i< sm_obj.length; i++){
+						if (hitTest(playerObj,sm_obj[i])){	
+							collision2 = true;	  
+						}
+					}
+					for (var i = 0; i< lg_obj.length; i++){
+						if (hitTest(playerObj,lg_obj[i])){   
+							collision2 = true;	 
+						}
+					}
+					if (collision2){
+						if (playerObj.state === 0){
+							playerObj.posX = playerObj.posX-10;	
+						}
+						else{
+							playerObj.posX = playerObj.posX+10;
+						}
+						 
+					}
+				}
+			}
+			else
+			{
+				for (var i = 0; i< breakables.length; i++)
 				{
-                    for (var i = 0; i< breakables.length; i++)
+					if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false)
 					{
-                        if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false)
-						{
-                            playerObj.posY = breakables[i].posY+breakables[i].height+1;
-                            playerObj.jumpStrength = 0;
-                            falling = true;
-                        }
-                    }
-					for (var i = 0; i< sm_obj.length; i++)
+						playerObj.posY = breakables[i].posY+breakables[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< sm_obj.length; i++)
+				{
+					if (hitTest(playerObj,sm_obj[i]))
 					{
-                        if (hitTest(playerObj,sm_obj[i]))
-						{
-                            playerObj.posY = sm_obj[i].posY+sm_obj[i].height+1;
-                            playerObj.jumpStrength = 0;
-                            falling = true;
-                        }
-                    }
-					for (var i = 0; i< lg_obj.length; i++)
+						playerObj.posY = sm_obj[i].posY+sm_obj[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< lg_obj.length; i++)
+				{
+					if (hitTest(playerObj,lg_obj[i]))
 					{
-                        if (hitTest(playerObj,lg_obj[i]))
-						{
-                            playerObj.posY = lg_obj[i].posY+lg_obj[i].height+1;
-                            playerObj.jumpStrength = 0;
-                            falling = true;
-                        }
-                    }
-                }
-                if(!collision)
-                {
-                    floorLvl = 737;
-                    // constantly updates playerOne's Y position
-                    playerObj.posY -= playerDirec;
-                    // constantly increases the amount of pull downwards by one. 
-                    playerObj.jumpDecay += 1;
-                }
-            }
+						playerObj.posY = lg_obj[i].posY+lg_obj[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				if (falling){
+					playerDirec = 0;
+					falling = false;
+				}
+			}
+
+			if(!collision)
+			{
+				floorLvl = 737;
+				// constantly updates playerOne's Y position
+				playerObj.posY -= playerDirec;
+				// constantly increases the amount of pull downwards by one. 
+				playerObj.jumpDecay += 1;
+			}
+		}
     }
     
     collide=false;
