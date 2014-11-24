@@ -1822,14 +1822,24 @@ function update()
 			
 			ctx.drawImage(regScreen,0,0);
       
-			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
+			/*ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			
 			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
 			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);*/
+			
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+			
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+			
 			
 			if(textBoxArray[0].canWrite)
 			{
@@ -1963,7 +1973,7 @@ function update()
                 }
             }
 			
-			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			/*if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
 			{
 				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			}
@@ -1986,6 +1996,31 @@ function update()
 			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
 			{
 				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
+			}*/
+			
+			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			}
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+			}
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+			{
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+			}
+			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
+			{
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
+			{
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
 			}
             
 			ctx.fillText(sheepPoints,210,100,50);
