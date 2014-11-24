@@ -722,9 +722,9 @@ regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
 
-blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
-redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
-orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 
 function menu(e)
