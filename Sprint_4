@@ -287,7 +287,7 @@ aBranch[2].posX = 2450;
 aBranch[2].posY = 580;
 
 aBranch[3].posX = 0;
-aBranch[3].posY = 737;
+aBranch[3].posY = 737+46;
 aBranch[3].width = gameWorld.width;
 
 aBranch[4].posX = 150;
@@ -448,8 +448,8 @@ for (var i=0; i<sheep.length; i++)
 
 
 var hitVar = false;
-var floorLvl = 737;
-var floorLvlSheep = 737;
+var floorLvl = 737+46;
+var floorLvlSheep = 737+46;
 
 camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
 camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
@@ -700,7 +700,7 @@ cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dc
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/dd01743a-6608-11e4-979c-4dac571f3560.png";
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
-sheepWizard.src = "https://cloud.githubusercontent.com/assets/8835208/5016355/1ffe5eae-6a6b-11e4-896b-ad9c89e2688e.png";
+sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c954f88-74e0-11e4-9625-d47f4e527609.png";
 optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8864180/4950025/2bb39eaa-6654-11e4-8a5f-b257b6b1004b.png";
 optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
 cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
@@ -897,125 +897,125 @@ function intialize()
 	sheepPoints = 0;
 	
 	playerObj.posX = 50;  //50
-	playerObj.posY = 600;	
+	playerObj.posY = 600+46;	
 	
-	miniGame.x = 3400
-	miniGame.y = 637
+	miniGame.x = 3400;
+	miniGame.y = 637+60;
 	
 	cougar.posX = 6100;
-	cougar.posY = 667;
+	cougar.posY = 667+46;
 		
 	sheep[0].posX =950;
-	sheep[0].posY =640;
+	sheep[0].posY =640+46;
 	sheep[0].saved = false;
 	
 	sheep[1].posX =1250 ;
-	sheep[1].posY =640;
+	sheep[1].posY =640+46;
 	sheep[1].saved = false;
 	
 	sheep[2].posX =1550 ;
-	sheep[2].posY =640;
+	sheep[2].posY =640+46;
 	sheep[2].saved = false;
 	
 	sheep[3].posX =1850;
-	sheep[3].posY =640;
+	sheep[3].posY =640+46;
 	sheep[3].saved = false;
 	
 	sheep[4].posX =2150;
-	sheep[4].posY =640;
+	sheep[4].posY =640+46;
 	sheep[4].saved = false;
 	
 	sheep[5].posX =2450;
-	sheep[5].posY =640;
+	sheep[5].posY =640+46;
 	sheep[5].saved = false;
 	
 	sheep[6].posX =2750;
-	sheep[6].posY =640;
+	sheep[6].posY =640+46;
 	sheep[6].saved = false;
 	
 	sheep[7].posX =3050;
-	sheep[7].posY =640;
+	sheep[7].posY =640+46;
 	sheep[7].saved = false;
 	
 	sheep[8].posX =3750;
-	sheep[8].posY =640;
+	sheep[8].posY =640+46;
 	sheep[8].saved = false;
 	
 	sheep[9].posX =3200;
-	sheep[9].posY =260;
+	sheep[9].posY =260+46;
 	sheep[9].saved = false;
 		
 	signs[0].posX = 50;
-	signs[0].posY = 623;
+	signs[0].posY = 623+46;
 	signs[0].active = true;
 	signs[1].posX = 650;
-	signs[1].posY = 626;
+	signs[1].posY = 626+46;
 	signs[2].posX = 3250;
-	signs[2].posY = 626;
+	signs[2].posY = 626+46;
 	signs[3].posX = 4000;
-	signs[3].posY = 626;
+	signs[3].posY = 626+46;
 
 	signs[4].posX = 4525;
-	signs[4].posY = 455;
+	signs[4].posY = 455+46;
 	signs[5].posX = 5900;
-	signs[5].posY = 626;
+	signs[5].posY = 626+46;
 	
 	lg_obj[1].posX=3150;
-	lg_obj[1].posY=364;
+	lg_obj[1].posY=364+46;
 	
 	sm_obj[3].posX=3550;
-	sm_obj[3].posY=447;
+	sm_obj[3].posY=447+46;
 	
 	sm_obj[2].posX=3850;
-	sm_obj[2].posY=530;
+	sm_obj[2].posY=530+46;
 	
 	lg_obj[0].posX=4114;
-	lg_obj[0].posY=617;
+	lg_obj[0].posY=617+46;
 	
 	sm_obj[0].posX=4524;
-	sm_obj[0].posY=570;
+	sm_obj[0].posY=570+46;
 	
 	sm_obj[1].posX=4788;
-	sm_obj[1].posY=570;
+	sm_obj[1].posY=570+46;
 	
 	breakables[0].posX =5100;
-	breakables[0].posY =540;
+	breakables[0].posY =540+46;
 	breakables[0].broken=false;
 	
 	breakables[1].posX =5100;
-	breakables[1].posY =640;
+	breakables[1].posY =640+46;
 	breakables[1].broken=false;
 	
 	breakables[2].posX =5250;
-	breakables[2].posY =640;
+	breakables[2].posY =640+46;
 	breakables[2].broken=false;
 	
 	breakables[3].posX =5400;
-	breakables[3].posY =540;
+	breakables[3].posY =540+46;
 	breakables[3].broken=false;
 	
 	breakables[4].posX =5400;
-	breakables[4].posY =640;
+	breakables[4].posY =640+46;
 	breakables[4].broken=false;
 	
 	breakables[5].posX =5500;
-	breakables[5].posY =640;
+	breakables[5].posY =640+46;
 	breakables[5].broken=false;
 	
 	breakables[6].posX =5500;
-	breakables[6].posY =540;
+	breakables[6].posY =540+46;
 	breakables[6].broken=false;
 	
 	breakables[7].posX =5500;
-	breakables[7].posY =440;
+	breakables[7].posY =440+46;
 	breakables[7].broken=false;
 	
 	breakables[8].posX =5600;
-	breakables[8].posY =640;
+	breakables[8].posY =640+46;
 	breakables[8].broken=false;
 	
 	breakables[9].posX =5700;
-	breakables[9].posY =640;
+	breakables[9].posY =640+46;
 	breakables[9].broken=false;
 	
 }
@@ -1044,118 +1044,99 @@ function setPositionLvl2() {
 	foregroundBackground.y = -3;
 	
 	playerObj.posX = 200;
-	playerObj.posY = 600;
-	
-	/*aBranch[0].posX = 150;
-	aBranch[0].posY = 580;
-	
-	aBranch[1].posX = 300;
-	aBranch[1].posY = 400;
-	
-	aBranch[2].posX = 2450;
-	aBranch[2].posY = 580;
-	
-	aBranch[3].posX = 750;
-	aBranch[3].posY = 737;
-	aBranch[3].width = gameWorld.width;
-	
-	aBranch[4].posX = 150;
-	aBranch[4].posY = 220;
-	
-	aBranch[5].posX = 500;
-	aBranch[5].posY = 450;*/
+	playerObj.posY = 600+46;
 
 	sheep[0].posX =1100;
-	sheep[0].posY =640;
+	sheep[0].posY =640+46;
 	sheep[0].saved = false;
 	sheep[1].posX =1100;
-	sheep[1].posY =440;
+	sheep[1].posY =440+46;
 	sheep[1].saved = false;
 	sheep[2].posX =1700;
-	sheep[2].posY =640;
+	sheep[2].posY =640+46;
 	sheep[2].saved = false;
 	sheep[3].posX =600;
-	sheep[3].posY =310;
+	sheep[3].posY =310+46;
 	sheep[3].saved = false;
 
 
 	sheep[7].posX =5700;
-	sheep[7].posY =640;
+	sheep[7].posY =640+46;
 	sheep[7].saved = false;
 	sheep[8].posX =5300;
-	sheep[8].posY =240;
+	sheep[8].posY =240+46;
 	sheep[8].saved = false;
 	
 	breakables[0].posX =1000;
-	breakables[0].posY =640;
+	breakables[0].posY =640+46;
 	breakables[0].broken=false;
 	breakables[1].posX =1100;
-	breakables[1].posY =540;
+	breakables[1].posY =540+46;
 	breakables[1].broken=false;
 	breakables[2].posX =1200;
-	breakables[2].posY =640;
+	breakables[2].posY =640+46;
 	breakables[2].broken=false;
 	
 	breakables[6].posX =5800;
-	breakables[6].posY =640;
+	breakables[6].posY =640+46;
 	breakables[6].broken=false;
 	breakables[7].posX =5800;
-	breakables[7].posY =540;
+	breakables[7].posY =540+46;
 	breakables[7].broken=false;
 	
 	sm_obj[0].posX=740;
-	sm_obj[0].posY=530;
+	sm_obj[0].posY=530+46;
 	sm_obj[1].posX=600;
-	sm_obj[1].posY=410;
+	sm_obj[1].posY=410+46;
 
 	//lg_obj[4].posX=4200;
 	//lg_obj[4].posY=240;
 	
 	sm_obj[2].posX=2600;
-	sm_obj[2].posY=600;
+	sm_obj[2].posY=600+46;
 	sm_obj[3].posX=2300;
-	sm_obj[3].posY=500;
+	sm_obj[3].posY=500+46;
 	sm_obj[4].posX=2000;
-	sm_obj[4].posY=400;
+	sm_obj[4].posY=400+46;
 	sm_obj[5].posX=2900;
-	sm_obj[5].posY=500;
+	sm_obj[5].posY=500+46;
 	lg_obj[0].posX=1700;
-	lg_obj[0].posY=300;
+	lg_obj[0].posY=300+46;
 	lg_obj[1].posX=3200;
-	lg_obj[1].posY=400;
+	lg_obj[1].posY=400+46;
 	lg_obj[2].posX=3550;
-	lg_obj[2].posY=350;
+	lg_obj[2].posY=350+46;
 	breakables[3].posX =3300;
-	breakables[3].posY =300;
+	breakables[3].posY =300+46;
 	breakables[3].broken=false;
 	breakables[4].posX =3300;
-	breakables[4].posY =200;
+	breakables[4].posY =200+46;
 	breakables[4].broken=false;
 	sheep[4].posX =2600;
-	sheep[4].posY =500;
+	sheep[4].posY =500+46;
 	sheep[4].saved = false;
 	sheep[5].posX =1700;
-	sheep[5].posY =200;
+	sheep[5].posY =200+46;
 	sheep[5].saved = false;
 	sheep[6].posX =3650;
-	sheep[6].posY =250;
+	sheep[6].posY =250+46;
 	sheep[6].saved = false;
 	
-	miniGame.x = 4300
-	miniGame.y = 637
+	miniGame.x = 4300;
+	miniGame.y = 637+60;
 	
 	signs[0].posX = 4500;
-	signs[0].posY = 623;
+	signs[0].posY = 623+46;
 	
 	breakables[5].posX =4600;
-	breakables[5].posY =640;
+	breakables[5].posY =640+46;
 	breakables[5].broken=false;
 	sm_obj[6].posX=4800;
-	sm_obj[6].posY=540;
+	sm_obj[6].posY=540+46;
 	sm_obj[7].posX=5000;
-	sm_obj[7].posY=440;
+	sm_obj[7].posY=440+46;
 	lg_obj[3].posX=5200;
-	lg_obj[3].posY=340;
+	lg_obj[3].posY=340+46;
 	
 	levelWords[0] = "CAKE";
 	levelWords[1] = "SMELL";
@@ -1486,7 +1467,7 @@ function update()
 
 			if(!collision)
 			{
-				floorLvl = 737;
+				floorLvl = 737+46;
 				// constantly updates playerOne's Y position
 				playerObj.posY -= playerDirec;
 				// constantly increases the amount of pull downwards by one. 
@@ -1506,7 +1487,7 @@ function update()
   
     
     if (!collide&&!isJump){
-        floorLvl=737;
+        floorLvl=737+46;
         
         if (playerObj.posY<floorLvl)
         {
@@ -1556,15 +1537,15 @@ function update()
                     playerObj.jumpDecay += 1;
                     if(!isDucking)
                     {
-                        if (playerObj.posY >600){
-                            playerObj.posY = 600;	
+                        if (playerObj.posY >600+46){
+                            playerObj.posY = 600+46;	
                         }
                     }
                     else
                     {
-                            if (playerObj.posY >650)
+                            if (playerObj.posY >650+46)
                             {
-                                playerObj.posY = 650;
+                                playerObj.posY = 650+46;
                             }
                     }
                 }
@@ -1830,7 +1811,7 @@ function update()
 			}
 			
 			if(!sheep[i].collision){
-				  floorLvlSheep=635;
+				  floorLvlSheep=635+46;
 			  
 				  if (sheep[i].posY<floorLvlSheep)
 				  {
@@ -1878,9 +1859,9 @@ function update()
 						  {
 							  sheep[i].posY+= sheep[i].jumpDecay;
 							  sheep[i].jumpDecay += 1;
-							  if(sheep[i].posY > 640)
+							  if(sheep[i].posY > 640+46)
 							  {
-								sheep[i].posY = 640;
+								sheep[i].posY = 640+46;
 							  }
 						  }
 					  }
@@ -2645,7 +2626,7 @@ function render()
 		
 		if(currentLvl==1)
 		{
-			ctx.drawImage(cloud,3100,270);
+			ctx.drawImage(cloud,3100,270+46);
 		}
 		count++;
 		if (count ==40){
@@ -2668,7 +2649,8 @@ function render()
         
     	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
     	{
-        	intialize();
+			playerObj.posX = 50;
+			playerObj.posY = 600+46;	 
     	}
         
   		ctx.restore();
