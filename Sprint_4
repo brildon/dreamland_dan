@@ -99,25 +99,25 @@ var temp2Y = 0;
 var key = [];
 
 var distantBackground = {
-	sourceY: 1009,
+	sourceY: 0,
 	sourceX: 0,
-	sourceWidth: 6336,
-	sourceHeight: 424,
-	width: 6336,
-	height: 428,
+	sourceWidth: 0,
+	sourceHeight: 0,
+	width: 0,
+	height: 0,
 	x: 0,
 	y: 0
 }
 
 var foregroundBackground = {
-	sourceY: 885,
+	sourceY: 0,
 	sourceX: 0,
-	sourceWidth: 6336,
-	sourceHeight: 42,
-	width: 6336,
-	height: 53,
+	sourceWidth: 0,
+	sourceHeight: 0,
+	width: 0,
+	height: 0,
 	x: 0,
-	y: 680
+	y: 0
 }
 
 var foreground2Background = {
@@ -550,7 +550,9 @@ var credits = new Image();
 credits.src = "https://cloud.githubusercontent.com/assets/8864180/4948999/ec74fcfe-6610-11e4-8b38-ed50a396dea8.png";
 
 var lvl1_background = new Image();	
-lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/4923079/a12690e0-6517-11e4-9492-2fe66469f118.png";
+lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160133/9eaf675e-7347-11e4-8aea-927623f8f998.png";
+var lvl2_background = new Image();	
+lvl2_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160595/24480b4c-7356-11e4-8565-c5cddc8d0582.png";
 
 var regExp = new Image();
 regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
@@ -639,10 +641,9 @@ var blueStar = new Image();
 var redStar = new Image();
 var orangeStar = new Image();
 var emptyStar = new Image();
-
-blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
-redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
-orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
@@ -875,9 +876,27 @@ function gameStart()
 }
 function intialize()
 {
+	distantBackground.sourceY = 2854;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 415;
+	distantBackground.width = 6336;
+	distantBackground.height = 415;
+	distantBackground.x = 0;
+	distantBackground.y = 0;
+	
+	foregroundBackground.sourceY = 1919;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 49;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 49;
+	foregroundBackground.x = 0;
+	foregroundBackground.y = 736;
+	
 	sheepPoints = 0;
 	
-	playerObj.posX = 50;  
+	playerObj.posX = 50;  //50
 	playerObj.posY = 600;	
 	
 	miniGame.x = 3400
@@ -1005,6 +1024,24 @@ function intialize()
 function setPositionLvl2() {
 	lvlFlag = false;
 	lastLevel = true;
+	
+	distantBackground.sourceY = 2854;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = 0;
+	
+	foregroundBackground.sourceY = 1180;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 789;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 789
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -3;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600;
@@ -1189,6 +1226,7 @@ function side_scroller(){
 	camera.vx = camera.x - camera.previousX;
 
 	distantBackground.x += camera.vx / 4;
+	//foregroundBackground.x -= camera.vx / 8;
 
 	camera.previousX = camera.x;
 }
@@ -1912,14 +1950,14 @@ function update()
 			
 			ctx.drawImage(regScreen,0,0);
       
-			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
+			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
 			
 			if(textBoxArray[0].canWrite)
 			{
@@ -2055,27 +2093,27 @@ function update()
 			
 			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord - 80);
 			}
 			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord - 80);
 			}
 			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
 			{
-				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord - 80);
 			}
 			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord - 80);
 			}
 			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
 			{
-				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord - 80);
 			}
 			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
 			{
-				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord - 80);
 			}
             
 			ctx.fillText(sheepPoints,210,100,50);
@@ -2310,10 +2348,13 @@ function render()
         	ctx.drawImage(endScene,0,0,1600,900);
     
     	if (currentLvl === 1){
-        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
+			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
+        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+			ctx.drawImage(lvl1_background,0,1101,6336,5,0, 781, 6336, 5); //black line 
+			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
     
         	//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
 			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
@@ -2383,10 +2424,12 @@ function render()
     	}
     	else if (currentLvl === 2)
 		{
-        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 10, 6336, 900);
-        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height);
-        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height);
-        	ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+        	ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+			ctx.drawImage(lvl2_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        	ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        	ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
+			ctx.drawImage(lvl2_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 			
 			ctx.drawImage(sign,signs[0].posX,signs[0].posY);
 			for(var i=0; i<8; i++)
