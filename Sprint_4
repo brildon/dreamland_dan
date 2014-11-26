@@ -446,7 +446,6 @@ for (var i=0; i<sheep.length; i++)
 	sheep[i]=Object.create(sheepObj);
 }
 
-
 var hitVar = false;
 var floorLvl = 737+46;
 var floorLvlSheep = 737+46;
@@ -544,10 +543,10 @@ window.addEventListener("keyup", keyUp, false);
 
 var mainScreen = new Image();	
 mainScreen.addEventListener("load", loadHandler, false);
-mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5153155/95f78944-71de-11e4-89ef-be0679abb6a1.png";
+mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
 
 var credits = new Image();
-credits.src = "https://cloud.githubusercontent.com/assets/8864180/4948999/ec74fcfe-6610-11e4-8b38-ed50a396dea8.png";
+credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
 
 var lvl1_background = new Image();	
 lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160133/9eaf675e-7347-11e4-8aea-927623f8f998.png";
@@ -603,6 +602,8 @@ var regScreen = new Image();
 var startButton = new Image();
 var optionsButton = new Image();
 var creditsButton = new Image();
+var backButton = new Image();
+var soundButton = new Image();
 
 var expInstr1 = new Image();
 var expInstr2 = new Image();
@@ -681,6 +682,8 @@ expInstr24.src = "https://cloud.githubusercontent.com/assets/8864180/5101849/51b
 startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
 optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
 creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
+backButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195212/7918d2da-74de-11e4-8f36-1e69ef195989.png";
+soundButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195215/79284788-74de-11e4-8b41-10194215c6f8.png";
 regScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5100959/980625da-6f75-11e4-818d-30b00f9e71bd.png";
 submitImg.src = "https://cloud.githubusercontent.com/assets/8864180/5049830/63f6826a-6bee-11e4-9d19-9048b8815500.png";
 endScene.src = "https://cloud.githubusercontent.com/assets/8864180/4950698/acadc788-665e-11e4-86e0-f0785f8c70ad.png";
@@ -701,8 +704,8 @@ cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/d
 box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c954f88-74e0-11e4-9625-d47f4e527609.png";
-optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8864180/4950025/2bb39eaa-6654-11e4-8a5f-b257b6b1004b.png";
-optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
+optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
+//optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
 cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
 restart.src = "https://cloud.githubusercontent.com/assets/8864180/4951552/c68d9b60-6668-11e4-806f-eb3eebb55a91.png";
 smallPlatform.src = "https://cloud.githubusercontent.com/assets/8864180/4951669/2d30d3f4-666a-11e4-947c-19d5196a0dc8.png";
@@ -747,13 +750,13 @@ function menu(e)
     	buildCheck=false;
 		mainCheck=false;	
 	}
-	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && creditsScreen == true) //out credits screen
+	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
 	{
 		creditsScreen = false;
 		menuFlag = 1;
 		mainCheck=true;
 	}
-	if(55<mouse.x && mouse.x<350 && 50<mouse.y && mouse.y<190 && optionsScreen == true) //out options screen
+	if(107<mouse.x && mouse.x<330 && 719<mouse.y && mouse.y<805 && optionsScreen == true) //out options screen
 	{
 		optionsScreen = false;
 		mainCheck=true;
@@ -768,11 +771,11 @@ function menu(e)
     	buildCheck=false;
 		mainCheck=false;
 	}
-	if(optionsScreen && mouse.x>795 && mouse.x<925 && mouse.y >385 && mouse.y<484) //deactivate sound
+	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && soundOn) //deactivate sound
 	{
-    	soundOn = false;
+		soundOn = false;
 	}
-	if(optionsScreen && mouse.x>575 && mouse.x<705 && mouse.y >385 && mouse.y<484) //activate sound
+	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && !soundOn) //activate sound
 	{
 		soundOn = true;
 	}
@@ -800,6 +803,10 @@ function renderMenu (){
     	if (creditsScreen==true)
     	{
         	ctx.drawImage(credits,0,0,1600,900);
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
+			{
+		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
+			}
     	}
     	else if(optionsScreen==true)
     	{
@@ -810,9 +817,14 @@ function renderMenu (){
         	}
         	else
         	{
-            	ctx.drawImage(optionSoundOff,0,0,1600,900);
+            	ctx.drawImage(optionSoundOn,0,0,1600,900);
+				ctx.drawImage(soundButton,0, 162,360, 162,587,410, 360, 162);
 				document.getElementById('music').pause();
         	}
+			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805)
+			{
+		 			ctx.drawImage(backButton,0,162,360, 162,35,692, 360, 162);
+			}
     	}
     	else if(buildCheck == false || mainCheck)
     	{
