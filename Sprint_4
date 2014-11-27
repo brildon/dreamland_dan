@@ -727,6 +727,15 @@ regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
 
+document.onkeydown = function (e) 
+{
+    if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+	{
+        console.log("Here");
+		e.preventDefault();
+    }
+};
+
 function menu(e)
 {
 	var tempStartH;
@@ -2850,6 +2859,12 @@ function writeText()
 
 	document.onkeydown = function(e)
 	{
+    		if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+		{
+        		console.log("Here");
+			e.preventDefault();
+    		{
+	
 		key[e.keyCode] = true;
 		if(currentTextBox != null && sheepPoints != 0)
 		{
