@@ -80,6 +80,8 @@ var regExpOne = "";
 var regExpTwo = "";
 var regExpThree = "";
 
+var lvlTwoStart = false;
+
 var mouse = {x:0,y:0};
 
 var collisionIndex = -1;
@@ -642,9 +644,10 @@ var blueStar = new Image();
 var redStar = new Image();
 var orangeStar = new Image();
 var emptyStar = new Image();
-blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160175/222e0c92-7349-11e4-9de1-94eda2cc8bd3.png";
-redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160177/51bf5c68-7349-11e4-8b56-b98b14dbc410.png";
-orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160179/65d2fc64-7349-11e4-8a68-10ac3267e593.png";
+
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
@@ -731,7 +734,6 @@ document.onkeydown = function (e)
 {
     if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
 	{
-        console.log("Here");
 		e.preventDefault();
     }
 };
@@ -1159,6 +1161,15 @@ function setPositionLvl2() {
 	lg_obj[3].posX=5200;
 	lg_obj[3].posY=340+46;
 	
+	//Do this for every Lvl
+	regExp1 = new RegExp();
+	regExp2 = new RegExp();
+	regExp3 = new RegExp();
+	
+	regExpOne = "";
+	regExpTwo = "";
+	regExpThree = "";
+	
 	levelWords[0] = "CAKE";
 	levelWords[1] = "SMELL";
 	levelWords[2] = "SMACK";
@@ -1170,6 +1181,20 @@ function setPositionLvl2() {
 	levelWords[6] = "BREACH";
 	levelWords[7] = "BREAK";
 	levelWords[8] = "BAKED";
+	
+	correctWords[0] = levelWords[2];
+	correctWords[1] = levelWords[3];
+	correctWords[2] = levelWords[7];
+	
+	incorrectWords[0] = levelWords[0];
+	incorrectWords[1] = levelWords[1];
+	incorrectWords[2] = levelWords[4];
+	incorrectWords[3] = levelWords[5];
+	incorrectWords[4] = levelWords[6];
+	incorrectWords[5] = levelWords[8];
+	
+	lvlTwoStart = true;
+	//Everything above for every Lvl 
 	
 	//extra stuff from first lvl
 	sheep[9].posX =0;
@@ -1941,7 +1966,8 @@ function update()
 	}
     if(hitTest(playerObj,miniGame) && closeWindow == false)
     {		
-        //if(currentLvl==1)
+        console.log("Here " + closeWindow);
+		//if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
@@ -2229,8 +2255,8 @@ function update()
 				
 				return true;
 			}  
-			console.log("x: "+tempX);
-			console.log("y: "+tempY);
+			//console.log("x: "+tempX);
+			//console.log("y: "+tempY);
 			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100)
 			{
 				ctx.drawImage(questionHelp,0,0);	
@@ -2324,9 +2350,12 @@ function update()
     && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
 		if(currentLvl==1)
-        	jumpable =true;
-		else if(currentLvl==2)
-			attackable =true;
+        	jumpable = true;
+		else if(currentLvl==2 && lvlTwoStart)
+		{
+			console.log("Here at attack");
+			attackable = true;
+		}	
     }
 }
 }
@@ -2862,8 +2891,8 @@ function writeText()
     		if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
 		{
         		console.log("Here");
-			e.preventDefault();
-    		{
+				e.preventDefault();
+		}
 	
 		key[e.keyCode] = true;
 		if(currentTextBox != null && sheepPoints != 0)
