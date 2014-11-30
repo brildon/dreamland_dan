@@ -303,6 +303,7 @@ var breakObj = {
 	posY: 0,
 	height: 100,
 	width: 100,
+	countB: 0,
 	broken: false,
 	
 	centerX: function (){
@@ -704,7 +705,7 @@ sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2d
 sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
 cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
 cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/dd01743a-6608-11e4-979c-4dac571f3560.png";
-box.src = "https://cloud.githubusercontent.com/assets/8864180/4948655/dd023a32-6608-11e4-95a6-35e7511b0679.png";
+box.src = "https://cloud.githubusercontent.com/assets/8835208/5236711/b984f888-780f-11e4-9e0e-6bb9dcac1f89.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c954f88-74e0-11e4-9625-d47f4e527609.png";
 optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
@@ -1065,6 +1066,10 @@ function setPositionLvl2() {
 	foregroundBackground.height = 789
 	foregroundBackground.x = 0;
 	foregroundBackground.y = -3;
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
@@ -1826,10 +1831,7 @@ function update()
         }
         if(sheep[i].saved)
         {
-            //changecode
-		
 			sheep[i].posX--;
-		
 		
 			sheep[i].collision = false;
 			
@@ -2379,7 +2381,7 @@ function render()
         	ctx.drawImage(endScene,0,0,1600,900);
     
     	if (currentLvl === 1){
-        	ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
 			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
         	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
@@ -2398,7 +2400,27 @@ function render()
 			{
 				if(!breakables[i].broken)
 				{
-					ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
 				}
 			}
 			for(var i=0; i<4; i++)
@@ -2467,7 +2489,27 @@ function render()
 			{
 				if(!breakables[i].broken)
 				{
-					ctx.drawImage(box,breakables[i].posX, breakables[i].posY);
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
 				}
 			}
 			for(var i=0; i<8; i++)
