@@ -31,10 +31,10 @@ levelWords[1] = "BOO";
 levelWords[2] = "HOP";
 
 levelWords[3] = "LEAP";
-levelWords[4] = "SLEEP";
+levelWords[4] = "STUNT";
 levelWords[5] = "EAT";
 
-levelWords[6] = "STUNT";
+levelWords[6] = "SLEEP";
 levelWords[7] = "JUMP";
 levelWords[8] = "JACK";
 
@@ -2458,7 +2458,7 @@ function render()
 					}
 				}
     		}
-			ctx.drawImage(cloud,3100,270);
+			
 			for(var i =0; i<signs.length; i++)  
 			{         
             	if(signs[i].active)
