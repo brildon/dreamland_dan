@@ -1199,6 +1199,10 @@ function setPositionLvl2() {
 	incorrectWords[5] = levelWords[8];
 	
 	lvlTwoStart = true;
+	
+	submitButtonArray[0].clicked = false;
+	submitButtonArray[1].clicked = false;
+	submitButtonArray[2].clicked = false;
 	//Everything above for every Lvl 
 	
 	//extra stuff from first lvl
@@ -2048,7 +2052,7 @@ function update()
                 if(i < 3)
                 {
                     coordX = 235;
-                    if(regExp1.test(levelWords[i]))
+                    if(regExp1.test(levelWords[i]) && submitButtonArray[0].clicked)
                     {
                         ctx.fillStyle = "#FEA301"; // yellow
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 75);
@@ -2058,14 +2062,14 @@ function update()
 					{
 						ctx.drawImage(orangeStar, coordX - 100, (i + 1)*100 + 163);
 					}
-					if(regExp2.test(levelWords[i]))
+					if(regExp2.test(levelWords[i]) && submitButtonArray[1].clicked)
                     {
 						ctx.fillStyle = "#F2561A"; // red
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 10);
 						ctx.fillRect(coordX - 100, (i + 1)*100 + 210, 394, 10);
 						ctx.fillStyle = 'black';
                     }
-					if(regExp3.test(levelWords[i]))
+					if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
                     {
 						ctx.strokeStyle = 'black';
 						ctx.miterLimit=2;
@@ -2083,14 +2087,14 @@ function update()
 					{
 						ctx.drawImage(redStar, coordX - 85, (i - 3 + 1)*100 + 163);
 					}
-                    if(regExp2.test(levelWords[i]))
+                    if(regExp2.test(levelWords[i]) && submitButtonArray[1].clicked)
                     {
                         ctx.fillStyle = "#F2561A"; // red
 						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 145, 394, 10);
 						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 210, 394, 10);
 						ctx.fillStyle = 'black';
                     }
-					if(regExp3.test(levelWords[i]))
+					if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
                     {
 						ctx.strokeStyle = 'black';
 						ctx.miterLimit=2;
@@ -2108,7 +2112,7 @@ function update()
 					{
 						ctx.drawImage(blueStar, coordX - 95, (i - 6 + 1)*100 + 163);
 					}
-                    if(regExp3.test(levelWords[i]))
+                    if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
                     {
 						ctx.strokeStyle = 'black';
 						ctx.miterLimit=2;
