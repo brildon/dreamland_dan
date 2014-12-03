@@ -2529,9 +2529,6 @@ function hitTest(r1,r2)
 
 function render()
 {
-	jumpable = true;
-	attackable = true;
-	
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
