@@ -30,6 +30,9 @@ var tempY = 0;
 var levelWords = new Array(9);
 var regExpFin = false;
 
+var tutorSheep = 0;
+var center = 0;
+
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
@@ -657,7 +660,11 @@ var blueStar = new Image();
 var redStar = new Image();
 var orangeStar = new Image();
 var emptyStar = new Image();
+var singleRegExp = new Image();
+var doubleRegExp = new Image();
 
+singleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275877/950cd470-7a72-11e4-8a1b-96702456ff91.png";
+doubleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275924/26bcd7ac-7a74-11e4-9466-ae76f4d044fb.png";
 blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
 redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
 orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
@@ -2106,23 +2113,63 @@ function update()
             ctx.font = "50px Helvetica";
             playerObj.speed = 0;
 			
-            textOpen = true;
+			if(tutorSheep == 0)
+			{
+				center = 455;
+			}
+			if(tutorSheep == 1)
+			{
+				center = 239;
+			}
+			if(tutorSheep == 2 || currentLvl > 1)
+			{
+				center = 0;
+			}
+			console.log(center);
+			textBoxArray[0].xCoord = 100 + center;
+			textBoxArray[1].xCoord = 600 + center;
+			textBoxArray[2].xCoord = 1000 + center;
+            
+			textOpen = true;
             writeText();
             //ctx.clearRect(0,0,1600,900);
+			if(tutorSheep >= 2 || currentLvl > 1)
+			{
+				ctx.drawImage(regScreen,0,0);
+			}
+			if(tutorSheep == 1)
+			{
+				ctx.drawImage(doubleRegExp,0,0);
+			}
+			if(tutorSheep == 0)
+			{
+				ctx.drawImage(singleRegExp,0,0);
+			}
 			
-			ctx.drawImage(regScreen,0,0);
-      
 			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			//TODO: Finish dis shite
+			if(tutorSheep == 1)
+			{
+				center = 231;
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295 - 8, textBoxArray[1].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345 - 8, textBoxArray[1].yCoord);
+			}
+			if(tutorSheep == 2 || currentLvl > 1)
+			{
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
 			
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
-			
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
-			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+			}
 			
 			if(textBoxArray[0].canWrite && !regExpFin)
 			{
+				if(tutorSheep == 1)
+				{
+					center = 239;
+				}
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
 					ctx.fillText(regExpOne + "|", textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
@@ -2138,8 +2185,11 @@ function update()
 				}
 			}
 			if(textBoxArray[1].canWrite && !regExpFin)
-
 			{
+				if(tutorSheep == 1)
+				{
+					center = 231;
+				}
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
 					ctx.fillText(regExpTwo + "|", textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
@@ -2154,6 +2204,7 @@ function update()
 					flashCounter = 0;
 				}
 			}
+			
 			if(textBoxArray[2].canWrite && !regExpFin)
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
@@ -2169,7 +2220,7 @@ function update()
 				{
 					flashCounter = 0;
 				}
-		}
+			}
 			
             ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
             ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
@@ -2180,7 +2231,11 @@ function update()
                 var coordX;
                 if(i < 3)
                 {
-                    coordX = 235;
+                    if(tutorSheep == 1)
+					{
+						center = 239;
+					}
+					coordX = 235 + center;
                     if(regExp1.test(levelWords[i]) && submitButtonArray[0].clicked)
                     {
                         ctx.fillStyle = "#FEA301"; // yellow
@@ -2209,9 +2264,13 @@ function update()
 					ctx.fillText(levelWords[i], coordX, (i + 1)*100 + 200);
 					ctx.fillStyle = 'black';
                 }
-                else if(i < 6)
+                else if(i < 6 && tutorSheep >= 1)
                 {
-                    coordX = 675;
+                    if(tutorSheep == 1)
+					{
+						center = 231;
+					}
+					coordX = 675 + center;
 					if(levelWords[i] == correctWords[1])
 					{
 						ctx.drawImage(redStar, coordX - 85, (i - 3 + 1)*100 + 163);
@@ -2234,9 +2293,9 @@ function update()
                     ctx.fillText(levelWords[i], coordX, (i - 3)*100 + 300);
                     ctx.fillStyle = 'black';
                 }
-                else if(i < 9)
+                else if(i < 9 && tutorSheep >= 2)
                 {
-                    coordX = 1140;
+                    coordX = 1140 + center;
 					if(levelWords[i] == correctWords[2])
 					{
 						ctx.drawImage(blueStar, coordX - 95, (i - 6 + 1)*100 + 163);
@@ -2258,7 +2317,11 @@ function update()
 			{
 				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
 			}
-			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]))
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && tutorSheep == 1)
+			{
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295 - 8, textBoxArray[1].yCoord);
+			}
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && tutorSheep != 1)
 			{
 				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
 			}
@@ -2266,7 +2329,11 @@ function update()
 			{
 				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
 			}
-			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) && tutorSheep == 1)
+			{
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345 - 8, textBoxArray[1].yCoord);
+			}
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) && tutorSheep != 1)
 			{
 				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
 			}
@@ -3102,6 +3169,10 @@ function writeText()
 			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
 			{
 				closeWindow = true;
+				if(tutorSheep < 3)
+				{
+					tutorSheep++;
+				}
 				playerObj.speed = 5;
 				textBoxArray[0].canWrite = false;
 				textBoxArray[1].canWrite = false;
