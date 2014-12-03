@@ -22,6 +22,7 @@ var levelAt = 0;
 var tempX = 0;
 var tempY = 0;
 var levelWords = new Array(9);
+var regExpFin = false;
 
 var flashCounter = 0;
 var closeWindow = false;
@@ -1199,6 +1200,7 @@ function setPositionLvl2() {
 	incorrectWords[5] = levelWords[8];
 	
 	lvlTwoStart = true;
+	regExpFin = false;
 	
 	submitButtonArray[0].clicked = false;
 	submitButtonArray[1].clicked = false;
@@ -1272,8 +1274,7 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
-	console.log(closeWindow);
-	console.log(hitTest(playerObj, miniGame));
+	console.log(regExpFin);
 	if(gameOver==false)
     {
     
@@ -1995,7 +1996,7 @@ function update()
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
 			ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
 			
-			if(textBoxArray[0].canWrite)
+			if(textBoxArray[0].canWrite && !regExpFin)
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
@@ -2011,7 +2012,7 @@ function update()
 					flashCounter = 0;
 				}
 			}
-			if(textBoxArray[1].canWrite)
+			if(textBoxArray[1].canWrite && !regExpFin)
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
@@ -2027,7 +2028,7 @@ function update()
 					flashCounter = 0;
 				}
 			}
-			if(textBoxArray[2].canWrite)
+			if(textBoxArray[2].canWrite && !regExpFin)
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
@@ -2358,12 +2359,19 @@ function update()
     && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
 		if(currentLvl==1)
+		{
         	jumpable = true;
+		}
 		else if(currentLvl==2 && lvlTwoStart)
 		{
-			console.log("Here at attack");
 			attackable = true;
-		}	
+		}
+		
+		//Always Happens
+		regExpFin = true;
+		textBoxArray[0].canWrite = false;
+		textBoxArray[1].canWrite = false;
+		textBoxArray[2].canWrite = false;
     }
 }
 }
@@ -2937,14 +2945,13 @@ function writeText()
 
 	document.onkeydown = function(e)
 	{
-    		if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+    	if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
 		{
-        		console.log("Here");
-				e.preventDefault();
+			e.preventDefault();
 		}
 	
 		key[e.keyCode] = true;
-		if(currentTextBox != null && sheepPoints != 0)
+		if(currentTextBox != null && sheepPoints != 0 && !regExpFin)
 		{
 			if(currentTextBox.canWrite == true)
 			{
@@ -3368,7 +3375,8 @@ function writeText()
 				}
 			}
 		}
-		if(key[8]) //delete button
+		
+		if(key[8] && !regExpFin) //delete button
 		{
 			if(currentTextBox == textBoxArray[0] && regExpOne.length != 0)
 			{
