@@ -1234,7 +1234,7 @@ function side_scroller(){
 	camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
 
 	if (playerObj.posX < camera.leftInnerBoundary()){
-    	camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));	
+    	camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));
 	}
 	if (playerObj.posY < camera.topInnerBoundary()){
     	camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
@@ -1272,6 +1272,8 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
+	console.log(closeWindow);
+	console.log(hitTest(playerObj, miniGame));
 	if(gameOver==false)
     {
     
@@ -1284,7 +1286,7 @@ function update()
     }
     
     //SpaceBar
-		if(key[32])
+		if(key[32] && !hitTest(playerObj, miniGame) || key[32] && closeWindow)
 		{
 			if(attackable){
 				if (countA >= 0 && countA < 10){
@@ -1309,7 +1311,7 @@ function update()
 			}
 		}
     //W
-    if(key[38])
+    if(key[38] && !hitTest(playerObj, miniGame) || key[38] && closeWindow)
     {
         if(!isJump&&jumpable)
         {
@@ -1318,7 +1320,7 @@ function update()
         }	
     }
     //A
-    if(key[37])
+    if(key[37] && !hitTest(playerObj, miniGame) || key[37] && closeWindow)
     {
         if(playerObj.stopped || signs[0].timesRead === -1){
             isMoveLeft = false;
@@ -1330,7 +1332,7 @@ function update()
         }
     }
     //S
-    if(key[40])
+    if(key[40] && !hitTest(playerObj, miniGame) || key[40] && closeWindow)
     {
         if(playerObj.stopped){
             isDucking = false;
@@ -1342,7 +1344,7 @@ function update()
         }
     }
     //D
-    if(key[39])
+    if(key[39] && !hitTest(playerObj, miniGame) || key[39] && closeWindow)
     {
         if (playerObj.stopped || signs[0].timesRead === -1){
             isMoveRight = false;
@@ -1972,12 +1974,12 @@ function update()
 	}
     if(hitTest(playerObj,miniGame) && closeWindow == false)
     {		
-        console.log("Here " + closeWindow);
 		//if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
-            
+            playerObj.speed = 0;
+			
             textOpen = true;
             writeText();
             //ctx.clearRect(0,0,1600,900);
@@ -2925,6 +2927,7 @@ function writeText()
 			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
 			{
 				closeWindow = true;
+				playerObj.speed = 5;
 				textBoxArray[0].canWrite = false;
 				textBoxArray[1].canWrite = false;
 				textBoxArray[2].canWrite = false;
