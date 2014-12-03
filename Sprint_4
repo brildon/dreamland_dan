@@ -8,12 +8,18 @@
 <canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
 
 </div>
-<audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav" preload="auto" loop></audio>
+<audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/SheepHeard_Backtrack1.wav" preload="auto" loop></audio>
+<audio id="sound01" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Box_Break.wav" preload="auto"</audio>
+<audio id="sound02" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Woosh-Mark_DiAngelo-4778593.wav" preload="auto"</audio>
+<audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
+<audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
+<audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
+
 <script>
 var cv = document.getElementById("ctx");
 var ctx = cv.getContext('2d');
 
-var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
+//var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
 
 document.getElementById('music').play();
 
@@ -445,6 +451,7 @@ for (var i =0; i<lg_obj.length; i++)
 
 
 var sheep = new Array (10);
+
 for (var i=0; i<sheep.length; i++)
 {
 	sheep[i]=Object.create(sheepObj);
@@ -556,6 +563,10 @@ var lvl1_background = new Image();
 lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160133/9eaf675e-7347-11e4-8aea-927623f8f998.png";
 var lvl2_background = new Image();	
 lvl2_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160595/24480b4c-7356-11e4-8565-c5cddc8d0582.png";
+var lvl3_background = new Image();
+lvl3_background.src = "https://cloud.githubusercontent.com/assets/8835208/5236669/9ccc57b0-780d-11e4-890c-df5cef37c58b.png";
+var lvl4_background = new Image();
+lvl4_background.src = "https://cloud.githubusercontent.com/assets/8835208/5274557/dda8e35c-7a5b-11e4-9eb5-605e54d41d69.png";
 
 var regExp = new Image();
 regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
@@ -752,6 +763,7 @@ function menu(e)
 
 	if(mouse.x < 718 && mouse.y < 484 && mouse.x > 418 && mouse.y > 405 && menuCheck==true && creditsScreen ==false && optionsScreen==false) //enter game
 	{
+		document.getElementById('sound05').play();
 		buildCheck=false;
     	menuCheck=false;
 		mainCheck=false;
@@ -759,37 +771,44 @@ function menu(e)
 	}
 	if(1046<mouse.x && mouse.x<1331 && 686<mouse.y && mouse.y<749 && optionsScreen == false) //enter credits screen
 	{
+		document.getElementById('sound05').play();
 		creditsScreen = true;
     	buildCheck=false;
 		mainCheck=false;	
 	}
 	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
 	{
+		document.getElementById('sound05').play();
 		creditsScreen = false;
 		menuFlag = 1;
 		mainCheck=true;
 	}
 	if(107<mouse.x && mouse.x<330 && 719<mouse.y && mouse.y<805 && optionsScreen == true) //out options screen
 	{
+		document.getElementById('sound05').play();
 		optionsScreen = false;
 		mainCheck=true;
 	}
 	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
 	{
+		document.getElementById('sound05').play();
 		mainCheck=false;
 	}
 	if(753<mouse.x && mouse.x<1054 && mouse.y>537 && 614 > mouse.y && creditsScreen == false)  //enter options screen
 	{
+		document.getElementById('sound05').play();
 		optionsScreen = true;
     	buildCheck=false;
 		mainCheck=false;
 	}
 	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && soundOn) //deactivate sound
 	{
+		document.getElementById('sound05').play();
 		soundOn = false;
 	}
 	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && !soundOn) //activate sound
 	{
+		document.getElementById('sound05').play();
 		soundOn = true;
 	}
 }
@@ -1045,10 +1064,8 @@ function intialize()
 	
 }
 
-
 function setPositionLvl2() {
 	lvlFlag = false;
-	lastLevel = true;
 	
 	distantBackground.sourceY = 2854;
 	distantBackground.sourceX = 0;
@@ -1223,6 +1240,107 @@ function setPositionLvl2() {
 
 }
 
+function setPositionLvl3() {
+	lvlFlag = false;
+	
+	distantBackground.sourceY = 1180;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = -3;
+	
+	foregroundBackground.sourceY = 2854;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 789;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 789
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -2;	
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;
+		breakables[i].posX = 0;
+		breakables[i].posY = 0;	
+	}
+	for (var i = 0; i < sheep.length; i++){
+		sheep[i].posX = 0;
+		sheep[i].posY = 0;	
+	}
+	for (var i = 0; i < sm_obj.length; i++){
+		sm_obj[i].posX = 0;
+		sm_obj[i].posY = 0;	
+	}
+	for (var i = 0; i < lg_obj.length; i++){
+		lg_obj[i].posX = 0;
+		lg_obj[i].posY = 0;	
+	}
+	for (var i = 0; i < signs.length; i++){
+		signs[i].posX = 0;
+		signs[i].posY = 0;	
+	}
+	
+	miniGame.x = 0;
+	miniGame.y = 0;
+	
+	playerObj.posX = 200;
+	playerObj.posY = 600+46;
+}
+
+function setPositionLvl4() {//changehere
+	lvlFlag = false;
+	lastLevel = true;
+	
+	distantBackground.sourceY = 1180;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = -3;
+	
+	foregroundBackground.sourceY = 2761;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 5329;
+	foregroundBackground.sourceHeight = 797;
+	foregroundBackground.width = 5329;
+	foregroundBackground.height = 797
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -5;	
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;
+		breakables[i].posX = 0;
+		breakables[i].posY = 0;	
+	}
+	for (var i = 0; i < sheep.length; i++){
+		sheep[i].posX = 0;
+		sheep[i].posY = 0;	
+	}
+	for (var i = 0; i < sm_obj.length; i++){
+		sm_obj[i].posX = 0;
+		sm_obj[i].posY = 0;	
+	}
+	for (var i = 0; i < lg_obj.length; i++){
+		lg_obj[i].posX = 0;
+		lg_obj[i].posY = 0;	
+	}
+	for (var i = 0; i < signs.length; i++){
+		signs[i].posX = 0;
+		signs[i].posY = 0;	
+	}
+	
+	miniGame.x = 0;
+	miniGame.y = 0;
+	
+	playerObj.posX = 200;
+	playerObj.posY = 600+46;
+ }
+
 function gameScreen()
 {
 	update();
@@ -1263,8 +1381,12 @@ function side_scroller(){
 
 	camera.vx = camera.x - camera.previousX;
 
+	if (currentLvl != 3){
 	distantBackground.x += camera.vx / 4;
-	//foregroundBackground.x -= camera.vx / 8;
+	}
+	if (currentLvl === 4){
+		foregroundBackground.x -= camera.vx / 2;
+	}
 
 	camera.previousX = camera.x;
 }
@@ -1292,6 +1414,7 @@ function update()
 			if(attackable){
 				if (countA >= 0 && countA < 10){
 					isAttack = true;
+					document.getElementById('sound02').play();
 				}
 				else{
 					isAttack = false;
@@ -1318,6 +1441,7 @@ function update()
         {
             playerObj.posY = playerObj.posY-1;
             isJump = true;
+			document.getElementById('sound02').play();
         }	
     }
     //A
@@ -1834,6 +1958,7 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
+				document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
@@ -2013,6 +2138,7 @@ function update()
 				}
 			}
 			if(textBoxArray[1].canWrite && !regExpFin)
+
 			{
 				if(flashCounter >= 0 && flashCounter <= 20)
 				{
@@ -2334,16 +2460,36 @@ function update()
         render();
     }
     
-    if (playerObj.posX > 6000){
+    if (playerObj.posX > 6000 && currentLvl === 1){
         currentLvl = 2;
         lvlFlag = true;	
     }
+	if (playerObj.posX > 6005 && currentLvl === 2){
+		currentLvl = 3;
+		lvlFlag = true;
+	}
+	if (playerObj.posX > 6010 && currentLvl === 3){
+		currentLvl = 4;
+		lvlFlag = true;
+	}
+	if (playerObj.posX > 6015 && currentLvl === 4){
+		lvlFlag = true;
+	}
     
     if (currentLvl === 2 && lvlFlag){
+		 ctx.drawImage(cutscene,0,0,1600,900);
+         setPositionLvl2();
+	}
+	if (currentLvl === 3 && lvlFlag){
+		 ctx.drawImage(cutscene,0,0,1600,900);
+         setPositionLvl3();
+	}
+	
+	if (currentLvl === 4 && lvlFlag){
         if(lastLevel==false)
         {
             ctx.drawImage(cutscene,0,0,1600,900);
-            window.setTimeout(setPositionLvl2,5000);
+            setPositionLvl4();
         }
         else
         {
@@ -2383,6 +2529,9 @@ function hitTest(r1,r2)
 
 function render()
 {
+	jumpable = true;
+	attackable = true;
+	
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
@@ -2419,6 +2568,7 @@ function render()
 				else{
 					if (breakables[i].countB >=0 && breakables[i].countB <6){
 						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
 					}
 					else if (breakables[i].countB >=6 && breakables[i].countB <12){
 						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
@@ -2560,6 +2710,22 @@ function render()
 			
 			if(signs[0].active)
 				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-250);
+		}
+		else if (currentLvl === 3)
+		{
+        	ctx.drawImage(lvl3_background,0,0,6336,900, 0, -6, 6336, 900); //bg
+			ctx.drawImage(lvl3_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+			
+        	ctx.drawImage(lvl3_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
+			ctx.drawImage(lvl3_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+		}
+		else if (currentLvl === 4)//changehere2
+		{
+        	ctx.drawImage(lvl4_background,0,0,6336,900, 0, -6, 6336, 900); //bg
+			ctx.drawImage(lvl4_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+			
+        	ctx.drawImage(lvl4_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
+			ctx.drawImage(lvl4_background,0,1101,6336,5,0, 781, 6336, 5); //black line
 		}
 		
 		
@@ -2734,6 +2900,10 @@ function render()
 		{
 			ctx.drawImage(cloud,3100,270+46);
 		}
+		if (currentLvl ===4){
+			ctx.drawImage(lvl4_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax		
+		}
+		
 		count++;
 		if (count ==40){
 			count = 0;	
