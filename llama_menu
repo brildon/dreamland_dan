@@ -1,0 +1,204 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sheep! Heard Dan</title>
+</head>
+<body>
+<div id="container" style="width:1500px; height:500px; position:relative;" >
+<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+
+</div>
+<audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/SheepHeard_Backtrack1.wav" preload="auto" loop></audio>
+<audio id="sound01" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Box_Break.wav" preload="auto"</audio>
+<audio id="sound02" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Woosh-Mark_DiAngelo-4778593.wav" preload="auto"</audio>
+<audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
+<audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
+<audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
+
+<script>
+var cv = document.getElementById("ctx");
+var ctx = cv.getContext('2d');
+
+//var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
+
+document.getElementById('music').play();
+
+var tempX = 0;
+var tempY = 0;
+var mousePos = {x:0, y:0}
+
+var menuCheck = true;
+var buildCheck = false;
+var creditsScreen = false;
+var optionsScreen = false;
+
+var regExpScreen = true;
+var soundOn = true;
+var mouse = {x:0,y:0};
+var mainCheck = true;
+var temp2X = 0;
+var temp2Y = 0;
+
+var mainScreen = new Image();	
+mainScreen.addEventListener("load", loadHandler, false);
+mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
+var credits = new Image();
+credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
+var optionSoundOn = new Image();
+var optionSoundOff = new Image();
+var startButton = new Image();
+var optionsButton = new Image();
+var creditsButton = new Image();
+var backButton = new Image();
+var soundButton = new Image();
+startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
+optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
+creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
+backButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195212/7918d2da-74de-11e4-8f36-1e69ef195989.png";
+soundButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195215/79284788-74de-11e4-8b41-10194215c6f8.png";
+optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
+//optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
+document.onkeydown = function (e) 
+{
+    if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+	{
+		e.preventDefault();
+    }
+};
+function menu(e)
+{
+	var tempStartH;
+	var tempStartW;
+	if(e.layerX || e.layerY == 0){
+    	mouse.x = e.pageX - cv.offsetLeft;
+    	mouse.y = e.pageY - cv.offsetTop;	
+	}
+	if(mouse.x < 718 && mouse.y < 484 && mouse.x > 418 && mouse.y > 405 && menuCheck==true && creditsScreen ==false && optionsScreen==false) //enter game
+	{
+		document.getElementById('sound05').play();
+		buildCheck=false;
+    	menuCheck=false;
+		mainCheck=false;
+		cancelRequestAnimFrame(loadHandler);window.location.href=("movie.html");
+	}
+	if(1046<mouse.x && mouse.x<1331 && 686<mouse.y && mouse.y<749 && optionsScreen == false) //enter credits screen
+	{
+		document.getElementById('sound05').play();
+		creditsScreen = true;
+    	buildCheck=false;
+		mainCheck=false;	
+	}
+	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
+	{
+		document.getElementById('sound05').play();
+		creditsScreen = false;
+		menuFlag = 1;
+		mainCheck=true;
+	}
+	if(107<mouse.x && mouse.x<330 && 719<mouse.y && mouse.y<805 && optionsScreen == true) //out options screen
+	{
+		document.getElementById('sound05').play();
+		optionsScreen = false;
+		mainCheck=true;
+	}
+	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
+	{
+		document.getElementById('sound05').play();
+		mainCheck=false;
+	}
+	if(753<mouse.x && mouse.x<1054 && mouse.y>537 && 614 > mouse.y && creditsScreen == false)  //enter options screen
+	{
+		document.getElementById('sound05').play();
+		optionsScreen = true;
+    	buildCheck=false;
+		mainCheck=false;
+	}
+	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && soundOn) //deactivate sound
+	{
+		document.getElementById('sound05').play();
+		soundOn = false;
+	}
+	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && !soundOn) //activate sound
+	{
+		document.getElementById('sound05').play();
+		soundOn = true;
+	}
+}
+window.cancelRequestAnimFrame = ( function() {
+    return window.cancelAnimationFrame          ||
+        window.webkitCancelRequestAnimationFrame    ||
+        window.mozCancelRequestAnimationFrame       ||
+        window.oCancelRequestAnimationFrame     ||
+        window.msCancelRequestAnimationFrame        ||
+        clearTimeout
+} )();
+function loadHandler()
+{  
+	renderMenu();
+	gameTrigger = requestAnimationFrame(loadHandler);
+}
+function renderMenu (){	
+	ctx.restore();
+	if(menuCheck == true)
+	{
+    	if (creditsScreen==true)
+    	{
+        	ctx.drawImage(credits,0,0,1600,900);
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
+			{
+		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
+			}
+    	}
+    	else if(optionsScreen==true)
+    	{
+        	if(soundOn)
+        	{
+            	ctx.drawImage(optionSoundOn,0,0,1600,900);
+            	document.getElementById('music').play();
+        	}
+        	else
+        	{
+            	ctx.drawImage(optionSoundOn,0,0,1600,900);
+				ctx.drawImage(soundButton,0, 162,360, 162,587,410, 360, 162);
+				document.getElementById('music').pause();
+        	}
+			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805)
+			{
+		 			ctx.drawImage(backButton,0,162,360, 162,35,692, 360, 162);
+			}
+    	}
+    	else if(buildCheck == false || mainCheck)
+    	{
+			buildCheck = true;
+			ctx.drawImage(mainScreen,0,0,1600,900);
+			
+			document.captureEvents(Event.MOUSEMOVE);
+			document.onmousemove = getMouseXY;
+
+			function getMouseXY(e) 
+			{
+				temp2X = e.pageX
+				temp2Y = e.pageY
+				if (temp2X < 0){tempX = 0}
+				if (temp2Y < 0){tempY = 0}  
+				
+				return true;
+			} 
+			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484)
+			{
+		 		ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
+			}
+			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
+				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
+			}
+			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749){
+				ctx.drawImage(creditsButton,0,162,360, 162,1008,636, 360, 162);
+			}	
+    	}
+    	document.onmousedown = menu;
+	}
+}
+
+</script>
+</body>
+</html>
