@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+<body>
+<video width="1584" height="884" autoplay>
+  <source src="openingCutscene.mp4" type="video/mp4">
+  <script>
+ 	window.setTimeout(function(){window.location="llama_orgy.html"},18000);
+  </script>
+  
+</video>
+</body>
+</html>
