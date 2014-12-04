@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Sheep! Heard Dan</title>
+	<link rel="stylesheet" href="sheepheard.css" type="text/css"/>
+	
+
+</head>
+<body>
+<div id="wrapper">
+	<a name="top"></a>
+	<header>
+		<h1>Sheep! Heard Dan</h1>
+		<h2>2D Sidescroller</h2>
+	</header>
+	
+	<nav>
+		<div class="menu">
+			<ul>
+				<li><a href="#trailer">Trailer</a></li>
+				<li><a href="#gameplay">Gameplay</a></li>
+				<li><a href="#launch">Launch</a></li>
+				<li><a href="#about">About</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<section id="main">
+			<section id="content">
+			
+        		<article>
+							<h2><a href="#top" name="trailer">Trailer</a></h2>
+							<!-- <img src="images/logo.png" alt="" class="alignleft" /> -->
+						</article>
+						<article>
+							<h2><a href="#top" name="gameplay">Gameplay</a></h2>
+							<!-- <img src="images/spyro.jpg" alt="" class="alignleft" width="60%" /> -->
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper a odio a vestibulum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam scelerisque elit augue, sit amet finibus tortor lacinia ut. Vivamus fermentum ante at lectus facilisis, in blandit urna laoreet. Fusce vel nisi nulla. Phasellus erat purus, pretium in mattis non, commodo ac purus. Donec leo magna, cursus et laoreet at, auctor et odio. Nam gravida nisl urna. Aliquam erat volutpat. Curabitur elementum nunc at dui ullamcorper, ac venenatis magna vestibulum. Vivamus commodo feugiat ex a condimentum. Suspendisse quis finibus ipsum. Suspendisse interdum sollicitudin facilisis. Proin commodo tristique eros quis sagittis.</p>
+	
+						</article>
+						<article>
+							<h2><a href="#top" name="launch">Launch</a></h2>
+							<p>Wednesday, December 10th, 2014 from 6-8 PM in the MSC Ballrooms</p>
+							
+						</article>
+						<article>
+							<h2><a href="#top" name="about">About Us</a></h2>
+							<!-- <img src="images/controller2.png" alt="" class="alignright" width="40%" /> -->
+							<p>We made this.</p>
+						</article>
+						
+			</section>
+
+		<aside id="sidebar">
+				<blockquote>Artists: </br> Leah Bolin </br> Eric Seidl </br> Huan Shenyu </br></br> Programmers: </br> Willy Elliott </br> Jeremy Rodgers </br> Willian Oliveira</blockquote>
+
+		</aside>
+
+	</section>
+	
+		<footer>
+		<section id="footer-area">
+
+			<section id="footer-outer-block">
+							
+					<aside class="footer-segment">
+								<p>&copy; 2014</a></p>
+					</aside>
+
+			</section>
+
+		</section>
+	</footer>
+	
+</div>
+</body>
+</html>
