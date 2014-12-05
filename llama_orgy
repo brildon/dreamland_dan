@@ -22,7 +22,7 @@ var ctx = cv.getContext('2d');
 
 //var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
 
-document.getElementById('music').play();
+//document.getElementById('music').play();
 
 
 var sheepPoints = 0;	
@@ -72,7 +72,6 @@ var collide = false;
 var falling = false;
 var isDucked = false;
 var isStanding = true;
-var sheepSaved = 0;
 var sheepTotal = 0;
 var collision = false;
 var collision2 = false;
@@ -96,6 +95,7 @@ var lvl3Started = false;
 var lvl4Started = false;
 
 var lvlTwoStart = false;
+var lvlThreeStart = false;
 
 var mouse = {x:0,y:0};
 
@@ -424,14 +424,6 @@ var sheepObj = {
 	}		
 }
 
-var cougarObj =
-{
-	posX: 0,
-	posY: 0,
-	height: 70,
-	width : 151,
-	saved: false
-}
 
 var playerObj = Object.create(playerObj);
 
@@ -457,9 +449,7 @@ var hitBox = {
 
 var attackBox = Object.create(hitBox);
 
-var cougar = Object.create(cougarObj);
-
-var signs = new Array(6);
+var signs = new Array(5);
 for(var i =0; i<signs.length; i++)
 {
 	signs[i] = Object.create(signObj);
@@ -622,8 +612,6 @@ var llama_run_sprite = new Image();
 var llama_duck_sprite = new Image();
 var sheep_right = new Image();
 var sheep_left = new Image();
-var cougar_left = new Image();
-var cougar_right = new Image();
 var box = new Image();
 var sheepIcon = new Image();
 var sheepWizard = new Image();
@@ -785,8 +773,6 @@ llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
 sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
-cougar_left.src = "https://cloud.githubusercontent.com/assets/8864180/4948652/dcffffb0-6608-11e4-806f-e4b32ceb2769.png";
-cougar_right.src = "https://cloud.githubusercontent.com/assets/8864180/4948654/dd01743a-6608-11e4-979c-4dac571f3560.png";
 box.src = "https://cloud.githubusercontent.com/assets/8835208/5236711/b984f888-780f-11e4-9e0e-6bb9dcac1f89.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c954f88-74e0-11e4-9625-d47f4e527609.png";
@@ -906,23 +892,20 @@ function intialize()
 	foregroundBackground.x = 0;
 	foregroundBackground.y = 736;
 	
-	playerObj.posX = 5900;  //50
+	playerObj.posX = 50;  //50
 	playerObj.posY = 600+46;
 	if(lvl1Started==false)
 	{
 		sheepPoints = 0;
 		
-		miniGameArray[0].x = 2700;
+		miniGameArray[0].x = 1400;
 		miniGameArray[0].y = 637+60;
 	
-		miniGameArray[1].x = 2900;
+		miniGameArray[1].x = 2400;
 		miniGameArray[1].y = 637+60;
 	
 		miniGameArray[2].x = 3400;
 		miniGameArray[2].y = 637+60;
-		
-		cougar.posX = 6100;
-		cougar.posY = 667+46;
 			
 		sheep[0].posX =950;
 		sheep[0].posY =640+46;
@@ -944,7 +927,7 @@ function intialize()
 		sheep[4].posY =640+46;
 		sheep[4].saved = false;
 		
-		sheep[5].posX =2450;
+		sheep[5].posX =650;
 		sheep[5].posY =640+46;
 		sheep[5].saved = false;
 		
@@ -967,13 +950,12 @@ function intialize()
 		signs[0].posX = 50;
 		signs[0].posY = 623+46;
 		signs[0].active = true;
-		signs[1].posX = 650;
+		signs[1].posX = 450;
 		signs[1].posY = 626+46;
 		signs[2].posX = 3250;
 		signs[2].posY = 626+46;
 		signs[3].posX = 4000;
 		signs[3].posY = 626+46;
-	
 		signs[4].posX = 4525;
 		signs[4].posY = 455+46;
 		
@@ -1064,7 +1046,7 @@ function setPositionLvl2() {
 		breakables[i].countB = 0;	
 	}
 	
-	playerObj.posX = 5800;
+	playerObj.posX = 50;
 	playerObj.posY = 600+46;
 	
 	breakables[0].posX =1000;
@@ -1388,8 +1370,8 @@ function setPositionLvl3() {
 		signs[1].posY = 623+46;
 		
 		
-		lg_obj[6].posX=5800;
-		lg_obj[6].posY=625;
+		lg_obj[5].posX=5800;
+		lg_obj[5].posY=625;
 		
 		sheep[14].posX =5825;
 		sheep[14].posY =686;
@@ -1400,6 +1382,78 @@ function setPositionLvl3() {
 			breakables[i].posX = 0;
 			breakables[i].posY = 0;	
 		}
+		
+				//Do this for every Lvl
+		wordChoice = Math.floor(Math.random() * 3);
+		regExp1 = new RegExp();
+		regExp2 = new RegExp();
+		regExp3 = new RegExp();
+		
+		regExpOne = "";
+		regExpTwo = "";
+		regExpThree = "";
+		if(wordChoice==0)
+		{
+			levelWords[0] = "CRAWL";
+			levelWords[1] = "BRAWL";
+			levelWords[2] = "CAW";
+	
+			levelWords[3] = "BROOCH";
+			levelWords[4] = "SCRIBE";
+			levelWords[5] = "CROUCH";
+	
+			levelWords[6] = "CHICKEN";
+			levelWords[7] = "DUCK";
+			levelWords[8] = "DONALD";
+		}
+		else if(wordChoice==1)
+		{
+			levelWords[0] = "CRAWL";
+			levelWords[1] = "BRAWL";
+			levelWords[2] = "CAW";
+	
+			levelWords[3] = "BROOCH";
+			levelWords[4] = "SCRIBE";
+			levelWords[5] = "CROUCH";
+	
+			levelWords[6] = "CHICKEN";
+			levelWords[7] = "DUCK";
+			levelWords[8] = "DONALD";
+		}
+		else if(wordChoice==2)
+		{
+			levelWords[0] = "CRAWL";
+			levelWords[1] = "BRAWL";
+			levelWords[2] = "CAW";
+	
+			levelWords[3] = "BROOCH";
+			levelWords[4] = "SCRIBE";
+			levelWords[5] = "CROUCH";
+	
+			levelWords[6] = "CHICKEN";
+			levelWords[7] = "DUCK";
+			levelWords[8] = "DONALD";
+		}
+		
+		correctWords[0] = levelWords[0];
+		correctWords[1] = levelWords[5];
+		correctWords[2] = levelWords[7];
+		
+		incorrectWords[0] = levelWords[1];
+		incorrectWords[1] = levelWords[2];
+		incorrectWords[2] = levelWords[3];
+		incorrectWords[3] = levelWords[4];
+		incorrectWords[4] = levelWords[6];
+		incorrectWords[5] = levelWords[8];
+		
+		lvlThreeStart = true;
+		regExpFin = false;
+		
+		submitButtonArray[0].clicked = false;
+		submitButtonArray[1].clicked = false;
+		submitButtonArray[2].clicked = false;
+		
+		lvl3Started=true;
 	}
 	breakables[3].posX =4500;
 	breakables[3].posY =686;
@@ -1484,9 +1538,8 @@ function setPositionLvl4() {//changehere
 		boxes[i].posY = 0;	
 	}
 	
-	miniGame.x = 0;
-	miniGame.y = 0;
-	miniGame.sound[2] = false;
+
+	miniGameArray.sound[2] = false;
 	miniGameArray[2].x = 0;
 	miniGameArray[2].y = 0;
 	
@@ -2161,6 +2214,25 @@ function update()
 	//sheep gravity
 	sheep[i].collision = false;
 		
+       for(var i=0; i<sheep.length; i++)
+    {
+        if(hitTest(playerObj,sheep[i]))
+        {
+            if(!sheep[i].saved==true)
+            {
+                sheep[i].saved=true;
+                sheepPoints++;
+		document.getElementById('sound03').play();
+            }
+        }
+        if(sheep[i].saved)
+        {
+			sheep[i].posX--;
+	}
+		
+	//sheep gravity
+	sheep[i].collision = false;
+		
     for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
@@ -2279,25 +2351,8 @@ function update()
 				  }
 			}
 		}
-        
+	}}
 	}
-     }
-    
-    sheepSaved = 0;
-    if(cougar.saved==false)
-    {
-        for(var i=0; i<sheep.length; i++)
-        {
-            if(sheep[i].saved)
-                {
-                    sheepSaved++;
-                }
-        }
-    }
-    if(sheepSaved>5)
-    {
-        cougar.posX = cougar.posX+5;	
-    }
 
     if(isAttack)
     {
@@ -2911,6 +2966,19 @@ function update()
 				playerObj.speed = 5;
 			}
 		}
+		else if(currentLvl==3 && lvlThreeStart && !closeWindow)
+		{
+			crouchable = true;
+			expComplete = true;
+			ctx.drawImage(congCrouch, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
+		}
+		
 		
 		//Always Happens
 		regExpFin = true;
@@ -2953,7 +3021,7 @@ function render()
 			ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
 			ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
 
-			for(var i =0; i<signs.length; i++)
+			for(var i =0; i<5; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}
@@ -3126,7 +3194,7 @@ function render()
 			}			
 			ctx.drawImage(arrow,6000,672);			
 
-			for(var i=0; i<14; i++)
+			for(var i=0; i<5; i++)
 			{
 				if(!breakables[i].broken)
 				{
@@ -3158,15 +3226,15 @@ function render()
 			{
 				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
 			}
-			for(var i=0; i<8; i++)
+			for(var i=0; i<6; i++)
 			{
 				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
 			}	
-			for(var i=0; i<10; i++)
+			for(var i=0; i<9; i++)
 			{
 					ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
 			}	
-			for (var i=0; i<17;i++)
+			for (var i=0; i<15;i++)
 			{
 				if(sheep[i].saved==false)
 				{
@@ -3365,15 +3433,6 @@ function render()
 					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
 				}
 			}	
-        
-		if(sheepSaved==6)
-		{
-			ctx.drawImage(cougar_right,cougar.posX,cougar.posY);
-		}
-		else
-		{
-			ctx.drawImage(cougar_left,cougar.posX,cougar.posY);
-		}
 		
 		if(currentLvl==1)
 		{
