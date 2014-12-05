@@ -14,8 +14,6 @@
 <audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
 <audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
 <audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
-<audio id="sound06" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Magic%20Wand%20Noise-SoundBible.com-375928671.wav" preload="auto"</audio>
-
 
 <script>
 var cv = document.getElementById("ctx");
@@ -25,27 +23,31 @@ var ctx = cv.getContext('2d');
 
 document.getElementById('music').play();
 
-
 var sheepPoints = 0;	
 var levelAt = 0;
 var tempX = 0;
 var tempY = 0;
 var levelWords = new Array(9);
 var regExpFin = false;
-var creditsScreen = false;
+
 var tutorSheep = 0;
 var center = 0;
+var wordChoice = 0;
+var expComplete = false;
+
+console.log(wordChoice);
 
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
-levelWords[0] = "CONE";
-levelWords[1] = "BOO";
+
+levelWords[0] = "HORN";
+levelWords[1] = "HEAT";
 levelWords[2] = "HOP";
 
 levelWords[3] = "LEAP";
-levelWords[4] = "STUNT";
-levelWords[5] = "EAT";
+levelWords[4] = "EAT";
+levelWords[5] = "STUNT";
 
 levelWords[6] = "SLEEP";
 levelWords[7] = "JUMP";
@@ -66,6 +68,10 @@ incorrectWords[3] = levelWords[5];
 incorrectWords[4] = levelWords[6];
 incorrectWords[5] = levelWords[8];
 
+var menuCheck = true;
+var buildCheck = false;
+var creditsScreen = false;
+var optionsScreen = false;
 var collide = false;
 var falling = false;
 var isDucked = false;
@@ -80,7 +86,7 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = true;
+var jumpable = false;
 var crouchable = true;
 var attackable = false;
 var counter = 1;
@@ -102,6 +108,7 @@ var countS = 0;
 var playerDirec = 0;
 var currentLvl = 1;
 var lvlFlag = false;
+var mainCheck = true;
 var gameTrigger;
 var temp2X = 0;
 var temp2Y = 0;
@@ -218,7 +225,7 @@ var miniGameObj = {
 	y: 0,
 	height: 100,
 	width: 100,
-	sound: false,
+	tutor: 2,
 	
 	centerX: function (){
 		return this.x + (this.width / 2);
@@ -234,7 +241,14 @@ var miniGameObj = {
 	}
 }
 
-var miniGame = Object.create(miniGameObj);
+var miniGameArray = new Array(3);
+for(i = 0; i < miniGameArray.length; i++)
+{
+	miniGameArray[i] = Object.create(miniGameObj);
+}
+
+miniGameArray[0].tutor = 0;
+miniGameArray[1].tutor = 1;	
 
 var playerObj = {
 	posY: 600,
@@ -243,7 +257,7 @@ var playerObj = {
 	width: 140,
 	hMask: 10,
 	wMask: 75,
-	jumpStrength: 20,
+	jumpStrength: 18,
 	jumpDecay: 0.5,
 	fallStrengh: 0,
 	speed: 5,
@@ -510,7 +524,6 @@ var submitButtonArray = new Array(3);
 for(j = 0; j < submitButtonArray.length; j++)
 {
 	submitButtonArray[j] = Object.create(submitButton);
-	console.log(submitButtonArray[j]);
 }
 
 submitButtonArray[0].posX = 210;
@@ -554,6 +567,9 @@ characterBoxArray[4].posY = 45;
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
 
+var mainScreen = new Image();	
+mainScreen.addEventListener("load", loadHandler, false);
+mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
 
 var credits = new Image();
 credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
@@ -643,6 +659,10 @@ var expInstr21 = new Image();
 var expInstr22 = new Image();
 var expInstr23 = new Image();
 var expInstr24 = new Image();
+var expInstr25 = new Image();
+var expInstr26 = new Image();
+var expInstr27 = new Image();
+var expInstr28 = new Image();
 var carrotHelp = new Image();
 var carrotBracketHelp = new Image();
 var helpHover = new Image();
@@ -658,11 +678,13 @@ var orangeStar = new Image();
 var emptyStar = new Image();
 var singleRegExp = new Image();
 var doubleRegExp = new Image();
-var levelClick = new Image();
-var restartClick = new Image();
+var congJump = new Image();
+var congBreak = new Image();
+var congCrouch = new Image();
 
-restartClick.src ="https://cloud.githubusercontent.com/assets/8864180/5292542/cd59fac2-7b28-11e4-83fa-238025f2b93d.png";
-levelClick.src = "https://cloud.githubusercontent.com/assets/8864180/5292543/cd5f3866-7b28-11e4-9ae5-fca91d31188f.png";
+congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
+congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
+congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
 singleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275877/950cd470-7a72-11e4-8a1b-96702456ff91.png";
 doubleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275924/26bcd7ac-7a74-11e4-9466-ae76f4d044fb.png";
 blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
@@ -678,30 +700,36 @@ lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c
 moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
 questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
 submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
-expInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5143296/220a5d2a-7154-11e4-837c-ef4f6bec3107.png";
-expInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5143297/2215129c-7154-11e4-9997-7720a0ee1349.png";
-expInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5143298/2215cafc-7154-11e4-9a6c-4f629f436acd.png";
-expInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5143299/222157f0-7154-11e4-8ffd-13ba8c1f1921.png";
-expInstr5.src = "https://cloud.githubusercontent.com/assets/8864180/5101458/9bd56d20-6f7e-11e4-8a87-cc6feb5b30f0.png";
-expInstr6.src = "https://cloud.githubusercontent.com/assets/8864180/5101462/9bdb0bfe-6f7e-11e4-995f-a9b664adfbec.png";
-expInstr7.src = "https://cloud.githubusercontent.com/assets/8864180/5143307/23030236-7154-11e4-84d0-bcd65e6f4f01.png";
-expInstr8.src = "https://cloud.githubusercontent.com/assets/8864180/5143300/226c0a34-7154-11e4-921d-0d7606329407.png";
-expInstr9.src = "https://cloud.githubusercontent.com/assets/8864180/5143301/227834f8-7154-11e4-80ca-c344a63e336a.png";
-expInstr10.src = "https://cloud.githubusercontent.com/assets/8864180/5143302/22c189e6-7154-11e4-88e5-ec00483e0a63.png";
-expInstr11.src = "https://cloud.githubusercontent.com/assets/8864180/5101838/5196e1be-6f86-11e4-8c0c-2254e24e2bbe.png";
-expInstr12.src = "https://cloud.githubusercontent.com/assets/8864180/5143303/22d204f6-7154-11e4-96ed-9962d61893cb.png";
-expInstr13.src = "https://cloud.githubusercontent.com/assets/8864180/5101839/519840fe-6f86-11e4-854f-ccd6ea9a8ac3.png";
-expInstr14.src = "https://cloud.githubusercontent.com/assets/8864180/5101837/519535bc-6f86-11e4-939d-b492fc1a4f95.png";
-expInstr15.src = "https://cloud.githubusercontent.com/assets/8864180/5143304/22da5156-7154-11e4-9171-f2aa858947ea.png";
-expInstr16.src = "https://cloud.githubusercontent.com/assets/8864180/5101840/519c3a7e-6f86-11e4-89f7-45ac9070d783.png";
-expInstr17.src = "https://cloud.githubusercontent.com/assets/8864180/5101843/51a35610-6f86-11e4-8b45-8635b1f6da8e.png";
-expInstr18.src = "https://cloud.githubusercontent.com/assets/8864180/5143305/22eab0d2-7154-11e4-9bf8-5b1c9f9fc385.png";
-expInstr19.src = "https://cloud.githubusercontent.com/assets/8864180/5143306/22f93b70-7154-11e4-9665-0870ddece88e.png";
-expInstr20.src = "https://cloud.githubusercontent.com/assets/8864180/5143308/230c39fa-7154-11e4-8fda-026cff9c308c.png";
-expInstr21.src = "https://cloud.githubusercontent.com/assets/8864180/5143309/23175a9c-7154-11e4-84cc-3eac984cc4e6.png";
-expInstr22.src = "https://cloud.githubusercontent.com/assets/8864180/5101847/51aaabea-6f86-11e4-8c8f-7fae059fbb5f.png";
-expInstr23.src = "https://cloud.githubusercontent.com/assets/8864180/5101848/51afb4b4-6f86-11e4-849a-9a1b1a92db66.png";
-expInstr24.src = "https://cloud.githubusercontent.com/assets/8864180/5101849/51b1185e-6f86-11e4-8784-3b5122a4e83a.png";
+
+expInstr1.src = "https://cloud.githubusercontent.com/assets/8835240/5311532/6c9e2e20-7c0d-11e4-8a58-7bb625f9e9e2.png";
+expInstr2.src = "https://cloud.githubusercontent.com/assets/8835240/5311534/6f84e5b6-7c0d-11e4-8fc3-01d37bd2dd67.png";
+expInstr3.src = "https://cloud.githubusercontent.com/assets/8835240/5311535/731c1e9c-7c0d-11e4-8372-b1e7996e22db.png";
+expInstr4.src = "https://cloud.githubusercontent.com/assets/8835240/5311537/74da7940-7c0d-11e4-9eea-7f5a11877b69.png";
+expInstr5.src = "https://cloud.githubusercontent.com/assets/8835240/5311538/76551730-7c0d-11e4-88cd-d21a6d171b2f.png";
+expInstr6.src = "https://cloud.githubusercontent.com/assets/8835240/5311539/77f24b9e-7c0d-11e4-96af-1b110708104a.png";
+expInstr7.src = "https://cloud.githubusercontent.com/assets/8835240/5311541/79c999e0-7c0d-11e4-81f6-57ebb240e3a8.png";
+expInstr8.src = "https://cloud.githubusercontent.com/assets/8835240/5311545/7b61a91e-7c0d-11e4-853c-034969d09f9a.png";
+expInstr9.src = "https://cloud.githubusercontent.com/assets/8835240/5311547/7dcdca2a-7c0d-11e4-8848-17d513a65fda.png";
+expInstr10.src = "https://cloud.githubusercontent.com/assets/8835240/5311552/7fc5d412-7c0d-11e4-9486-02157cc5ea63.png";
+expInstr11.src = "https://cloud.githubusercontent.com/assets/8835240/5311553/8177c0ae-7c0d-11e4-9da2-f983ebc298be.png";
+expInstr12.src = "https://cloud.githubusercontent.com/assets/8835240/5311554/82e05028-7c0d-11e4-8f08-89d4bc5c03d5.png";
+expInstr13.src = "https://cloud.githubusercontent.com/assets/8835240/5311555/856f4d12-7c0d-11e4-8017-f42eba685111.png";
+expInstr14.src = "https://cloud.githubusercontent.com/assets/8835240/5311558/9973e6b0-7c0d-11e4-9abe-64f8909b7a9e.png";
+expInstr15.src = "https://cloud.githubusercontent.com/assets/8835240/5311560/9b9722fe-7c0d-11e4-9830-12ea4810856e.png";
+expInstr16.src = "https://cloud.githubusercontent.com/assets/8835240/5311564/9e8f148a-7c0d-11e4-9f15-eb9fe4e15d67.png";
+expInstr17.src = "https://cloud.githubusercontent.com/assets/8835240/5311565/a04ed4cc-7c0d-11e4-998f-b136789c90e9.png";
+expInstr18.src = "https://cloud.githubusercontent.com/assets/8835240/5311566/a34e5c38-7c0d-11e4-942b-d0ec117c0fcc.png";
+expInstr19.src = "https://cloud.githubusercontent.com/assets/8835240/5311568/a4f3334c-7c0d-11e4-9732-fbc3b36d0352.png";
+expInstr20.src = "https://cloud.githubusercontent.com/assets/8835240/5311569/a6899fa2-7c0d-11e4-8916-b1070085b392.png";
+expInstr21.src = "https://cloud.githubusercontent.com/assets/8835240/5311571/a813ee9a-7c0d-11e4-9231-9cbbf6aa2ead.png";
+expInstr22.src = "https://cloud.githubusercontent.com/assets/8835240/5311576/b08de7d8-7c0d-11e4-96b8-228cf45bcb9b.png";
+expInstr23.src = "https://cloud.githubusercontent.com/assets/8835240/5311577/b29b791e-7c0d-11e4-8f43-4beb2d0fd72a.png";
+expInstr24.src = "https://cloud.githubusercontent.com/assets/8835240/5311578/b47946a8-7c0d-11e4-8868-02d2c3dc1f91.png";
+expInstr25.src = "https://cloud.githubusercontent.com/assets/8835240/5311581/b6faee9a-7c0d-11e4-9d52-6e7f40145d5b.png";
+expInstr26.src = "https://cloud.githubusercontent.com/assets/8835240/5311582/b88f265e-7c0d-11e4-98d3-84183591d462.png";
+expInstr27.src = "https://cloud.githubusercontent.com/assets/8835240/5311584/ba20f330-7c0d-11e4-9c86-3a67f2d47a50.png";
+expInstr28.src = "https://cloud.githubusercontent.com/assets/8835240/5311585/bbcc0274-7c0d-11e4-970e-0ed1dea46046.png";
+
 startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
 optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
 creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
@@ -737,15 +765,15 @@ sign.src = "https://cloud.githubusercontent.com/assets/8864180/5041650/9957a1ee-
 smBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041651/995b5e74-6b8c-11e4-82b2-04469c5f78a3.png";
 medBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041648/9951b5f4-6b8c-11e4-80c0-edfef849f7e6.png";
 lgBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041649/9956489e-6b8c-11e4-9888-9308c77c6744.png";
-moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292536/cd4c684e-7b28-11e4-816b-35d6f2140692.png";
-jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292540/cd595090-7b28-11e4-83b5-50c57d3db824.png";
+moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5136531/321f83b2-70ef-11e4-9b06-37b4a7cd52b9.png";
+jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048073/9b747eda-6be0-11e4-90c4-a691835d6cbb.png";
 crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048076/9b795180-6be0-11e4-9ded-4b3400e4e3ca.png";
 atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048071/9b73d4f8-6be0-11e4-8057-e4904aa96f88.png";
-restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292541/cd593bb4-7b28-11e4-8aae-b142ae663a52.png";
+restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048079/9b82fadc-6be0-11e4-9383-9d98a9213099.png";
 endLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048075/9b78e876-6be0-11e4-88fb-6a12e251ff11.png";
 finishInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048072/9b747c82-6be0-11e4-8c11-8649b6854b0c.png";
-sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292537/cd54e0b4-7b28-11e4-8544-a965f0c29835.png";
-regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5292539/cd590770-7b28-11e4-94de-8a360cfcd57e.png";
+sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048082/9b873502-6be0-11e4-850b-2386d28b8c57.png";
+regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5048077/9b7ea324-6be0-11e4-838b-697931b347ee.png";
 regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84d280-6be0-11e4-872f-525fb0c44fa9.png";
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
@@ -768,19 +796,55 @@ function menu(e)
     	mouse.y = e.pageY - cv.offsetTop;	
 	}
 
-	if(creditsScreen ==false) //enter game
+	if(mouse.x < 718 && mouse.y < 484 && mouse.x > 418 && mouse.y > 405 && menuCheck==true && creditsScreen ==false && optionsScreen==false) //enter game
 	{
 		document.getElementById('sound05').play();
+		buildCheck=false;
+    	menuCheck=false;
+		mainCheck=false;
 		cancelRequestAnimFrame(loadHandler);
+	}
+	if(1046<mouse.x && mouse.x<1331 && 686<mouse.y && mouse.y<749 && optionsScreen == false) //enter credits screen
+	{
+		document.getElementById('sound05').play();
+		creditsScreen = true;
+    	buildCheck=false;
+		mainCheck=false;	
 	}
 	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
 	{
 		document.getElementById('sound05').play();
-		window.location="llama_menu.html";
+		creditsScreen = false;
+		menuFlag = 1;
+		mainCheck=true;
+	}
+	if(107<mouse.x && mouse.x<330 && 719<mouse.y && mouse.y<805 && optionsScreen == true) //out options screen
+	{
+		document.getElementById('sound05').play();
+		optionsScreen = false;
+		mainCheck=true;
 	}
 	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
 	{
 		document.getElementById('sound05').play();
+		mainCheck=false;
+	}
+	if(753<mouse.x && mouse.x<1054 && mouse.y>537 && 614 > mouse.y && creditsScreen == false)  //enter options screen
+	{
+		document.getElementById('sound05').play();
+		optionsScreen = true;
+    	buildCheck=false;
+		mainCheck=false;
+	}
+	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && soundOn) //deactivate sound
+	{
+		document.getElementById('sound05').play();
+		soundOn = false;
+	}
+	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && !soundOn) //activate sound
+	{
+		document.getElementById('sound05').play();
+		soundOn = true;
 	}
 }
 
@@ -801,6 +865,8 @@ function loadHandler()
 
 function renderMenu (){	
 	ctx.restore();
+	if(menuCheck == true)
+	{
     	if (creditsScreen==true)
     	{
         	ctx.drawImage(credits,0,0,1600,900);
@@ -809,12 +875,76 @@ function renderMenu (){
 		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
 			}
     	}
+    	else if(optionsScreen==true)
+    	{
+        	if(soundOn)
+        	{
+            	ctx.drawImage(optionSoundOn,0,0,1600,900);
+            	document.getElementById('music').play();
+        	}
+        	else
+        	{
+            	ctx.drawImage(optionSoundOn,0,0,1600,900);
+				ctx.drawImage(soundButton,0, 162,360, 162,587,410, 360, 162);
+				document.getElementById('music').pause();
+        	}
+			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805)
+			{
+		 			ctx.drawImage(backButton,0,162,360, 162,35,692, 360, 162);
+			}
+    	}
+    	else if(buildCheck == false || mainCheck)
+    	{
+			buildCheck = true;
+			ctx.drawImage(mainScreen,0,0,1600,900);
+			
+			document.captureEvents(Event.MOUSEMOVE);
+			document.onmousemove = getMouseXY;
+
+			function getMouseXY(e) 
+			{
+				temp2X = e.pageX
+				temp2Y = e.pageY
+				if (temp2X < 0){tempX = 0}
+				if (temp2Y < 0){tempY = 0}  
+				
+				return true;
+			} 
+			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484)
+			{
+		 		ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
+			}
+			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
+				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
+			}
+			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749){
+				ctx.drawImage(creditsButton,0,162,360, 162,1008,636, 360, 162);
+			}	
+    	}
     	document.onmousedown = menu;
+	}
+	else
+	{	
+		if(regExpScreen == true)
+		{
+			regExpScreen = false;
+		}
+		else if(buildCheck==false)
+		{
+			ctx.drawImage(cutscene,0,0,1600,900);
+			buildCheck = true;
+			gameover = false;
+			window.setTimeout(gameStart,5000);		
+		}
+	}
 }
 
 function endGame()
 {
+	menuCheck = true;
+	buildCheck = false;
 	creditsScreen = true;
+	optionsScreen = false;
 	loadHandler();
 }
 
@@ -848,8 +978,14 @@ function intialize()
 	playerObj.posX = 50;  //50
 	playerObj.posY = 600+46;	
 	
-	miniGame.x = 3400;
-	miniGame.y = 637+60;
+	miniGameArray[0].x = 2700;
+	miniGameArray[0].y = 637+60;
+	
+	miniGameArray[1].x = 2900;
+	miniGameArray[1].y = 637+60;
+	
+	miniGameArray[2].x = 3400;
+	miniGameArray[2].y = 637+60;
 	
 	cougar.posX = 6100;
 	cougar.posY = 667+46;
@@ -1069,14 +1205,12 @@ function setPositionLvl2() {
 	sheep[5].posX =1700;
 	sheep[5].posY =200+46;
 	sheep[5].saved = false;
-
 	sheep[6].posX =3650;
 	sheep[6].posY =250+46;
 	sheep[6].saved = false;
 	
-	miniGame.x = 4300;
-	miniGame.y = 637+60;
-	miniGame.sound = false;
+	miniGameArray[2].x = 4300;
+	miniGameArray[2].y = 637+60;
 	
 	signs[0].posX = 4500;
 	signs[0].posY = 623+46;
@@ -1092,6 +1226,9 @@ function setPositionLvl2() {
 	lg_obj[3].posY=340+46;
 	
 	//Do this for every Lvl
+	
+	wordChoice = Math.floor(Math.random() * 3);
+	
 	regExp1 = new RegExp();
 	regExp2 = new RegExp();
 	regExp3 = new RegExp();
@@ -1099,18 +1236,50 @@ function setPositionLvl2() {
 	regExpOne = "";
 	regExpTwo = "";
 	regExpThree = "";
-	
-	levelWords[0] = "CAKE";
-	levelWords[1] = "SMELL";
-	levelWords[2] = "SMACK";
+	if(wordChoice == 0)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
 
-	levelWords[3] = "ATTACK";
-	levelWords[4] = "RACE";
-	levelWords[5] = "KITTEN";
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
 
-	levelWords[6] = "BREACH";
-	levelWords[7] = "BREAK";
-	levelWords[8] = "BAKED";
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
+	//TODO: Change Words
+	else if(wordChoice == 1)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
+
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
+
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
+	//TODO: Change Words
+	else if(wordChoice == 2)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
+
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
+
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
 	
 	correctWords[0] = levelWords[2];
 	correctWords[1] = levelWords[3];
@@ -1190,9 +1359,8 @@ function setPositionLvl3() {
 		signs[i].posY = 0;	
 	}
 	
-	miniGame.x = 0;
-	miniGame.y = 0;
-	miniGame.sound = false;
+	miniGameArray[2].x = 0;
+	miniGameArray[2].y = 0;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
@@ -1242,10 +1410,8 @@ function setPositionLvl4() {//changehere
 		signs[i].posY = 0;	
 	}
 	
-
-	miniGame.x = 0;
-	miniGame.y = 0;
-	miniGame.sound = false.
+	miniGameArray[2].x = 0;
+	miniGameArray[2].y = 0;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
@@ -1306,7 +1472,6 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
-	console.log(regExpFin);
 	if(gameOver==false)
     {
     
@@ -1319,7 +1484,7 @@ function update()
     }
     
     //SpaceBar
-		if(key[32] && !hitTest(playerObj, miniGame) || key[32] && closeWindow)
+		if(key[32] && !hitTest(playerObj, miniGameArray[2]) || key[32] && closeWindow)
 		{
 			if(attackable){
 				if (countA >= 0 && countA < 10){
@@ -1345,7 +1510,7 @@ function update()
 			}
 		}
     //W
-    if(key[38] && !hitTest(playerObj, miniGame) || key[38] && closeWindow)
+    if(key[38] && !hitTest(playerObj, miniGameArray[2]) || key[38] && closeWindow)
     {
         if(!isJump&&jumpable)
         {
@@ -1355,7 +1520,7 @@ function update()
         }	
     }
     //A
-    if(key[37] && !hitTest(playerObj, miniGame) || key[37] && closeWindow)
+    if(key[37] && !hitTest(playerObj, miniGameArray[2]) || key[37] && closeWindow)
     {
         if(playerObj.stopped || signs[0].timesRead === -1){
             isMoveLeft = false;
@@ -1367,7 +1532,7 @@ function update()
         }
     }
     //S
-    if(key[40] && !hitTest(playerObj, miniGame) || key[40] && closeWindow)
+    if(key[40] && !hitTest(playerObj, miniGameArray[2]) || key[40] && closeWindow)
     {
         if(playerObj.stopped){
             isDucking = false;
@@ -1379,7 +1544,7 @@ function update()
         }
     }
     //D
-    if(key[39] && !hitTest(playerObj, miniGame) || key[39] && closeWindow)
+    if(key[39] && !hitTest(playerObj, miniGameArray[2]) || key[39] && closeWindow)
     {
         if (playerObj.stopped || signs[0].timesRead === -1){
             isMoveRight = false;
@@ -1420,7 +1585,6 @@ function update()
 			if(playerObj.posX+40 === signs[i].posX && signs[i].posY > playerObj.posY && playerObj.posY < playerObj.posY+playerObj.height)
        		{
             	if (!signs[i].read){
-					//console.log("collsion with sign");
             		playerObj.stopped = true;
             		signs[i].active = true;
             		signIndex = i;
@@ -1445,7 +1609,7 @@ function update()
 		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
             {
 				playerObj.jumpDecay = .5;
-                playerObj.jumpStrength = 20;
+                playerObj.jumpStrength = 18;
                 playerObj.posY = (floorLvl-playerObj.height);
                 playerDirec = 0;
                 isJump = false;
@@ -1658,7 +1822,6 @@ function update()
             {
                 if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
                 {
-                    console.log("hit");
                     collision=true;
                 }
             }
@@ -1860,7 +2023,7 @@ function update()
         //}
     }
     
-     for(var i=0; i<sheep.length; i++)
+    for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -1868,100 +2031,100 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
-		document.getElementById('sound03').play();
+				document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
         {
 			sheep[i].posX--;
-	}
 		
-	//sheep gravity
-	sheep[i].collision = false;
-		
-	for(var j=0; j<breakables.length; j++)
-	{
-		if(hitTest(breakables[j],sheep[i])){
-			if(!breakables[j].broken){
-				sheep[i].collision = true;
+			sheep[i].collision = false;
+			
+			for(var j=0; j<breakables.length; j++)
+			{
+				if(hitTest(breakables[j],sheep[i])){
+					if(!breakables[j].broken){
+						sheep[i].collision = true;
+					}
+				}
 			}
-		}
-	}
-	for(var j=0; j<sm_obj.length; j++)
-	{
-		if(hitTest(sm_obj[j],sheep[i]))
-		{
-			sheep[i].collision = true;
-		}
-	}
-	for(var j=0; j<lg_obj.length; j++)
-	{
-		if(hitTest(lg_obj[j],sheep[i]))
-		{
-			sheep[i].collision = true;
-		}
-	}
-		
-	if(!sheep[i].collision){
-		  floorLvlSheep=635+46;
-	  
-		  if (sheep[i].posY<floorLvlSheep)
-		  {
-			  if(!sheep[i].falling)
-			  {		
-				  sheep[i].jumpDecay = 0.5;
-				  sheep[i].falling = true;
-			  }
-			  else
-			  {
-				  for(var j=0; j<breakables.length; j++)
+			for(var j=0; j<sm_obj.length; j++)
+			{
+				if(hitTest(sm_obj[j],sheep[i]))
+				{
+					sheep[i].collision = true;
+				}
+			}
+			for(var j=0; j<lg_obj.length; j++)
+			{
+				if(hitTest(lg_obj[j],sheep[i]))
+				{
+					sheep[i].collision = true;
+				}
+			}
+			
+			if(!sheep[i].collision){
+				  floorLvlSheep=635+46;
+			  
+				  if (sheep[i].posY<floorLvlSheep)
 				  {
-					  if(hitTest(breakables[j],sheep[i])){
-						  if(!breakables[j].broken){
-							  sheep[i].collision=true;
-							  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
-								  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
-								  sheep[i].falling = false;
+					  if(!sheep[i].falling)
+					  {		
+						  sheep[i].jumpDecay = 0.5;
+						  sheep[i].falling = true;
+					  }
+					  else
+					  {
+						  for(var j=0; j<breakables.length; j++)
+						  {
+							  if(hitTest(breakables[j],sheep[i])){
+								  if(!breakables[j].broken){
+									  sheep[i].collision=true;
+									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+										  sheep[i].posY = breakables[j].sheep[i].height+.5;
+										  sheep[i].falling = false;
+									  }
+								  }
+							  }
+						  }
+						  for(var j=0; j<sm_obj.length; j++)
+						  {
+							  if(hitTest(sm_obj[j],sheep[i]))
+							  {
+								  sheep[i].collision=true;
+								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+									  sheep[i].falling = false;
+								  }
+							  }
+						  }
+						  for(var j=0; j<lg_obj.length; j++)
+						  {
+							  if(hitTest(lg_obj[j],sheep[i]))
+							  {
+								  sheep[i].collision=true;
+								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+									  sheep[i].falling = false;
+							  }
+						  }
+						  if(!sheep[i].collision)
+						  {
+							  sheep[i].posY+= sheep[i].jumpDecay;
+							  sheep[i].jumpDecay += 1;
+							  if(sheep[i].posY > 640+46)
+							  {
+								sheep[i].posY = 640+46;
 							  }
 						  }
 					  }
 				  }
-				  for(var j=0; j<sm_obj.length; j++)
-				  {
-					  if(hitTest(sm_obj[j],sheep[i]))
-					  {
-						  sheep[i].collision=true;
-						  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
-							  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
-							  sheep[i].falling = false;
-						  }
-					  }
+				  else{
+					  sheep[i].falling = false;
 				  }
-				  for(var j=0; j<lg_obj.length; j++)
-				  {
-					  if(hitTest(lg_obj[j],sheep[i]))
-					  {
-						  sheep[i].collision=true;
-						  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
-							  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
-							  sheep[i].falling = false;
-					  }
-				  }
-				  if(!sheep[i].collision)
-				  {
-					  sheep[i].posY+= sheep[i].jumpDecay;
-					  sheep[i].jumpDecay += 1;
-					  if(sheep[i].posY > 640+46)
-					  {
-						sheep[i].posY = 640+46;
-					  }
-				  }
-			  }
-		  }
-		  else{
-			  sheep[i].falling = false;
-		  }
-	}
+			}
+		}
+        
     }
     
     sheepSaved = 0;
@@ -2004,23 +2167,17 @@ function update()
         attackBox.posY = playerObj.posY;
     }
     
-    if(!hitTest(playerObj, miniGame) && !regExpFin)
+    if(!hitTest(playerObj, miniGameArray[2]) && !hitTest(playerObj, miniGameArray[1]) && !hitTest(playerObj, miniGameArray[1]) && !regExpFin)
 	{
 		closeWindow = false;
 	}
-    if(hitTest(playerObj,miniGame) && closeWindow == false)
+    if(hitTest(playerObj,miniGameArray[2]) && closeWindow == false && miniGameArray[2].tutor <= tutorSheep || hitTest(playerObj,miniGameArray[1]) && closeWindow == false && miniGameArray[1].tutor == tutorSheep || hitTest(playerObj,miniGameArray[0]) && closeWindow == false && miniGameArray[0].tutor == tutorSheep)
     {		
-		if (!miniGame.sound){
-			document.getElementById('sound06').play();
-			miniGame.sound = true;
-		}
-		
 		//if(currentLvl==1)
         {
-			ctx.fillStyle = 'black';
+            ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
             playerObj.speed = 0;
-			
 			if(tutorSheep == 0)
 			{
 				center = 455;
@@ -2029,11 +2186,14 @@ function update()
 			{
 				center = 239;
 			}
-			if(tutorSheep == 2 || currentLvl > 1)
+			if(tutorSheep >= 2 || currentLvl > 1)
 			{
 				center = 0;
 			}
-			console.log(center);
+			submitButtonArray[0].posX = 210 + center;
+			submitButtonArray[1].posX = 670 + center;
+			submitButtonArray[2].posX = 1130 + center;
+			
 			textBoxArray[0].xCoord = 100 + center;
 			textBoxArray[1].xCoord = 600 + center;
 			textBoxArray[2].xCoord = 1000 + center;
@@ -2255,7 +2415,21 @@ function update()
 			}
             
 			ctx.fillText(sheepPoints,210,100,50);
-			
+			if(hitTest(playerObj, miniGameArray[1]))
+			{
+				if(counter == 14)
+				{
+					counter ++;
+				}	
+			}
+			if(hitTest(playerObj, miniGameArray[2]))
+			{
+				if(counter == 22)
+				{
+					counter++;
+				}
+			}
+			// Start of part A
 		   	if(counter==1)
 			{
 		   		ctx.drawImage(expInstr1,0,0); //help me
@@ -2304,55 +2478,76 @@ function update()
 			{
 				ctx.drawImage(expInstr12,0,0);
 			}
-			else if(counter==13)
+			else if(counter == 13)
 			{
 				ctx.drawImage(expInstr13,0,0);
 			}
 			else if(counter==14)
 			{
-				ctx.drawImage(expInstr14,0,0);
+				ctx.drawImage(expInstr21,0,0);
 			}
+			//Start of part B
 			else if(counter==15)
 			{
-				ctx.drawImage(expInstr15,0,0);
+				ctx.drawImage(expInstr14,0,0);
 			}
 			else if(counter==16)
 			{
-				ctx.drawImage(expInstr16,0,0);
+				ctx.drawImage(expInstr15,0,0);
 			}
 			else if(counter==17)
 			{
-				ctx.drawImage(expInstr17,0,0);
+				ctx.drawImage(expInstr16,0,0);
 			}
 			else if(counter==18)
 			{
-				ctx.drawImage(expInstr18,0,0);
+				ctx.drawImage(expInstr17,0,0);
 			}
 			else if(counter==19)
 			{
-				ctx.drawImage(expInstr19,0,0);
+				ctx.drawImage(expInstr18,0,0);
 			}
 			else if(counter==20)
 			{
-				ctx.drawImage(expInstr20,0,0);
+				ctx.drawImage(expInstr19,0,0);
 			}
 			else if(counter==21)
 			{
-				ctx.drawImage(expInstr21,0,0);
+				ctx.drawImage(expInstr20,0,0);
 			}
+			// Start of part C
 			else if(counter==22)
 			{
-				ctx.drawImage(expInstr22,0,0);
+				ctx.drawImage(expInstr21,0,0);
 			}
 			else if(counter==23)
 			{
-				ctx.drawImage(expInstr23,0,0);
+				ctx.drawImage(expInstr22,0,0);
 			}
 			else if(counter==24)
 			{
+				ctx.drawImage(expInstr23,0,0);
+			}
+			else if(counter==25)
+			{
 				ctx.drawImage(expInstr24,0,0);
 			}
-			
+			else if(counter==26)
+			{
+				ctx.drawImage(expInstr25,0,0);
+			}
+			else if(counter==27)
+			{
+				ctx.drawImage(expInstr26,0,0);
+			}
+			else if(counter==28)
+			{
+				ctx.drawImage(expInstr27,0,0);
+			}
+			else if(counter==29)
+			{
+				ctx.drawImage(expInstr28,0,0);
+			}
 			document.captureEvents(Event.MOUSEMOVE);
 			document.onmousemove = getMouseXY;
 
@@ -2365,52 +2560,55 @@ function update()
 				
 				return true;
 			}  
-			//console.log("x: "+tempX);
-			//console.log("y: "+tempY);
-			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100)
+			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(questionHelp,0,0);	
 			}
-			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100)
+			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(lineHelp,0,0);	
 			}
-			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100)
+			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(carrotHelp,0,0);	
 			}
-			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100)
+			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(carrotBracketHelp,0,0);	
 			}
-			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100)
+			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(moneyHelp,0,0);	
 			}
-			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100)
+			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(helpHover,0,0);	
 			}
-			if(tempX>240 && tempX<435 && tempY>795 && tempY<835)
+			if(tempX>240 + center && tempX<435 + center && tempY>795 && tempY<835)
 			{
-				ctx.drawImage(submitHover,200,770);	
+				if(tutorSheep == 1)
+				{
+					ctx.drawImage(submitHover,208 + center,770);
+				}
+				else
+				{
+					ctx.drawImage(submitHover,200 + center,770);
+				}
 			}
-			if(tempX>690 && tempX<890 && tempY>795 && tempY<835)
+			if(tempX>690 + center && tempX<890 + center && tempY>795 && tempY<835 && tutorSheep > 0)
 			{
-				ctx.drawImage(submitHover,658,770);	
+				ctx.drawImage(submitHover,658 + center,770);	
 			}
-			if(tempX>1160 && tempX<1360 && tempY>795 && tempY<835)
+			if(tempX>1160 + center && tempX<1360 + center && tempY>795 && tempY<835 && tutorSheep > 1)
 			{
-				ctx.drawImage(submitHover,1112,770);	
+				ctx.drawImage(submitHover,1112 + center,770);	
 			}
-
-			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100)
+			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100 && tutorSheep >= 2 && !expComplete)
 			{
 				helpActive = true;	
 			}
 			if(helpActive)
 			{
-				console.log("test 1: " +helpActive);
 				ctx.drawImage(helpScreen,0,0);	
 			}
 			document.onkeyup = function(e)
@@ -2418,14 +2616,52 @@ function update()
    				key[e.keyCode] = true;
             	if(key[32]) // spacebar
            		{
-					counter++;
+					if(counter < 14 && hitTest(playerObj, miniGameArray[0]))
+					{
+						if(counter == 7 && regExp1.test("O"))
+						{
+							counter++;
+						}
+						else if(counter == 9 && regExp1.test("OP") && !regExp1.test("OV"))
+						{
+							counter++;
+						}
+						else if(counter != 7 && counter != 9)
+						{
+							counter++;
+						}
+					}
+					else if(counter < 22 && hitTest(playerObj, miniGameArray[1]))
+					{
+						if(counter == 16 && regExp2.test("E"))
+						{
+							counter++;
+						}
+						else if(counter == 20 && regExp2.test("P"))
+						{
+							counter++;
+						}
+						else if(counter != 16 && counter != 20)
+						{
+							counter++;
+						}
+					}
+					else if(counter > 21 && hitTest(playerObj, miniGameArray[2]))
+					{
+						if(counter == 29 && regExp3.test("[^E]P") && !regExp3.test("[^E]"))
+						{
+							//suck it!
+						}
+						else if(counter != 29)
+						{
+							counter++;
+						}
+					}
 					helpActive = false;
-				}
-				
+				}	
 			}
 			mouse.x = 0;
 			mouse.y = 0;
-			console.log("test 2: " +helpActive);
         }
     }
     else
@@ -2435,52 +2671,74 @@ function update()
         render();
     }
     
-    if (playerObj.posX > 6000)
-	{
-		ctx.drawImage(levelClick,0,0);
-		//here
-		document.onmouseup=function(e){mouseUp()};
-		function mouseUp(e)
-		{
-				if(playerObj.posX > 6000&&currentLvl==1)
-				{
-					currentLvl = 2;
-					lvlFlag = true;	
-					setPositionLvl2();
-				}
-				else if(playerObj.posX > 6005 &&currentLvl==2)
-				{
-					currentLvl = 3;
-					lvlFlag = true;	
-					setPositionLvl3();
-				}
-				else if(playerObj.posX > 6010 &&currentLvl==3)
-				{
-					currentLvl = 4;
-					lvlFlag = true;	
-					setPositionLvl4();
-				}
-				else if(playerObj.posX > 6015 &&currentLvl==4)
-				{
-					ctx.drawImage(endScene,0,0,1600,900);
-					gameOver = true;
-					setTimeout(endGame,5000);
-				}
-		}
-    }    
+    if (playerObj.posX > 6000 && currentLvl === 1){
+        currentLvl = 2;
+        lvlFlag = true;	
+    }
+	if (playerObj.posX > 6005 && currentLvl === 2){
+		currentLvl = 3;
+		lvlFlag = true;
+	}
+	if (playerObj.posX > 6010 && currentLvl === 3){
+		currentLvl = 4;
+		lvlFlag = true;
+	}
+	if (playerObj.posX > 6015 && currentLvl === 4){
+		lvlFlag = true;
+	}
+    
+    if (currentLvl === 2 && lvlFlag){
+		 ctx.drawImage(cutscene,0,0,1600,900);
+         setPositionLvl2();
+	}
+	if (currentLvl === 3 && lvlFlag){
+		 ctx.drawImage(cutscene,0,0,1600,900);
+         setPositionLvl3();
+	}
+	
+	if (currentLvl === 4 && lvlFlag){
+        if(lastLevel==false)
+        {
+            ctx.drawImage(cutscene,0,0,1600,900);
+            setPositionLvl4();
+        }
+        else
+        {
+            ctx.drawImage(endScene,0,0,1600,900);
+            gameOver = true;
+            setTimeout(endGame,5000);
+        }
+    }
 
     if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
     && !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) 
     && !regExp3.test(incorrectWords[0])&& !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]) && regExp3.test(correctWords[1]) 
     && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
-		if(currentLvl==1)
+		if(currentLvl==1 && !closeWindow)
 		{
         	jumpable = true;
+			expComplete = true;
+			counter++;
+			ctx.drawImage(congJump, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
 		}
-		else if(currentLvl==2 && lvlTwoStart)
+		else if(currentLvl==2 && lvlTwoStart && !closeWindow)
 		{
 			attackable = true;
+			expComplete = true;
+			ctx.drawImage(congBreak, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
 		}
 		
 		//Always Happens
@@ -2499,17 +2757,17 @@ function hitTest(r1,r2)
 
 function render()
 {
-	document.onmousedown = function(e)
-	{
-			mouse.x = e.pageX - cv.offsetLeft;
-			mouse.y = e.pageY - cv.offsetTop;
-	}
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
     
     	ctx.save();
     	ctx.translate(-camera.x, -camera.y);
+    	if (currentLvl === 2 && lvlFlag)
+        	ctx.drawImage(cutscene,0,0,1600,900);
+    	if (currentLvl === 2 && lvlFlag && lastLevel)
+        	ctx.drawImage(endScene,0,0,1600,900);
+    
     	if (currentLvl === 1){
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
@@ -2520,8 +2778,10 @@ function render()
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
     
         	//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
-			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
-		
+			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
+			ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
+			
         	for(var i =0; i<signs.length; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
@@ -2625,7 +2885,6 @@ function render()
 				else{
 					if (breakables[i].countB >=0 && breakables[i].countB <6){
 						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
-						document.getElementById('sound01').play();
 					}
 					else if (breakables[i].countB >=6 && breakables[i].countB <12){
 						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
@@ -2674,7 +2933,7 @@ function render()
 					}
 				}
     		}
-			ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
 			
 			if(signs[0].active)
 				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-250);
@@ -2884,12 +3143,15 @@ function render()
 		if (countS ==20){
 			countS = 0;	
 		}
-
+		if (currentLvl === 2 && lvlFlag)
+			ctx.drawImage(cutscene,0,0,1600,900);
+		if (currentLvl === 2 && lvlFlag && lastLevel)
+			ctx.drawImage(endScene,0,0,1600,900);
+        
     	ctx.drawImage(restart,1534+camera.x,10);
-        console.log(mouse.x+", "+mouse.y);
+        
     	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
     	{
-			ctx.drawImage(restartClick,0,0);
 			playerObj.posX = 50;
 			playerObj.posY = 600+46;	 
     	}
@@ -2917,27 +3179,26 @@ function writeText()
 			mouse.x = e.pageX - cv.offsetLeft;
 			mouse.y = e.pageY - cv.offsetTop;
 			
-			console.log(mouse.x);
-			console.log(mouse.y);
-			console.log(textBoxArray[0].xCoord);
-			console.log(textBoxArray[1].xCoord);
-			console.log(textBoxArray[2].xCoord);
-			console.log(currentTextBox);
-			
 			for(i = 0; i < textBoxArray.length; i++)
 			{
 				if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
 				{
 					if(currentTextBox == null)
 					{
-						currentTextBox = textBoxArray[i];
-						currentTextBox.canWrite = true;
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{						
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}	
 					}
 					else
 					{
-						currentTextBox.canWrite = false;
-						currentTextBox = textBoxArray[i];
-						currentTextBox.canWrite = true;
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{
+							currentTextBox.canWrite = false;
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}
 					}
 				}	
 			}
@@ -2963,7 +3224,7 @@ function writeText()
 			if(sheepPoints > 0)
 			{
 				//?
-				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 98 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 59)
+				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 98 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(currentTextBox == textBoxArray[0])
 					{
@@ -2982,7 +3243,7 @@ function writeText()
 					}
 				}
 				//[^] 98, 54
-				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 98 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 59)
+				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 98 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3004,7 +3265,7 @@ function writeText()
 					}
 				}
 				//^
-				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59)
+				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3026,7 +3287,7 @@ function writeText()
 					}
 				}
 				//$
-				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 98 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 59)
+				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 98 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3048,7 +3309,7 @@ function writeText()
 					}
 				}
 				//|
-				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 98 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 59)
+				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 98 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(currentTextBox == textBoxArray[0])
 					{
@@ -3069,15 +3330,45 @@ function writeText()
 			}
 			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
 			{
-				closeWindow = true;
-				if(tutorSheep < 3)
+				console.log(tutorSheep);
+				if(tutorSheep == 0)
 				{
-					tutorSheep++;
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+					{
+						closeWindow = true;
+						tutorSheep++;
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
+				}	
+				if(tutorSheep == 1)
+				{	
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+					&& !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+					{
+						closeWindow = true;
+						tutorSheep++;
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
 				}
-				playerObj.speed = 5;
-				textBoxArray[0].canWrite = false;
-				textBoxArray[1].canWrite = false;
-				textBoxArray[2].canWrite = false;
+				else if(tutorSheep >= 2)
+				{
+					closeWindow = true;
+					if(tutorSheep < 3)
+					{
+						tutorSheep++;
+					}
+					playerObj.speed = 5;
+					textBoxArray[0].canWrite = false;
+					textBoxArray[1].canWrite = false;
+					textBoxArray[2].canWrite = false;
+					console.log(playerObj.speed);
+				}
 			}
 		}
 	}
@@ -3352,7 +3643,6 @@ function writeText()
 					}
 					sheepPoints--;
 				}
-
 				if(key[81]) // q
 				{
 					if(currentTextBox == textBoxArray[0])
@@ -3578,7 +3868,7 @@ function writeText()
 		}
 	}
 }
-gameStart();
+
 </script>
 </body>
 </html>
