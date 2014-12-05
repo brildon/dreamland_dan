@@ -1860,7 +1860,7 @@ function update()
         //}
     }
     
-    for(var i=0; i<sheep.length; i++)
+     for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -1868,100 +1868,100 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
-				document.getElementById('sound03').play();
+		document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
         {
 			sheep[i].posX--;
+	}
 		
-			sheep[i].collision = false;
-			
-			for(var j=0; j<breakables.length; j++)
-			{
-				if(hitTest(breakables[j],sheep[i])){
-					if(!breakables[j].broken){
-						sheep[i].collision = true;
-					}
-				}
-			}
-			for(var j=0; j<sm_obj.length; j++)
-			{
-				if(hitTest(sm_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			for(var j=0; j<lg_obj.length; j++)
-			{
-				if(hitTest(lg_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			
-			if(!sheep[i].collision){
-				  floorLvlSheep=635+46;
-			  
-				  if (sheep[i].posY<floorLvlSheep)
-				  {
-					  if(!sheep[i].falling)
-					  {		
-						  sheep[i].jumpDecay = 0.5;
-						  sheep[i].falling = true;
-					  }
-					  else
-					  {
-						  for(var j=0; j<breakables.length; j++)
-						  {
-							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[j].broken){
-									  sheep[i].collision=true;
-									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
-										  sheep[i].posY = breakables[j].sheep[i].height+.5;
-										  sheep[i].falling = false;
-									  }
-								  }
-							  }
-						  }
-						  for(var j=0; j<sm_obj.length; j++)
-						  {
-							  if(hitTest(sm_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
-									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-								  }
-							  }
-						  }
-						  for(var j=0; j<lg_obj.length; j++)
-						  {
-							  if(hitTest(lg_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
-									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-							  }
-						  }
-						  if(!sheep[i].collision)
-						  {
-							  sheep[i].posY+= sheep[i].jumpDecay;
-							  sheep[i].jumpDecay += 1;
-							  if(sheep[i].posY > 640+46)
-							  {
-								sheep[i].posY = 640+46;
-							  }
-						  }
-					  }
-				  }
-				  else{
-					  sheep[i].falling = false;
-				  }
+	//sheep gravity
+	sheep[i].collision = false;
+		
+	for(var j=0; j<breakables.length; j++)
+	{
+		if(hitTest(breakables[j],sheep[i])){
+			if(!breakables[j].broken){
+				sheep[i].collision = true;
 			}
 		}
-        
+	}
+	for(var j=0; j<sm_obj.length; j++)
+	{
+		if(hitTest(sm_obj[j],sheep[i]))
+		{
+			sheep[i].collision = true;
+		}
+	}
+	for(var j=0; j<lg_obj.length; j++)
+	{
+		if(hitTest(lg_obj[j],sheep[i]))
+		{
+			sheep[i].collision = true;
+		}
+	}
+		
+	if(!sheep[i].collision){
+		  floorLvlSheep=635+46;
+	  
+		  if (sheep[i].posY<floorLvlSheep)
+		  {
+			  if(!sheep[i].falling)
+			  {		
+				  sheep[i].jumpDecay = 0.5;
+				  sheep[i].falling = true;
+			  }
+			  else
+			  {
+				  for(var j=0; j<breakables.length; j++)
+				  {
+					  if(hitTest(breakables[j],sheep[i])){
+						  if(!breakables[j].broken){
+							  sheep[i].collision=true;
+							  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+								  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
+								  sheep[i].falling = false;
+							  }
+						  }
+					  }
+				  }
+				  for(var j=0; j<sm_obj.length; j++)
+				  {
+					  if(hitTest(sm_obj[j],sheep[i]))
+					  {
+						  sheep[i].collision=true;
+						  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+							  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+							  sheep[i].falling = false;
+						  }
+					  }
+				  }
+				  for(var j=0; j<lg_obj.length; j++)
+				  {
+					  if(hitTest(lg_obj[j],sheep[i]))
+					  {
+						  sheep[i].collision=true;
+						  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+							  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+							  sheep[i].falling = false;
+					  }
+				  }
+				  if(!sheep[i].collision)
+				  {
+					  sheep[i].posY+= sheep[i].jumpDecay;
+					  sheep[i].jumpDecay += 1;
+					  if(sheep[i].posY > 640+46)
+					  {
+						sheep[i].posY = 640+46;
+					  }
+				  }
+			  }
+		  }
+		  else{
+			  sheep[i].falling = false;
+		  }
+	}
     }
     
     sheepSaved = 0;
