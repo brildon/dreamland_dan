@@ -38,12 +38,19 @@ var mouse = {x:0,y:0};
 var mainCheck = true;
 var temp2X = 0;
 var temp2Y = 0;
+var language = 0;
 
 var mainScreen = new Image();	
 mainScreen.addEventListener("load", loadHandler, false);
 mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
 var credits = new Image();
-credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
+credits.src = "https://cloud.githubusercontent.com/assets/8835208/5275802/d83841e6-7a70-11e4-9a60-0f7041b42b78.png";
+var mainScreenSpa = new Image();
+mainScreenSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311514/f3e22c0c-7c0c-11e4-92b5-e7ced456c6fe.png";
+var creditsSpa = new Image();
+creditsSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311512/f3e0bae8-7c0c-11e4-9b2f-f1f849d26b0a.png";
+var optionScreenSpa = new Image();
+optionScreenSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311507/f3c62ebc-7c0c-11e4-976b-786797dce5e5.png";
 var optionSoundOn = new Image();
 var optionSoundOff = new Image();
 var startButton = new Image();
@@ -51,12 +58,27 @@ var optionsButton = new Image();
 var creditsButton = new Image();
 var backButton = new Image();
 var soundButton = new Image();
+var engButton = new Image();
+var spaButton = new Image();
+var optionSoundSpa = new Image();
+var backButtonSpa = new Image();
+var optionsButtonSpa = new Image();
+var creditsButtonSpa = new Image();
+var startButtonSpa = new Image();
 startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
 optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
 creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
 backButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195212/7918d2da-74de-11e4-8f36-1e69ef195989.png";
 soundButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195215/79284788-74de-11e4-8b41-10194215c6f8.png";
-optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
+optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5311508/f3c7452c-7c0c-11e4-9d60-eec217522d07.png";
+engButton.src = "https://cloud.githubusercontent.com/assets/8835208/5310794/5657713e-7bff-11e4-8e96-0e9c87068f06.png";
+spaButton.src = "https://cloud.githubusercontent.com/assets/8835208/5311509/f3c875c8-7c0c-11e4-8828-9dc673751145.png";
+optionSoundSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311516/f3e35e42-7c0c-11e4-99f5-960ea647ce30.png";
+backButtonSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311513/f3e0da6e-7c0c-11e4-8dc8-e760b5ddfe73.png";
+optionsButtonSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311517/f3e6fe6c-7c0c-11e4-8921-93787d03436e.png";
+creditsButtonSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311515/f3e33192-7c0c-11e4-95f7-4bb650ce0efa.png";
+startButtonSpa.src = "https://cloud.githubusercontent.com/assets/8835208/5311511/f3ccc40c-7c0c-11e4-9f8d-d11632866ad3.png";
+
 //optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
 document.onkeydown = function (e) 
 {
@@ -123,6 +145,14 @@ function menu(e)
 		document.getElementById('sound05').play();
 		soundOn = true;
 	}
+	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >629 && mouse.y<719 && language ===0) //activate spanish
+	{
+		language = 1;
+	}
+	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >629 && mouse.y<719 && language ===1) //activate english
+	{
+		language = 0;
+	}
 }
 window.cancelRequestAnimFrame = ( function() {
     return window.cancelAnimationFrame          ||
@@ -143,34 +173,73 @@ function renderMenu (){
 	{
     	if (creditsScreen==true)
     	{
-        	ctx.drawImage(credits,0,0,1600,900);
-			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
+        	if (language === 0){
+				ctx.drawImage(credits,0,0,1600,900);
+			}
+			else if (language === 1){
+				ctx.drawImage(creditsSpa,0,0,1600,900);	
+			}
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184 && language ===0)
 			{
 		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
 			}
-    	}
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184 && language ===1) 
+			{
+		 		ctx.drawImage(backButtonSpa,0,162,360, 162,25,44, 360, 162);
+			} 
+		}
     	else if(optionsScreen==true)
     	{
-        	if(soundOn)
+        	if(soundOn && language === 0)
         	{
             	ctx.drawImage(optionSoundOn,0,0,1600,900);
             	document.getElementById('music').play();
         	}
-        	else
+        	else if (!soundOn && language === 0)
         	{
             	ctx.drawImage(optionSoundOn,0,0,1600,900);
 				ctx.drawImage(soundButton,0, 162,360, 162,587,410, 360, 162);
 				document.getElementById('music').pause();
         	}
-			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805)
+			else if(soundOn && language === 1)
+        	{
+            	ctx.drawImage(optionScreenSpa,0,0,1600,900);
+				ctx.drawImage(spaButton,0,0,360, 162,586,606, 360, 162);
+            	document.getElementById('music').play();
+        	}
+        	else if (!soundOn && language === 1)
+        	{
+            	ctx.drawImage(optionScreenSpa,0,0,1600,900);
+				ctx.drawImage(optionSoundSpa,0, 162,360, 162,587,410, 360, 162);
+				ctx.drawImage(spaButton,0,0,360, 162,586,606, 360, 162);
+				document.getElementById('music').pause();
+        	}
+			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805 && language ===0)
 			{
 		 			ctx.drawImage(backButton,0,162,360, 162,35,692, 360, 162);
+			}
+			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805 && language ===1)
+			{
+		 			ctx.drawImage(backButtonSpa,0,162,360, 162,35,692, 360, 162);
+			}
+			if(temp2X > 639 && temp2X < 907 && temp2Y > 629 && temp2Y < 719 && language ===0)
+			{
+		 			ctx.drawImage(engButton,0,162,360, 162,586,604, 360, 162);
+			}
+			if(temp2X > 639 && temp2X < 907 && temp2Y > 629 && temp2Y < 719 && language ===1)
+			{
+		 			ctx.drawImage(spaButton,0,162,360, 162,586,604, 360, 162);
 			}
     	}
     	else if(buildCheck == false || mainCheck)
     	{
 			buildCheck = true;
-			ctx.drawImage(mainScreen,0,0,1600,900);
+			if (language === 0){
+				ctx.drawImage(mainScreen,0,0,1600,900);
+			}
+			else if (language === 1){
+				ctx.drawImage(mainScreenSpa,0,0,1600,900);
+			}
 			
 			document.captureEvents(Event.MOUSEMOVE);
 			document.onmousemove = getMouseXY;
@@ -184,16 +253,26 @@ function renderMenu (){
 				
 				return true;
 			} 
-			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484)
+			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484 && language ===0)
 			{
 		 		ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
 			}
-			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
+			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614 && language ===0){
 				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
 			}
-			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749){
+			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749 && language ===0){
 				ctx.drawImage(creditsButton,0,162,360, 162,1008,636, 360, 162);
-			}	
+			}
+			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484 && language ===1)
+			{
+		 		ctx.drawImage(startButtonSpa,0,162,360, 162,385,354, 360, 162);
+			}
+			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614 && language ===1){
+				ctx.drawImage(optionsButtonSpa,0,162,360, 162,717,486, 360, 162);
+			}
+			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749 && language ===1){
+				ctx.drawImage(creditsButtonSpa,0,162,360, 162,1008,636, 360, 162);
+			}		
     	}
     	document.onmousedown = menu;
 	}
