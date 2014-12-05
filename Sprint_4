@@ -32,12 +32,17 @@ var regExpFin = false;
 
 var tutorSheep = 0;
 var center = 0;
+var wordChoice = 0;
+var expComplete = false;
+
+console.log(wordChoice);
 
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
-levelWords[0] = "CONE";
-levelWords[1] = "BOO";
+
+levelWords[0] = "HORN";
+levelWords[1] = "HEAT";
 levelWords[2] = "HOP";
 
 levelWords[3] = "LEAP";
@@ -662,7 +667,13 @@ var orangeStar = new Image();
 var emptyStar = new Image();
 var singleRegExp = new Image();
 var doubleRegExp = new Image();
+var congJump = new Image();
+var congBreak = new Image();
+var congCrouch = new Image();
 
+congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
+congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
+congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
 singleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275877/950cd470-7a72-11e4-8a1b-96702456ff91.png";
 doubleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275924/26bcd7ac-7a74-11e4-9466-ae76f4d044fb.png";
 blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
@@ -1192,6 +1203,9 @@ function setPositionLvl2() {
 	lg_obj[3].posY=340+46;
 	
 	//Do this for every Lvl
+	
+	wordChoice = Math.floor(Math.random() * 3);
+	
 	regExp1 = new RegExp();
 	regExp2 = new RegExp();
 	regExp3 = new RegExp();
@@ -1199,18 +1213,50 @@ function setPositionLvl2() {
 	regExpOne = "";
 	regExpTwo = "";
 	regExpThree = "";
-	
-	levelWords[0] = "CAKE";
-	levelWords[1] = "SMELL";
-	levelWords[2] = "SMACK";
+	if(wordChoice == 0)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
 
-	levelWords[3] = "ATTACK";
-	levelWords[4] = "RACE";
-	levelWords[5] = "KITTEN";
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
 
-	levelWords[6] = "BREACH";
-	levelWords[7] = "BREAK";
-	levelWords[8] = "BAKED";
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
+	//TODO: Change Words
+	else if(wordChoice == 1)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
+
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
+
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
+	//TODO: Change Words
+	else if(wordChoice == 2)
+	{
+		levelWords[0] = "CAKE";
+		levelWords[1] = "SMELL";
+		levelWords[2] = "SMACK";
+
+		levelWords[3] = "ATTACK";
+		levelWords[4] = "RACE";
+		levelWords[5] = "KITTEN";
+
+		levelWords[6] = "BREACH";
+		levelWords[7] = "BREAK";
+		levelWords[8] = "BAKED";
+	}
 	
 	correctWords[0] = levelWords[2];
 	correctWords[1] = levelWords[3];
@@ -2125,7 +2171,10 @@ function update()
 			{
 				center = 0;
 			}
-			console.log(center);
+			submitButtonArray[0].posX = 210 + center;
+			submitButtonArray[1].posX = 670 + center;
+			submitButtonArray[2].posX = 1130 + center;
+			
 			textBoxArray[0].xCoord = 100 + center;
 			textBoxArray[1].xCoord = 600 + center;
 			textBoxArray[2].xCoord = 1000 + center;
@@ -2457,52 +2506,55 @@ function update()
 				
 				return true;
 			}  
-			//console.log("x: "+tempX);
-			//console.log("y: "+tempY);
-			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100)
+			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(questionHelp,0,0);	
 			}
-			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100)
+			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(lineHelp,0,0);	
 			}
-			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100)
+			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(carrotHelp,0,0);	
 			}
-			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100)
+			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(carrotBracketHelp,0,0);	
 			}
-			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100)
+			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(moneyHelp,0,0);	
 			}
-			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100)
+			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100 && tutorSheep >= 2)
 			{
 				ctx.drawImage(helpHover,0,0);	
 			}
-			if(tempX>240 && tempX<435 && tempY>795 && tempY<835)
+			if(tempX>240 + center && tempX<435 + center && tempY>795 && tempY<835)
 			{
-				ctx.drawImage(submitHover,200,770);	
+				if(tutorSheep == 1)
+				{
+					ctx.drawImage(submitHover,208 + center,770);
+				}
+				else
+				{
+					ctx.drawImage(submitHover,200 + center,770);
+				}
 			}
-			if(tempX>690 && tempX<890 && tempY>795 && tempY<835)
+			if(tempX>690 + center && tempX<890 + center && tempY>795 && tempY<835 && tutorSheep > 0)
 			{
-				ctx.drawImage(submitHover,658,770);	
+				ctx.drawImage(submitHover,658 + center,770);	
 			}
-			if(tempX>1160 && tempX<1360 && tempY>795 && tempY<835)
+			if(tempX>1160 + center && tempX<1360 + center && tempY>795 && tempY<835 && tutorSheep > 1)
 			{
-				ctx.drawImage(submitHover,1112,770);	
+				ctx.drawImage(submitHover,1112 + center,770);	
 			}
-
-			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100)
+			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100 && tutorSheep >= 2 && !expComplete)
 			{
 				helpActive = true;	
 			}
 			if(helpActive)
 			{
-				console.log("test 1: " +helpActive);
 				ctx.drawImage(helpScreen,0,0);	
 			}
 			document.onkeyup = function(e)
@@ -2512,12 +2564,10 @@ function update()
            		{
 					counter++;
 					helpActive = false;
-				}
-				
+				}	
 			}
 			mouse.x = 0;
 			mouse.y = 0;
-			console.log("test 2: " +helpActive);
         }
     }
     else
@@ -2571,13 +2621,29 @@ function update()
     && !regExp3.test(incorrectWords[0])&& !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]) && regExp3.test(correctWords[1]) 
     && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
     {
-		if(currentLvl==1)
+		if(currentLvl==1 && !closeWindow)
 		{
         	jumpable = true;
+			expComplete = true;
+			ctx.drawImage(congJump, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
 		}
-		else if(currentLvl==2 && lvlTwoStart)
+		else if(currentLvl==2 && lvlTwoStart && !closeWindow)
 		{
 			attackable = true;
+			expComplete = true;
+			ctx.drawImage(congBreak, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
 		}
 		
 		//Always Happens
@@ -3016,27 +3082,26 @@ function writeText()
 			mouse.x = e.pageX - cv.offsetLeft;
 			mouse.y = e.pageY - cv.offsetTop;
 			
-			console.log(mouse.x);
-			console.log(mouse.y);
-			console.log(textBoxArray[0].xCoord);
-			console.log(textBoxArray[1].xCoord);
-			console.log(textBoxArray[2].xCoord);
-			console.log(currentTextBox);
-			
 			for(i = 0; i < textBoxArray.length; i++)
 			{
 				if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
 				{
 					if(currentTextBox == null)
 					{
-						currentTextBox = textBoxArray[i];
-						currentTextBox.canWrite = true;
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{						
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}	
 					}
 					else
 					{
-						currentTextBox.canWrite = false;
-						currentTextBox = textBoxArray[i];
-						currentTextBox.canWrite = true;
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{
+							currentTextBox.canWrite = false;
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}
 					}
 				}	
 			}
@@ -3062,7 +3127,7 @@ function writeText()
 			if(sheepPoints > 0)
 			{
 				//?
-				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 98 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 59)
+				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 98 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(currentTextBox == textBoxArray[0])
 					{
@@ -3081,7 +3146,7 @@ function writeText()
 					}
 				}
 				//[^] 98, 54
-				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 98 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 59)
+				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 98 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3103,7 +3168,7 @@ function writeText()
 					}
 				}
 				//^
-				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59)
+				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3125,7 +3190,7 @@ function writeText()
 					}
 				}
 				//$
-				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 98 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 59)
+				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 98 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(sheepPoints > 1)
 					{
@@ -3147,7 +3212,7 @@ function writeText()
 					}
 				}
 				//|
-				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 98 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 59)
+				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 98 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 59 && tutorSheep >= 2 && !expComplete)
 				{
 					if(currentTextBox == textBoxArray[0])
 					{
@@ -3168,15 +3233,51 @@ function writeText()
 			}
 			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
 			{
-				closeWindow = true;
-				if(tutorSheep < 3)
+				console.log(tutorSheep);
+				if(tutorSheep == 0)
 				{
-					tutorSheep++;
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+					{
+						closeWindow = true;
+						if(tutorSheep < 3)
+						{
+							tutorSheep++;
+						}
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
+				}	
+				if(tutorSheep == 1)
+				{	
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+					&& !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+					{
+						closeWindow = true;
+						if(tutorSheep < 3)
+						{
+							tutorSheep++;
+						}
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
 				}
-				playerObj.speed = 5;
-				textBoxArray[0].canWrite = false;
-				textBoxArray[1].canWrite = false;
-				textBoxArray[2].canWrite = false;
+				else if(tutorSheep >= 2)
+				{
+					console.log("here");
+					closeWindow = true;
+					if(tutorSheep < 3)
+					{
+						tutorSheep++;
+					}
+					playerObj.speed = 5;
+					textBoxArray[0].canWrite = false;
+					textBoxArray[1].canWrite = false;
+					textBoxArray[2].canWrite = false;
+				}
 			}
 		}
 	}
