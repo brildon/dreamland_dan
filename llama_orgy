@@ -1274,6 +1274,10 @@ function setPositionLvl3() {
 	foregroundBackground.x = 0;
 	foregroundBackground.y = -2;
 	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
 	playerObj.posX = 50;
 	playerObj.posY = 646;
 	
