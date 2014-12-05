@@ -24,28 +24,25 @@ var ctx = cv.getContext('2d');
 
 document.getElementById('music').play();
 
+
 var sheepPoints = 0;	
 var levelAt = 0;
 var tempX = 0;
 var tempY = 0;
 var levelWords = new Array(9);
 var regExpFin = false;
-
 var creditsScreen = false;
-
 var tutorSheep = 0;
 var center = 0;
 var wordChoice = 0;
 var expComplete = false;
 
 console.log(wordChoice);
-
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
-
 levelWords[0] = "HORN";
-levelWords[1] = "HEAT";
+levelWords[1] = "HEART";
 levelWords[2] = "HOP";
 
 levelWords[3] = "LEAP";
@@ -85,14 +82,18 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = false;
+var jumpable = true;
 var crouchable = true;
-var attackable = false;
+var attackable = true;
 var counter = 1;
 var helpActive = false;
 var regExpOne = "";
 var regExpTwo = "";
 var regExpThree = "";
+var lvl1Started = false;
+var lvl2Started = false;
+var lvl3Started = false;
+var lvl4Started = false;
 
 var lvlTwoStart = false;
 
@@ -247,7 +248,7 @@ for(i = 0; i < miniGameArray.length; i++)
 }
 
 miniGameArray[0].tutor = 0;
-miniGameArray[1].tutor = 1;	
+miniGameArray[1].tutor = 1;
 
 var playerObj = {
 	posY: 600,
@@ -328,6 +329,25 @@ var breakObj = {
 	countB: 0,
 	broken: false,
 	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+var boxObj = {
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width: 100,
+
 	centerX: function (){
 		return this.posX + (this.width / 2);
 	},
@@ -439,18 +459,26 @@ var attackBox = Object.create(hitBox);
 
 var cougar = Object.create(cougarObj);
 
-var signs = new Array(6);
+var signs = new Array(5);
 for(var i =0; i<signs.length; i++)
 {
 	signs[i] = Object.create(signObj);
 }
 
-var breakables = new Array (10);
+var breakables = new Array (14);
 
 for (var i =0; i<breakables.length; i++)
 {
 	breakables[i]=Object.create(breakObj);
 }
+
+var boxes = new Array (10);
+
+for (var i =0; i<boxes.length; i++)
+{
+	boxes[i]=Object.create(boxObj);
+}
+
 
 var sm_obj = new Array (8);
 for (var i =0; i<sm_obj.length; i++)
@@ -458,14 +486,14 @@ for (var i =0; i<sm_obj.length; i++)
 	sm_obj[i]=Object.create(smallObj);
 }
 
-var lg_obj = new Array (5);
+var lg_obj = new Array (8);
 for (var i =0; i<lg_obj.length; i++)
 {
 	lg_obj[i]=Object.create(largeObj);
 }
 
 
-var sheep = new Array (10);
+var sheep = new Array (17);
 
 for (var i=0; i<sheep.length; i++)
 {
@@ -523,6 +551,7 @@ var submitButtonArray = new Array(3);
 for(j = 0; j < submitButtonArray.length; j++)
 {
 	submitButtonArray[j] = Object.create(submitButton);
+	console.log(submitButtonArray[j]);
 }
 
 submitButtonArray[0].posX = 210;
@@ -566,8 +595,9 @@ characterBoxArray[4].posY = 45;
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
 
+
 var credits = new Image();
-credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
+credits.src = "https://cloud.githubusercontent.com/assets/8864180/5309490/b6b67378-7bea-11e4-949a-24324d2863a0.png";
 
 var lvl1_background = new Image();	
 lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160133/9eaf675e-7347-11e4-8aea-927623f8f998.png";
@@ -576,7 +606,7 @@ lvl2_background.src = "https://cloud.githubusercontent.com/assets/8835208/516059
 var lvl3_background = new Image();
 lvl3_background.src = "https://cloud.githubusercontent.com/assets/8835208/5236669/9ccc57b0-780d-11e4-890c-df5cef37c58b.png";
 var lvl4_background = new Image();
-lvl4_background.src = "https://cloud.githubusercontent.com/assets/8835208/5274557/dda8e35c-7a5b-11e4-9eb5-605e54d41d69.png";
+lvl4_background.src = "https://cloud.githubusercontent.com/assets/8864180/5311784/254b3c7a-7c12-11e4-97f0-ecdf0f50a7f0.png";
 
 var regExp = new Image();
 regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
@@ -654,11 +684,11 @@ var expInstr21 = new Image();
 var expInstr22 = new Image();
 var expInstr23 = new Image();
 var expInstr24 = new Image();
+var carrotHelp = new Image();
 var expInstr25 = new Image();
 var expInstr26 = new Image();
 var expInstr27 = new Image();
 var expInstr28 = new Image();
-var carrotHelp = new Image();
 var carrotBracketHelp = new Image();
 var helpHover = new Image();
 var helpScreen = new Image();
@@ -673,17 +703,24 @@ var orangeStar = new Image();
 var emptyStar = new Image();
 var singleRegExp = new Image();
 var doubleRegExp = new Image();
+var levelClick = new Image();
+var restartClick = new Image();
+var box2 = new Image();
+var boxInst = new Image();
+var arrow = new Image();
 var congJump = new Image();
 var congBreak = new Image();
 var congCrouch = new Image();
-var levelClick = new Image();
-var restartClick = new Image();
 
-restartClick.src ="https://cloud.githubusercontent.com/assets/8864180/5292542/cd59fac2-7b28-11e4-83fa-238025f2b93d.png";
-levelClick.src = "https://cloud.githubusercontent.com/assets/8864180/5292543/cd5f3866-7b28-11e4-9ae5-fca91d31188f.png";
 congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
 congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
 congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
+
+arrow.src = "https://cloud.githubusercontent.com/assets/8864180/5312748/e8fdd274-7c24-11e4-94ca-c47791f82303.png";
+boxInst.src = "https://cloud.githubusercontent.com/assets/8864180/5312209/f44ea324-7c1a-11e4-9ed2-c6db98313dcf.png";
+box2.src = "https://cloud.githubusercontent.com/assets/8864180/5309191/108de96c-7be6-11e4-8ee6-6d0a921a281f.png";
+restartClick.src ="https://cloud.githubusercontent.com/assets/8864180/5292542/cd59fac2-7b28-11e4-83fa-238025f2b93d.png";
+levelClick.src = "https://cloud.githubusercontent.com/assets/8864180/5312211/f45582fc-7c1a-11e4-86c3-ed40cca8f1c3.png";
 singleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275877/950cd470-7a72-11e4-8a1b-96702456ff91.png";
 doubleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275924/26bcd7ac-7a74-11e4-9466-ae76f4d044fb.png";
 blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
@@ -699,7 +736,6 @@ lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c
 moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
 questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
 submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
-
 expInstr1.src = "https://cloud.githubusercontent.com/assets/8835240/5311532/6c9e2e20-7c0d-11e4-8a58-7bb625f9e9e2.png";
 expInstr2.src = "https://cloud.githubusercontent.com/assets/8835240/5311534/6f84e5b6-7c0d-11e4-8fc3-01d37bd2dd67.png";
 expInstr3.src = "https://cloud.githubusercontent.com/assets/8835240/5311535/731c1e9c-7c0d-11e4-8372-b1e7996e22db.png";
@@ -757,7 +793,7 @@ sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c
 optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
 //optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
 cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
-restart.src = "https://cloud.githubusercontent.com/assets/8864180/4951552/c68d9b60-6668-11e4-806f-eb3eebb55a91.png";
+restart.src = "https://cloud.githubusercontent.com/assets/8864180/5312210/f4553e14-7c1a-11e4-9a89-4717be1e4623.png";
 smallPlatform.src = "https://cloud.githubusercontent.com/assets/8864180/4951669/2d30d3f4-666a-11e4-947c-19d5196a0dc8.png";
 largePlatform.src = "https://cloud.githubusercontent.com/assets/8864180/4951668/2d3073fa-666a-11e4-86a1-5ce1fe80e8fe.png";
 sign.src = "https://cloud.githubusercontent.com/assets/8864180/5041650/9957a1ee-6b8c-11e4-941e-b37410114261.png	";
@@ -766,8 +802,8 @@ medBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041648/9951
 lgBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041649/9956489e-6b8c-11e4-9888-9308c77c6744.png";
 moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292536/cd4c684e-7b28-11e4-816b-35d6f2140692.png";
 jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292540/cd595090-7b28-11e4-83b5-50c57d3db824.png";
-crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048076/9b795180-6be0-11e4-9ded-4b3400e4e3ca.png";
-atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048071/9b73d4f8-6be0-11e4-8057-e4904aa96f88.png";
+crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5312208/f44458e2-7c1a-11e4-8cc0-fc7576c0fd00.png";
+atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5312207/f43184ba-7c1a-11e4-898a-b5d3c6588041.png";
 restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292541/cd593bb4-7b28-11e4-8aae-b142ae663a52.png";
 endLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048075/9b78e876-6be0-11e4-88fb-6a12e251ff11.png";
 finishInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048072/9b747c82-6be0-11e4-8c11-8649b6854b0c.png";
@@ -828,15 +864,15 @@ function loadHandler()
 
 function renderMenu (){	
 	ctx.restore();
-    if (creditsScreen==true)
-    {
-       	ctx.drawImage(credits,0,0,1600,900);
-		if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
-		{
-	 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
-		}
-    }
-   	document.onmousedown = menu;
+    	if (creditsScreen==true)
+    	{
+        	ctx.drawImage(credits,0,0,1600,900);
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
+			{
+		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
+			}
+    	}
+    	document.onmousedown = menu;
 }
 
 function endGame()
@@ -870,96 +906,97 @@ function intialize()
 	foregroundBackground.x = 0;
 	foregroundBackground.y = 736;
 	
-	sheepPoints = 0;
-	
 	playerObj.posX = 50;  //50
-	playerObj.posY = 600+46;	
-	
-	miniGameArray[0].x = 2700;
-	miniGameArray[0].y = 637+60;
-	
-	miniGameArray[1].x = 2900;
-	miniGameArray[1].y = 637+60;
-	
-	miniGameArray[2].x = 3400;
-	miniGameArray[2].y = 637+60;
-	
-	cougar.posX = 6100;
-	cougar.posY = 667+46;
+	playerObj.posY = 600+46;
+	if(lvl1Started==false)
+	{
+		sheepPoints = 0;
 		
-	sheep[0].posX =950;
-	sheep[0].posY =640+46;
-	sheep[0].saved = false;
+		miniGameArray[0].x = 2700;
+		miniGameArray[0].y = 637+60;
 	
-	sheep[1].posX =1250 ;
-	sheep[1].posY =640+46;
-	sheep[1].saved = false;
+		miniGameArray[1].x = 2900;
+		miniGameArray[1].y = 637+60;
 	
-	sheep[2].posX =1550 ;
-	sheep[2].posY =640+46;
-	sheep[2].saved = false;
-	
-	sheep[3].posX =1850;
-	sheep[3].posY =640+46;
-	sheep[3].saved = false;
-	
-	sheep[4].posX =2150;
-	sheep[4].posY =640+46;
-	sheep[4].saved = false;
-	
-	sheep[5].posX =2450;
-	sheep[5].posY =640+46;
-	sheep[5].saved = false;
-	
-	sheep[6].posX =2750;
-	sheep[6].posY =640+46;
-	sheep[6].saved = false;
-	
-	sheep[7].posX =3050;
-	sheep[7].posY =640+46;
-	sheep[7].saved = false;
-	
-	sheep[8].posX =3750;
-	sheep[8].posY =640+46;
-	sheep[8].saved = false;
-	
-	sheep[9].posX =3200;
-	sheep[9].posY =260+46;
-	sheep[9].saved = false;
+		miniGameArray[2].x = 3400;
+		miniGameArray[2].y = 637+60;
 		
-	signs[0].posX = 50;
-	signs[0].posY = 623+46;
-	signs[0].active = true;
-	signs[1].posX = 650;
-	signs[1].posY = 626+46;
-	signs[2].posX = 3250;
-	signs[2].posY = 626+46;
-	signs[3].posX = 4000;
-	signs[3].posY = 626+46;
-
-	signs[4].posX = 4525;
-	signs[4].posY = 455+46;
-	signs[5].posX = 5900;
-	signs[5].posY = 626+46;
+		cougar.posX = 6100;
+		cougar.posY = 667+46;
+			
+		sheep[0].posX =950;
+		sheep[0].posY =640+46;
+		sheep[0].saved = false;
+		
+		sheep[1].posX =1250 ;
+		sheep[1].posY =640+46;
+		sheep[1].saved = false;
+		
+		sheep[2].posX =1550 ;
+		sheep[2].posY =640+46;
+		sheep[2].saved = false;
+		
+		sheep[3].posX =1850;
+		sheep[3].posY =640+46;
+		sheep[3].saved = false;
+		
+		sheep[4].posX =2150;
+		sheep[4].posY =640+46;
+		sheep[4].saved = false;
+		
+		sheep[5].posX =2450;
+		sheep[5].posY =640+46;
+		sheep[5].saved = false;
+		
+		sheep[6].posX =2750;
+		sheep[6].posY =640+46;
+		sheep[6].saved = false;
+		
+		sheep[7].posX =3050;
+		sheep[7].posY =640+46;
+		sheep[7].saved = false;
+		
+		sheep[8].posX =3750;
+		sheep[8].posY =640+46;
+		sheep[8].saved = false;
+		
+		sheep[9].posX =3200;
+		sheep[9].posY =260+46;
+		sheep[9].saved = false;
+			
+		signs[0].posX = 50;
+		signs[0].posY = 623+46;
+		signs[0].active = true;
+		signs[1].posX = 650;
+		signs[1].posY = 626+46;
+		signs[2].posX = 3250;
+		signs[2].posY = 626+46;
+		signs[3].posX = 4000;
+		signs[3].posY = 626+46;
 	
-	lg_obj[1].posX=3150;
-	lg_obj[1].posY=364+46;
-	
-	sm_obj[3].posX=3550;
-	sm_obj[3].posY=447+46;
-	
-	sm_obj[2].posX=3850;
-	sm_obj[2].posY=530+46;
-	
-	lg_obj[0].posX=4114;
-	lg_obj[0].posY=617+46;
-	
-	sm_obj[0].posX=4524;
-	sm_obj[0].posY=570+46;
-	
-	sm_obj[1].posX=4788;
-	sm_obj[1].posY=570+46;
-	
+		signs[4].posX = 4525;
+		signs[4].posY = 455+46;
+		
+		lg_obj[1].posX=3150;
+		lg_obj[1].posY=364+46;
+		
+		sm_obj[3].posX=3550;
+		sm_obj[3].posY=447+46;
+		
+		sm_obj[2].posX=3850;
+		sm_obj[2].posY=530+46;
+		
+		lg_obj[0].posX=4114;
+		lg_obj[0].posY=617+46;
+		
+		sm_obj[0].posX=4524;
+		sm_obj[0].posY=570+46;
+		
+		sm_obj[1].posX=4788;
+		sm_obj[1].posY=570+46;
+		
+		lvl1Started = true;
+	}
 	breakables[0].posX =5100;
 	breakables[0].posY =540+46;
 	breakables[0].broken=false;
@@ -1027,29 +1064,8 @@ function setPositionLvl2() {
 		breakables[i].countB = 0;	
 	}
 	
-	playerObj.posX = 200;
+	playerObj.posX = 5800;
 	playerObj.posY = 600+46;
-
-	sheep[0].posX =1100;
-	sheep[0].posY =640+46;
-	sheep[0].saved = false;
-	sheep[1].posX =1100;
-	sheep[1].posY =440+46;
-	sheep[1].saved = false;
-	sheep[2].posX =1700;
-	sheep[2].posY =640+46;
-	sheep[2].saved = false;
-	sheep[3].posX =600;
-	sheep[3].posY =310+46;
-	sheep[3].saved = false;
-
-
-	sheep[7].posX =5700;
-	sheep[7].posY =640+46;
-	sheep[7].saved = false;
-	sheep[8].posX =5300;
-	sheep[8].posY =240+46;
-	sheep[8].saved = false;
 	
 	breakables[0].posX =1000;
 	breakables[0].posY =640+46;
@@ -1068,149 +1084,172 @@ function setPositionLvl2() {
 	breakables[7].posY =540+46;
 	breakables[7].broken=false;
 	
-	sm_obj[0].posX=740;
-	sm_obj[0].posY=530+46;
-	sm_obj[1].posX=600;
-	sm_obj[1].posY=410+46;
-
-	//lg_obj[4].posX=4200;
-	//lg_obj[4].posY=240;
-	
-	sm_obj[2].posX=2600;
-	sm_obj[2].posY=600+46;
-	sm_obj[3].posX=2300;
-	sm_obj[3].posY=500+46;
-	sm_obj[4].posX=2000;
-	sm_obj[4].posY=400+46;
-	sm_obj[5].posX=2900;
-	sm_obj[5].posY=500+46;
-	lg_obj[0].posX=1700;
-	lg_obj[0].posY=300+46;
-	lg_obj[1].posX=3200;
-	lg_obj[1].posY=400+46;
-	lg_obj[2].posX=3550;
-	lg_obj[2].posY=350+46;
+	breakables[5].posX =4600;
+	breakables[5].posY =640+46;
+	breakables[5].broken=false;
 	breakables[3].posX =3300;
 	breakables[3].posY =300+46;
 	breakables[3].broken=false;
 	breakables[4].posX =3300;
 	breakables[4].posY =200+46;
 	breakables[4].broken=false;
-	sheep[4].posX =2600;
-	sheep[4].posY =500+46;
-	sheep[4].saved = false;
-	sheep[5].posX =1700;
-	sheep[5].posY =200+46;
-	sheep[5].saved = false;
-	sheep[6].posX =3650;
-	sheep[6].posY =250+46;
-	sheep[6].saved = false;
 	
-	miniGameArray[2].x = 4300;
-	miniGameArray[2].y = 637+60;
-	miniGameArray[2].sound = false;
-	
-	signs[0].posX = 4500;
-	signs[0].posY = 623+46;
-	
-	breakables[5].posX =4600;
-	breakables[5].posY =640+46;
-	breakables[5].broken=false;
-	sm_obj[6].posX=4800;
-	sm_obj[6].posY=540+46;
-	sm_obj[7].posX=5000;
-	sm_obj[7].posY=440+46;
-	lg_obj[3].posX=5200;
-	lg_obj[3].posY=340+46;
-	
-	//Do this for every Lvl
-	
-	wordChoice = Math.floor(Math.random() * 3);
-	
-	regExp1 = new RegExp();
-	regExp2 = new RegExp();
-	regExp3 = new RegExp();
-	
-	regExpOne = "";
-	regExpTwo = "";
-	regExpThree = "";
-	if(wordChoice == 0)
+	if(lvl2Started==false)
 	{
-		levelWords[0] = "CAKE";
-		levelWords[1] = "SMELL";
-		levelWords[2] = "SMACK";
+	
+		sheep[0].posX =1100;
+		sheep[0].posY =640+46;
+		sheep[0].saved = false;
+		sheep[1].posX =1100;
+		sheep[1].posY =440+46;
+		sheep[1].saved = false;
+		sheep[2].posX =1700;
+		sheep[2].posY =640+46;
+		sheep[2].saved = false;
+		sheep[3].posX =600;
+		sheep[3].posY =310+46;
+		sheep[3].saved = false;
+	
+	
+		sheep[7].posX =5700;
+		sheep[7].posY =640+46;
+		sheep[7].saved = false;
+		sheep[8].posX =5300;
+		sheep[8].posY =240+46;
+		sheep[8].saved = false;
+		
+		sm_obj[0].posX=740;
+		sm_obj[0].posY=530+46;
+		sm_obj[1].posX=600;
+		sm_obj[1].posY=410+46;
+	
+		//lg_obj[4].posX=4200;
+		//lg_obj[4].posY=240;
+		
+		sm_obj[2].posX=2600;
+		sm_obj[2].posY=600+46;
+		sm_obj[3].posX=2300;
+		sm_obj[3].posY=500+46;
+		sm_obj[4].posX=2000;
+		sm_obj[4].posY=400+46;
+		sm_obj[5].posX=2900;
+		sm_obj[5].posY=500+46;
+		lg_obj[0].posX=1700;
+		lg_obj[0].posY=300+46;
+		lg_obj[1].posX=3200;
+		lg_obj[1].posY=400+46;
+		lg_obj[2].posX=3550;
+		lg_obj[2].posY=350+46;
 
-		levelWords[3] = "ATTACK";
-		levelWords[4] = "RACE";
-		levelWords[5] = "KITTEN";
-
-		levelWords[6] = "BREACH";
-		levelWords[7] = "BREAK";
-		levelWords[8] = "BAKED";
+		sheep[4].posX =2600;
+		sheep[4].posY =500+46;
+		sheep[4].saved = false;
+		sheep[5].posX =1700;
+		sheep[5].posY =200+46;
+		sheep[5].saved = false;
+		sheep[6].posX =3650;
+		sheep[6].posY =250+46;
+		sheep[6].saved = false;
+		
+		miniGameArray[2].x = 4300;
+		miniGameArray[2].y = 637+60;
+		miniGameArray[2].sound = false;
+		signs[0].posX = 4500;
+		signs[0].posY = 623+46;
+		
+		sm_obj[6].posX=4800;
+		sm_obj[6].posY=540+46;
+		sm_obj[7].posX=5000;
+		sm_obj[7].posY=440+46;
+		lg_obj[3].posX=5200;
+		lg_obj[3].posY=340+46;
+		
+		//Do this for every Lvl
+		wordChoice = Math.floor(Math.random() * 3);
+		regExp1 = new RegExp();
+		regExp2 = new RegExp();
+		regExp3 = new RegExp();
+		
+		regExpOne = "";
+		regExpTwo = "";
+		regExpThree = "";
+		if(wordChoice==0)
+		{
+			levelWords[0] = "CAKE";
+			levelWords[1] = "SMELL";
+			levelWords[2] = "SMACK";
+	
+			levelWords[3] = "ATTACK";
+			levelWords[4] = "RACE";
+			levelWords[5] = "KITTEN";
+	
+			levelWords[6] = "BREACH";
+			levelWords[7] = "BREAK";
+			levelWords[8] = "BAKED";
+		}
+		else if(wordChoice==1)
+		{
+			levelWords[0] = "CAKE";
+			levelWords[1] = "SMELL";
+			levelWords[2] = "SMACK";
+	
+			levelWords[3] = "ATTACK";
+			levelWords[4] = "RACE";
+			levelWords[5] = "KITTEN";
+	
+			levelWords[6] = "BREACH";
+			levelWords[7] = "BREAK";
+			levelWords[8] = "BAKED";
+		}
+		else if(wordChoice==2)
+		{
+			levelWords[0] = "CAKE";
+			levelWords[1] = "SMELL";
+			levelWords[2] = "SMACK";
+	
+			levelWords[3] = "ATTACK";
+			levelWords[4] = "RACE";
+			levelWords[5] = "KITTEN";
+	
+			levelWords[6] = "BREACH";
+			levelWords[7] = "BREAK";
+			levelWords[8] = "BAKED";
+		}
+		
+		correctWords[0] = levelWords[2];
+		correctWords[1] = levelWords[3];
+		correctWords[2] = levelWords[7];
+		
+		incorrectWords[0] = levelWords[0];
+		incorrectWords[1] = levelWords[1];
+		incorrectWords[2] = levelWords[4];
+		incorrectWords[3] = levelWords[5];
+		incorrectWords[4] = levelWords[6];
+		incorrectWords[5] = levelWords[8];
+		
+		lvlTwoStart = true;
+		regExpFin = false;
+		
+		submitButtonArray[0].clicked = false;
+		submitButtonArray[1].clicked = false;
+		submitButtonArray[2].clicked = false;
+		//Everything above for every Lvl 
+		
+		//extra stuff from first lvl
+		sheep[9].posX =0;
+		sheep[9].posY =0;
+		sheep[9].saved = false;
+		breakables[8].posX =5800;
+		breakables[8].posY =540;
+		breakables[9].posX =5800;
+		breakables[9].posY =540;
+		signs[1].posX = 8200;
+		signs[2].posX = 8200;
+		signs[3].posX = 8200;
+		signs[4].posX = 8200;
+		signs[5].posX = 8200;
+		lvl2Started=true;
 	}
-	//TODO: Change Words
-	else if(wordChoice == 1)
-	{
-		levelWords[0] = "CAKE";
-		levelWords[1] = "SMELL";
-		levelWords[2] = "SMACK";
-
-		levelWords[3] = "ATTACK";
-		levelWords[4] = "RACE";
-		levelWords[5] = "KITTEN";
-
-		levelWords[6] = "BREACH";
-		levelWords[7] = "BREAK";
-		levelWords[8] = "BAKED";
-	}
-	//TODO: Change Words
-	else if(wordChoice == 2)
-	{
-		levelWords[0] = "CAKE";
-		levelWords[1] = "SMELL";
-		levelWords[2] = "SMACK";
-
-		levelWords[3] = "ATTACK";
-		levelWords[4] = "RACE";
-		levelWords[5] = "KITTEN";
-
-		levelWords[6] = "BREACH";
-		levelWords[7] = "BREAK";
-		levelWords[8] = "BAKED";
-	}
-	
-	correctWords[0] = levelWords[2];
-	correctWords[1] = levelWords[3];
-	correctWords[2] = levelWords[7];
-	
-	incorrectWords[0] = levelWords[0];
-	incorrectWords[1] = levelWords[1];
-	incorrectWords[2] = levelWords[4];
-	incorrectWords[3] = levelWords[5];
-	incorrectWords[4] = levelWords[6];
-	incorrectWords[5] = levelWords[8];
-	
-	lvlTwoStart = true;
-	regExpFin = false;
-	
-	submitButtonArray[0].clicked = false;
-	submitButtonArray[1].clicked = false;
-	submitButtonArray[2].clicked = false;
-	//Everything above for every Lvl 
-	
-	//extra stuff from first lvl
-	sheep[9].posX =0;
-	sheep[9].posY =0;
-	sheep[9].saved = false;
-	breakables[8].posX =5800;
-	breakables[8].posY =540;
-	breakables[9].posX =5800;
-	breakables[9].posY =540;
-	signs[1].posX = 8200;
-	signs[2].posX = 8200;
-	signs[3].posX = 8200;
-	signs[4].posX = 8200;
-	signs[5].posX = 8200;
 
 }
 
@@ -1233,14 +1272,147 @@ function setPositionLvl3() {
 	foregroundBackground.width = 6336;
 	foregroundBackground.height = 789
 	foregroundBackground.x = 0;
-	foregroundBackground.y = -2;	
+	foregroundBackground.y = -2;
 	
-	for (var i = 0; i < breakables.length; i++){
-		breakables[i].countB = 0;
-		breakables[i].posX = 0;
-		breakables[i].posY = 0;	
+	playerObj.posX = 50;
+	playerObj.posY = 646;
+	
+	if(lvl3Started==false)
+	{
+
+		sm_obj[0].posX=350;
+		sm_obj[0].posY=625;
+		sm_obj[1].posX=500;
+		sm_obj[1].posY=550;
+		sm_obj[2].posX=650;
+		sm_obj[2].posY=600;
+		sheep[0].posX =500;
+		sheep[0].posY =686;
+		sheep[0].saved = false;
+		sheep[1].posX =500;
+		sheep[1].posY =450;
+		sheep[1].saved = false;
+		
+		sheep[2].posX =1200;
+		sheep[2].posY =686;
+		sheep[2].saved = false;
+		sheep[3].posX =1450;
+		sheep[3].posY =400;
+		sheep[3].saved = false;	
+		lg_obj[0].posX=1150;
+		lg_obj[0].posY=400;
+
+		sm_obj[3].posX=925;
+		sm_obj[3].posY=500;
+		sm_obj[4].posX=1450;
+		sm_obj[4].posY=500;
+		
+		signs[0].posX = 1725;
+		signs[0].posY = 525;	
+		sheep[4].posX =2000;
+		sheep[4].posY =486;
+		sheep[4].saved = false;
+		sheep[5].posX =2300;
+		sheep[5].posY =686;
+		sheep[5].saved = false;
+		sheep[6].posX =2675;
+		sheep[6].posY =450;
+		sheep[6].saved = false;
+		boxes[0].posX =2000;
+		boxes[0].posY =686;
+		boxes[1].posX =2000;
+		boxes[1].posY =586;
+		boxes[2].posX =2650;
+		boxes[2].posY =686;
+		lg_obj[1].posX=2275;
+		lg_obj[1].posY=550;
+		lg_obj[2].posX=2650;
+		lg_obj[2].posY=550;
+		sm_obj[5].posX=1725;
+		sm_obj[5].posY=625;
+		
+		lg_obj[3].posX=3425;
+		lg_obj[3].posY=550;
+		sm_obj[6].posX=3150;
+		sm_obj[6].posY=675;
+		sm_obj[7].posX=3800;
+		sm_obj[7].posY=375;
+		sheep[7].posX =3000;
+		sheep[7].posY =686;
+		sheep[7].saved = false;
+		sheep[8].posX =3425;
+		sheep[8].posY =686;
+		sheep[8].saved = false;
+		sheep[9].posX =3800;
+		sheep[9].posY =275;
+		sheep[9].saved = false;
+		sheep[10].posX =4075;
+		sheep[10].posY =686;
+		sheep[10].saved = false;
+		boxes[3].posX =3525;
+		boxes[3].posY =450;
+		boxes[4].posX =3950;
+		boxes[4].posY =686;
+		boxes[5].posX =3950;
+		boxes[5].posY =586;
+		boxes[6].posX =4230;
+		boxes[6].posY =686;
+		boxes[7].posX =4230;
+		boxes[7].posY =586;
+		
+		
+		lg_obj[4].posX=4600;
+		lg_obj[4].posY=625;
+		sheep[11].posX =4700;
+		sheep[11].posY =525;
+		sheep[11].saved = false;
+		sheep[12].posX =4700;
+		sheep[12].posY =686;
+		sheep[12].saved = false;
+
+		boxes[8].posX =5100;
+		boxes[8].posY =686;
+		sheep[13].posX =5300;
+		sheep[13].posY =686;
+		sheep[13].saved = false;
+		
+		miniGameArray[2].x = 5500;
+		miniGameArray[2].y = 697;
+		miniGameArray[2].sound = false;
+		
+		signs[1].posX = 5650;
+		signs[1].posY = 623+46;
+		
+		
+		lg_obj[6].posX=5800;
+		lg_obj[6].posY=625;
+		
+		sheep[14].posX =5825;
+		sheep[14].posY =686;
+		sheep[14].saved = false;
+		
+		for (var i = 5; i < breakables.length; i++){
+			breakables[i].countB = 0;
+			breakables[i].posX = 0;
+			breakables[i].posY = 0;	
+		}
 	}
-	for (var i = 0; i < sheep.length; i++){
+	breakables[3].posX =4500;
+	breakables[3].posY =686;
+	breakables[3].broken=false;
+	breakables[1].posX =1225;
+	breakables[1].posY =300;
+	breakables[1].broken=false;
+	breakables[2].posX =1225;
+	breakables[2].posY =200;
+	breakables[2].broken=false;
+	breakables[0].posX =210;
+	breakables[0].posY =686;
+	breakables[0].broken=false;
+	breakables[4].posX =5100;
+	breakables[4].posY =586;
+	breakables[4].broken=false;
+	/*for (var i = 0; i < sheep.length; i++){
 		sheep[i].posX = 0;
 		sheep[i].posY = 0;	
 	}
@@ -1255,14 +1427,9 @@ function setPositionLvl3() {
 	for (var i = 0; i < signs.length; i++){
 		signs[i].posX = 0;
 		signs[i].posY = 0;	
-	}
+	}*/
 	
-	miniGameArray[2].x = 0;
-	miniGameArray[2].y = 0;
-	miniGameArray[2].sound = false;
-	
-	playerObj.posX = 200;
-	playerObj.posY = 600+46;
+
 }
 
 function setPositionLvl4() {//changehere
@@ -1308,13 +1475,21 @@ function setPositionLvl4() {//changehere
 		signs[i].posX = 0;
 		signs[i].posY = 0;	
 	}
+	for (var i = 0; i < boxes.length; i++){
+		boxes[i].posX = 0;
+		boxes[i].posY = 0;	
+	}
 	
+	miniGame.x = 0;
+	miniGame.y = 0;
+	miniGame.sound[2] = false;
 	miniGameArray[2].x = 0;
 	miniGameArray[2].y = 0;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
  }
+ 
 
 function gameScreen()
 {
@@ -1371,6 +1546,7 @@ collisionObj.x = playerObj.posX+10;
 
 function update()
 {
+	//console.log(regExpFin);
 	if(gameOver==false)
     {
     
@@ -1484,6 +1660,7 @@ function update()
 			if(playerObj.posX+40 === signs[i].posX && signs[i].posY > playerObj.posY && playerObj.posY < playerObj.posY+playerObj.height)
        		{
             	if (!signs[i].read){
+					//console.log("collsion with sign");
             		playerObj.stopped = true;
             		signs[i].active = true;
             		signIndex = i;
@@ -1527,10 +1704,13 @@ function update()
 							floorLvl = breakables[i].posY;
 							playerObj.posY =breakables[i].posY-playerObj.height;
 							collision = true;
-							
-							//console.log("top of box:"+breakables[i].posY);
-							//collide = true;	
-							//falling = false;
+					}
+				}
+				for (var i = 0; i< boxes.length; i++){
+						if (hitTest(collisionObj,boxes[i])){
+						floorLvl = boxes[i].posY;
+						playerObj.posY =boxes[i].posY-playerObj.height;
+						collision = true;
 					}
 				}
 				for (var i = 0; i< sm_obj.length; i++){
@@ -1538,10 +1718,6 @@ function update()
 							floorLvl = sm_obj[i].posY;
 							playerObj.posY =sm_obj[i].posY-playerObj.height;
 							collision = true;
-							
-							//console.log("top of box:"+breakables[i].posY);
-							//collide = true;	
-							//falling = false;
 					}
 				}
 				for (var i = 0; i< lg_obj.length; i++){
@@ -1549,10 +1725,6 @@ function update()
 							floorLvl = lg_obj[i].posY;
 							playerObj.posY =lg_obj[i].posY-playerObj.height;
 							collision = true;
-							
-							//console.log("top of box:"+breakables[i].posY);
-							//collide = true;	
-							//falling = false;
 					}
 				}
 				
@@ -1561,6 +1733,11 @@ function update()
 				if (!collision){
 					for (var i = 0; i< breakables.length; i++){
 						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){    
+							collision2 = true;
+						}
+					}
+					for (var i = 0; i< boxes.length; i++){
+						if (hitTest(playerObj,boxes[i])){    
 							collision2 = true;
 						}
 					}
@@ -1592,6 +1769,15 @@ function update()
 					if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false)
 					{
 						playerObj.posY = breakables[i].posY+breakables[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< boxes.length; i++)
+				{
+					if (hitTest(playerObj,boxes[i]))
+					{
+						playerObj.posY = boxes[i].posY+boxes[i].height+1;
 						playerObj.jumpStrength = 10;
 						falling = true;
 					}
@@ -1666,6 +1852,16 @@ function update()
                         }
                     }
                 }
+				for(var i=0; i<boxes.length; i++)
+                {
+                    if(hitTest(boxes[i],playerObj))
+                    {
+                            collision=true;
+                            if (playerObj.posY+playerObj.height > boxes[i].posY)
+                                playerObj.posY = boxes[i].posY-playerObj.height+.5;
+                                falling = false;
+                    }
+                }
                 for(var i=0; i<sm_obj.length; i++)
                 {
                     if(hitTest(sm_obj[i],playerObj))
@@ -1721,6 +1917,18 @@ function update()
             {
                 if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
                 {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > boxes[i].posY)
+                {
+                    console.log("hit");
                     collision=true;
                 }
             }
@@ -1765,6 +1973,16 @@ function update()
                 }
             }
         }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                    if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
+                    {
+                        collision = true;
+                    }
+            }
+        }
         for(var i=0; i<sm_obj.length; i++)
         {
             if(hitTest(sm_obj[i],playerObj))
@@ -1800,6 +2018,17 @@ function update()
             if(hitTest(breakables[i],playerObj))
             {
                 if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > boxes[i].posY)
                 {
                     console.log("hit");
                     collision=true;
@@ -1846,6 +2075,16 @@ function update()
                 }
             }
         }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                    if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
+                    {
+                        collision = true;
+                    }
+            }
+        }
         for(var i=0; i<sm_obj.length; i++)
         {
             if(hitTest(sm_obj[i],playerObj))
@@ -1888,28 +2127,6 @@ function update()
     }
     if(!isDucking)
     {
-		//TODO: finish this junk yo
-        /*for(i = 0; i < sm_obj.length; i++)
-		{
-			if(playerObj.height = sm_obj[i]. && !isJump)
-			{
-				isDucking = true;
-				isStanding = false;
-			}
-		}*/
-		/*for(var i=0; i<breakables.length; i++)
-        {
-            if(hitTest(playerObj,breakables[i]))
-            {
-                isDucking = true;
-                playerObj.posY = breakables[i].posY+breakables[i].height;
-                //collide = false;
-                //collision = false;
-                //falling=true;
-            }
-        }
-        if(!isDucking)
-        {*/
             isDucked = false;
             if(isStanding == false)
             {
@@ -1919,10 +2136,9 @@ function update()
 				attackBox.posY = playerObj.posY;
                 //floorlvl = floorlvl-50;
             }
-        //}
     }
     
-   for(var i=0; i<sheep.length; i++)
+         for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -1956,6 +2172,13 @@ function update()
 			sheep[i].collision = true;
 		}
 	}
+		for(var j=0; j<sm_obj.length; j++)
+	{
+	if(hitTest(boxes[j],sheep[i]))
+		{
+			sheep[i].collision = true;
+		}
+	}
 	for(var j=0; j<lg_obj.length; j++)
 	{
 		if(hitTest(lg_obj[j],sheep[i]))
@@ -1985,6 +2208,17 @@ function update()
 								  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
 								  sheep[i].falling = false;
 							  }
+						  }
+					  }
+				  }
+				  for(var j=0; j<boxes.length; j++)
+				  {
+					  if(hitTest(boxes[j],sheep[i]))
+					  {
+						  sheep[i].collision=true;
+						  if (sheep[i].posY+sheep[i].height > boxes[j].posY){
+							  sheep[i].posY = boxes[j].posY-sheep[i].height+.5;
+							  sheep[i].falling = false;
 						  }
 					  }
 				  }
@@ -2025,6 +2259,7 @@ function update()
 		  }
 	}
     }
+    
     sheepSaved = 0;
     if(cougar.saved==false)
     {
@@ -2071,26 +2306,12 @@ function update()
 	}
     if(hitTest(playerObj,miniGameArray[2]) && closeWindow == false && miniGameArray[2].tutor <= tutorSheep || hitTest(playerObj,miniGameArray[1]) && closeWindow == false && miniGameArray[1].tutor == tutorSheep || hitTest(playerObj,miniGameArray[0]) && closeWindow == false && miniGameArray[0].tutor == tutorSheep)
     {		
-		if(!miniGameArray[2].sound && tutorSheep >= 2)
-		{
-			document.getElementById('sound06').play();
-			miniGameArray[2].sound = true;	
-		}
-		if(!miniGameArray[1].sound && tutorSheep == 1)
-		{
-			document.getElementById('sound06').play();
-			miniGameArray[1].sound = true;	
-		}
-		if(!miniGameArray[0].sound && tutorSheep == 0)
-		{
-			document.getElementById('sound06').play();
-			miniGameArray[0].sound = true;	
-		}
 		//if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
             playerObj.speed = 0;
+			
 			if(tutorSheep == 0)
 			{
 				center = 455;
@@ -2103,10 +2324,10 @@ function update()
 			{
 				center = 0;
 			}
+			console.log(center);
 			submitButtonArray[0].posX = 210 + center;
 			submitButtonArray[1].posX = 670 + center;
 			submitButtonArray[2].posX = 1130 + center;
-			
 			textBoxArray[0].xCoord = 100 + center;
 			textBoxArray[1].xCoord = 600 + center;
 			textBoxArray[2].xCoord = 1000 + center;
@@ -2391,7 +2612,7 @@ function update()
 			{
 				ctx.drawImage(expInstr12,0,0);
 			}
-			else if(counter == 13)
+			else if(counter==13)
 			{
 				ctx.drawImage(expInstr13,0,0);
 			}
@@ -2399,7 +2620,7 @@ function update()
 			{
 				ctx.drawImage(expInstr21,0,0);
 			}
-			//Start of part B
+			//PART B
 			else if(counter==15)
 			{
 				ctx.drawImage(expInstr14,0,0);
@@ -2428,7 +2649,7 @@ function update()
 			{
 				ctx.drawImage(expInstr20,0,0);
 			}
-			// Start of part C
+			//PART C
 			else if(counter==22)
 			{
 				ctx.drawImage(expInstr21,0,0);
@@ -2443,8 +2664,8 @@ function update()
 			}
 			else if(counter==25)
 			{
-				ctx.drawImage(expInstr24,0,0);
-			}
+ 				ctx.drawImage(expInstr24,0,0);
+ 			}
 			else if(counter==26)
 			{
 				ctx.drawImage(expInstr25,0,0);
@@ -2506,7 +2727,7 @@ function update()
 				else
 				{
 					ctx.drawImage(submitHover,200 + center,770);
-				}
+				}	
 			}
 			if(tempX>690 + center && tempX<890 + center && tempY>795 && tempY<835 && tutorSheep > 0)
 			{
@@ -2522,6 +2743,7 @@ function update()
 			}
 			if(helpActive)
 			{
+				console.log("test 1: " +helpActive);
 				ctx.drawImage(helpScreen,0,0);	
 			}
 			document.onkeyup = function(e)
@@ -2571,10 +2793,12 @@ function update()
 						}
 					}
 					helpActive = false;
-				}	
+				}
+				
 			}
 			mouse.x = 0;
 			mouse.y = 0;
+			console.log("test 2: " +helpActive);
         }
     }
     else
@@ -2584,12 +2808,13 @@ function update()
         render();
     }
     
-   if (playerObj.posX > 6000)
+    if (playerObj.posX > 6000)
 	{
 		ctx.drawImage(levelClick,0,0);
 		//here
-		document.onmouseup=function(e){mouseUp()};
-		function mouseUp(e)
+		//document.onkey=function(e){key()};
+		//function key(e)
+		if(key[32])
 		{
 				if(playerObj.posX > 6000&&currentLvl==1)
 				{
@@ -2611,7 +2836,7 @@ function update()
 				}
 				else if(playerObj.posX > 6015 &&currentLvl==4)
 				{
-									ctx.drawImage(endScene,0,0,1600,900);
+					ctx.drawImage(endScene,0,0,1600,900);
 					gameOver = true;
 					setTimeout(endGame,5000);
 				}
@@ -2666,21 +2891,16 @@ function hitTest(r1,r2)
 function render()
 {
 	document.onmousedown = function(e)
-	{
-		mouse.x = e.pageX - cv.offsetLeft;
-		mouse.y = e.pageY - cv.offsetTop;
-	}
+		{
+			mouse.x = e.pageX - cv.offsetLeft;
+			mouse.y = e.pageY - cv.offsetTop;
+		}
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
     
     	ctx.save();
     	ctx.translate(-camera.x, -camera.y);
-    	if (currentLvl === 2 && lvlFlag)
-        	ctx.drawImage(cutscene,0,0,1600,900);
-    	if (currentLvl === 2 && lvlFlag && lastLevel)
-        	ctx.drawImage(endScene,0,0,1600,900);
-    
     	if (currentLvl === 1){
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
@@ -2694,11 +2914,12 @@ function render()
 			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
 			ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
 			ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
-			
-        	for(var i =0; i<signs.length; i++)
+
+			for(var i =0; i<signs.length; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
-			}			
+			}
+			ctx.drawImage(arrow,6000,672);			
 			for(var i=0; i<10; i++)
 			{
 				if(!breakables[i].broken)
@@ -2769,13 +2990,11 @@ function render()
                 	else if(i==1)
 						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==2)
-                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250);
-                	else if(i==3)
-                    	ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250);
+                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250); 
+					else if(i==3)
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250); 
 					else if(i==4)
-						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250);
-					else if(i==5)
-						ctx.drawImage(endLvlInstr,signs[i].posX+70,signs[i].posY-250);        
+						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
 			}
     	}
@@ -2798,7 +3017,6 @@ function render()
 				else{
 					if (breakables[i].countB >=0 && breakables[i].countB <6){
 						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
-						document.getElementById('sound01').play();
 					}
 					else if (breakables[i].countB >=6 && breakables[i].countB <12){
 						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
@@ -2851,6 +3069,8 @@ function render()
 			
 			if(signs[0].active)
 				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-250);
+			ctx.drawImage(arrow,6000,672);			
+
 		}
 		else if (currentLvl === 3)
 		{
@@ -2859,6 +3079,89 @@ function render()
 			
         	ctx.drawImage(lvl3_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
 			ctx.drawImage(lvl3_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			
+						ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+		
+        	for(var i =0; i<3; i++)
+        	{
+            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+			}			
+			ctx.drawImage(arrow,6000,672);			
+
+			for(var i=0; i<14; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			for(var i=0; i<8; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<8; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			for(var i=0; i<10; i++)
+			{
+					ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+			}	
+			for (var i=0; i<17;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+				}
+    		}
+			
+			for(var i =0; i<2; i++)  
+			{         
+            	if(signs[i].active)
+            	{
+                	if(i==0)
+						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-250);
+                	else if(i==1)
+						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);      
+				}
+			}
+			ctx.drawImage(arrow,6000,672);			
 		}
 		else if (currentLvl === 4)//changehere2
 		{
@@ -2870,10 +3173,7 @@ function render()
 		}
 		
 		
-    	ctx.drawImage(sheepIcon,camera.x,0);
-    	ctx.fillStyle = 'black';
-    	ctx.font = "50px Arial";
-    	ctx.fillText(sheepPoints,camera.x+50,50,50);
+
     
     	if(playerObj.state == 0){ //right
 			if(isJump){
@@ -3057,18 +3357,24 @@ function render()
 		if (countS ==20){
 			countS = 0;	
 		}
-		if (currentLvl === 2 && lvlFlag)
-			ctx.drawImage(cutscene,0,0,1600,900);
-		if (currentLvl === 2 && lvlFlag && lastLevel)
-			ctx.drawImage(endScene,0,0,1600,900);
-        
+//draw HERE bitch
     	ctx.drawImage(restart,1534+camera.x,10);
-        
+        console.log(mouse.x+", "+mouse.y);
+		ctx.drawImage(sheepIcon,camera.x,0);
+    	ctx.fillStyle = 'black';
+    	ctx.font = "50px Arial";
+    	ctx.fillText(sheepPoints,camera.x+50,50,50);
     	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
     	{
 			ctx.drawImage(restartClick,0,0);
-			playerObj.posX = 50;
-			playerObj.posY = 600+46;	 
+			if(currentLvl==1)
+				intialize();//maybe	 
+			else if(currentLvl==2)
+				setPositionLvl2();
+			else if(currentLvl==3)
+				setPositionLvl3();
+			else if(currentLvl==4)
+				setPositionLvl4();
     	}
         
   		ctx.restore();
@@ -3784,7 +4090,6 @@ function writeText()
 	}
 }
 gameStart();
-
 </script>
 </body>
 </html>
