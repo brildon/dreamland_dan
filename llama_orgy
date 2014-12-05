@@ -23,7 +23,7 @@ var ctx = cv.getContext('2d');
 
 //var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
 
-//document.getElementById('music').play();
+document.getElementById('music').play();
 
 
 var sheepPoints = 0;	
