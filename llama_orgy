@@ -459,7 +459,7 @@ var attackBox = Object.create(hitBox);
 
 var cougar = Object.create(cougarObj);
 
-var signs = new Array(5);
+var signs = new Array(6);
 for(var i =0; i<signs.length; i++)
 {
 	signs[i] = Object.create(signObj);
@@ -906,7 +906,7 @@ function intialize()
 	foregroundBackground.x = 0;
 	foregroundBackground.y = 736;
 	
-	playerObj.posX = 50;  //50
+	playerObj.posX = 5900;  //50
 	playerObj.posY = 600+46;
 	if(lvl1Started==false)
 	{
@@ -3095,7 +3095,7 @@ function render()
         	ctx.drawImage(lvl3_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
 			ctx.drawImage(lvl3_background,0,1101,6336,5,0, 781, 6336, 5); //black line
 			
-						ctx.drawImage(sheepWizard,miniGame.x, miniGame.y);
+			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
 		
         	for(var i =0; i<3; i++)
         	{
