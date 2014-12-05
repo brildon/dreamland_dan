@@ -81,9 +81,9 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = true;
-var crouchable = true;
-var attackable = true;
+var jumpable = false;
+var crouchable = false;
+var attackable = false;
 var counter = 1;
 var helpActive = false;
 var regExpOne = "";
@@ -455,14 +455,14 @@ for(var i =0; i<signs.length; i++)
 	signs[i] = Object.create(signObj);
 }
 
-var breakables = new Array (14);
+var breakables = new Array (30);
 
 for (var i =0; i<breakables.length; i++)
 {
 	breakables[i]=Object.create(breakObj);
 }
 
-var boxes = new Array (10);
+var boxes = new Array (30);
 
 for (var i =0; i<boxes.length; i++)
 {
@@ -470,13 +470,13 @@ for (var i =0; i<boxes.length; i++)
 }
 
 
-var sm_obj = new Array (8);
+var sm_obj = new Array (20);
 for (var i =0; i<sm_obj.length; i++)
 {
 	sm_obj[i]=Object.create(smallObj);
 }
 
-var lg_obj = new Array (8);
+var lg_obj = new Array (20);
 for (var i =0; i<lg_obj.length; i++)
 {
 	lg_obj[i]=Object.create(largeObj);
@@ -699,6 +699,12 @@ var arrow = new Image();
 var congJump = new Image();
 var congBreak = new Image();
 var congCrouch = new Image();
+
+var smallGem = new Image();
+var largeGem  = new Image();
+
+smallGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316589/27dce5a6-7c53-11e4-8c9f-ce1ee9b5eb18.png";
+largeGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316590/27dcfd98-7c53-11e4-9d03-9aed33acb83c.png";
 
 congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
 congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
@@ -1470,24 +1476,6 @@ function setPositionLvl3() {
 	breakables[4].posX =5100;
 	breakables[4].posY =586;
 	breakables[4].broken=false;
-	/*for (var i = 0; i < sheep.length; i++){
-		sheep[i].posX = 0;
-		sheep[i].posY = 0;	
-	}
-	for (var i = 0; i < sm_obj.length; i++){
-		sm_obj[i].posX = 0;
-		sm_obj[i].posY = 0;	
-	}
-	for (var i = 0; i < lg_obj.length; i++){
-		lg_obj[i].posX = 0;
-		lg_obj[i].posY = 0;	
-	}
-	for (var i = 0; i < signs.length; i++){
-		signs[i].posX = 0;
-		signs[i].posY = 0;	
-	}*/
-	
-
 }
 
 function setPositionLvl4() {//changehere
@@ -1511,39 +1499,207 @@ function setPositionLvl4() {//changehere
 	foregroundBackground.height = 797
 	foregroundBackground.x = 0;
 	foregroundBackground.y = -5;	
-	
 	for (var i = 0; i < breakables.length; i++){
-		breakables[i].countB = 0;
-		breakables[i].posX = 0;
-		breakables[i].posY = 0;	
-	}
-	for (var i = 0; i < sheep.length; i++){
-		sheep[i].posX = 0;
-		sheep[i].posY = 0;	
-	}
-	for (var i = 0; i < sm_obj.length; i++){
-		sm_obj[i].posX = 0;
-		sm_obj[i].posY = 0;	
-	}
-	for (var i = 0; i < lg_obj.length; i++){
-		lg_obj[i].posX = 0;
-		lg_obj[i].posY = 0;	
-	}
-	for (var i = 0; i < signs.length; i++){
-		signs[i].posX = 0;
-		signs[i].posY = 0;	
-	}
-	for (var i = 0; i < boxes.length; i++){
-		boxes[i].posX = 0;
-		boxes[i].posY = 0;	
+		breakables[i].countB = 0;	
 	}
 	
+	if(lvl4Started==false)
+	{
+		for (var i = 0; i < breakables.length; i++){
+			breakables[i].posX = 0;
+			breakables[i].posY = 0;	
+		}
+		for (var i = 0; i < sheep.length; i++){
+			sheep[i].posX = 0;
+			sheep[i].posY = 0;	
+		}
+		for (var i = 0; i < sm_obj.length; i++){
+			sm_obj[i].posX = 0;
+			sm_obj[i].posY = 0;	
+		}
+		for (var i = 0; i < lg_obj.length; i++){
+			lg_obj[i].posX = 0;
+			lg_obj[i].posY = 0;	
+		}
+		for (var i = 0; i < signs.length; i++){
+			signs[i].posX = 0;
+			signs[i].posY = 0;	
+		}
+		for (var i = 0; i < boxes.length; i++){
+			boxes[i].posX = 0;
+			boxes[i].posY = 0;	
+		}
+	
+		sm_obj[0].posX = 500;
+		sm_obj[0].posY = 625;
+		boxes[0].posX = 500;
+		boxes[0].posY = 525;
+		sm_obj[1].posX = 1100;
+		sm_obj[1].posY = 650;
+		lg_obj[0].posX = 1300;
+		lg_obj[0].posY = 550;
+		sm_obj[2].posX = 1600;
+		sm_obj[2].posY = 350;
+		lg_obj[1].posX = 1900;
+		lg_obj[1].posY = 350;
+		lg_obj[2].posX = 2120;
+		lg_obj[2].posY = 350;
+		lg_obj[3].posX = 2120;
+		lg_obj[3].posY = 175;
+		boxes[1].posX = 2230;
+		boxes[1].posY = 75;
+		boxes[2].posX = 2230;
+		boxes[2].posY = -25;
+		sheep[0].posX =2120;
+		sheep[0].posY =75;
+		sheep[0].saved = false;
+		sheep[1].posX =2230;
+		sheep[1].posY =250;
+		sheep[1].saved = false;
+		sheep[2].posX =2600;
+		sheep[2].posY =686;
+		sheep[2].saved = false;
+		sheep[3].posX =2770;
+		sheep[3].posY =286;
+		sheep[3].saved = false;
+		sheep[4].posX =2860;
+		sheep[4].posY =586;
+		sheep[4].saved = false;
+		
+		boxes[3].posX = 3400;
+		boxes[3].posY = 586;
+		boxes[4].posX = 3500;
+		boxes[4].posY = 586;
+		boxes[5].posX = 3600;
+		boxes[5].posY = 586;
+		boxes[6].posX = 3700;
+		boxes[6].posY = 586;
+		boxes[7].posX = 3800;
+		boxes[7].posY = 586;
+		boxes[8].posX = 3900;
+		boxes[8].posY = 586;
+		boxes[9].posX = 4000;
+		boxes[9].posY = 586;
+		boxes[10].posX = 4100;
+		boxes[10].posY = 586;
+		boxes[11].posX = 4200;
+		boxes[11].posY = 586;
+		boxes[12].posX = 4200;
+		boxes[12].posY = 686;
+		
+		boxes[13].posX = 3600;
+		boxes[13].posY = 386;
+		boxes[14].posX = 3700;
+		boxes[14].posY = 386;
+		boxes[15].posX = 3800;
+		boxes[15].posY = 386;
+		boxes[16].posX = 3900;
+		boxes[16].posY = 386;
+		boxes[17].posX = 4000;
+		boxes[17].posY = 386;
+		boxes[18].posX = 4100;
+		boxes[18].posY = 386;
+		boxes[19].posX = 4200;
+		boxes[19].posY = 386;
+		
+		boxes[20].posX = 3800;
+		boxes[20].posY = 186;
+		boxes[21].posX = 3900;
+		boxes[21].posY = 186;
+		boxes[22].posX = 4000;
+		boxes[22].posY = 186;
+		boxes[23].posX = 4100;
+		boxes[23].posY = 186;
+		boxes[24].posX = 4200;
+		boxes[24].posY = 186;
+		boxes[25].posX = 4200;
+		boxes[25].posY = 286;
+		boxes[26].posX = 4200;
+		boxes[26].posY = -14;
+		boxes[27].posX = 4200;
+		boxes[27].posY = 86;
+		sheep[5].posX =3700;
+		sheep[5].posY =686;
+		sheep[5].saved = false;
+		sheep[6].posX =4000;
+		sheep[6].posY =486;
+		sheep[6].saved = false;
+		sheep[7].posX =3900;
+		sheep[7].posY =286;
+		sheep[7].saved = false;
+		sheep[8].posX =4000;
+		sheep[8].posY =86;
+		sheep[8].saved = false;
+		
+		lg_obj[4].posX = 4300;
+		lg_obj[4].posY = 600;
+		
+		lg_obj[5].posX = 4700;
+		lg_obj[5].posY = 600;
+		
+		lg_obj[6].posX = 5100;
+		lg_obj[6].posY = 600;
+		
+		lvl4Started=true;
+	}
+	breakables[0].posX = 800;
+	breakables[0].posY = 686;	
+	breakables[0].broken = false;
+	breakables[1].posX = 800;
+	breakables[1].posY = 586;
+	breakables[1].broken = false;
+	breakables[2].posX = 1400;
+	breakables[2].posY = 450;
+	breakables[2].broken = false;
+	breakables[3].posX = 2000;
+	breakables[3].posY = 250;
+	breakables[3].broken = false;
+	
+	breakables[4].posX = 2500;
+	breakables[4].posY = 686;
+	breakables[4].broken = false;
+	breakables[5].posX = 2680;
+	breakables[5].posY = 686;
+	breakables[5].broken = false;
+	breakables[6].posX = 2860;
+	breakables[6].posY = 686;
+	breakables[6].broken = false;
+	breakables[7].posX = 3040;
+	breakables[7].posY = 686;
+	breakables[7].broken = false;
+	breakables[8].posX = 2590;
+	breakables[8].posY = 586;
+	breakables[8].broken = false;
+	breakables[9].posX = 2770;
+	breakables[9].posY = 586;
+	breakables[9].broken = false;
+	breakables[10].posX = 2950;
+	breakables[10].posY = 586;
+	breakables[10].broken = false;
+	breakables[11].posX = 2680;
+	breakables[11].posY = 486;
+	breakables[11].broken = false;
+	breakables[12].posX = 2860;
+	breakables[12].posY = 486;
+	breakables[12].broken = false;
+	breakables[13].posX = 2770;
+	breakables[13].posY = 386;
+	breakables[13].broken = false;
 
-	miniGameArray.sound[2] = false;
-	miniGameArray[2].x = 0;
-	miniGameArray[2].y = 0;
+	breakables[14].posX = 3300;
+	breakables[14].posY = 686;
+	breakables[14].broken = false;
+	breakables[15].posX = 3500;
+	breakables[15].posY = 486;
+	breakables[15].broken = false;
+	breakables[16].posX = 4200;
+	breakables[16].posY = 486;
+	breakables[16].broken = false;
+	breakables[17].posX = 3700;
+	breakables[17].posY = 286;
+	breakables[17].broken = false;
 	
-	playerObj.posX = 200;
+	playerObj.posX = 50;
 	playerObj.posY = 600+46;
  }
  
@@ -3276,6 +3432,69 @@ function render()
 			
         	ctx.drawImage(lvl4_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
 			ctx.drawImage(lvl4_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			
+			for(var i=0; i<30; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			for(var i=0; i<20; i++)
+			{
+				ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<20; i++)
+			{
+				ctx.drawImage(largeGem,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			for(var i=0; i<30; i++)
+			{
+					ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+			}	
+			for (var i=0; i<15;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+				}
+    		}
 		}
 		
 		
