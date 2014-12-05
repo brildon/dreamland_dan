@@ -14,6 +14,8 @@
 <audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
 <audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
 <audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
+<audio id="sound06" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Magic%20Wand%20Noise-SoundBible.com-375928671.wav" preload="auto"</audio>
+
 
 <script>
 var cv = document.getElementById("ctx");
@@ -216,6 +218,7 @@ var miniGameObj = {
 	y: 0,
 	height: 100,
 	width: 100,
+	sound: false,
 	
 	centerX: function (){
 		return this.x + (this.width / 2);
@@ -842,7 +845,7 @@ function intialize()
 	
 	sheepPoints = 0;
 	
-	playerObj.posX = 5900;  //50
+	playerObj.posX = 50;  //50
 	playerObj.posY = 600+46;	
 	
 	miniGame.x = 3400;
@@ -1066,6 +1069,7 @@ function setPositionLvl2() {
 	sheep[5].posX =1700;
 	sheep[5].posY =200+46;
 	sheep[5].saved = false;
+
 	sheep[6].posX =3650;
 	sheep[6].posY =250+46;
 	sheep[6].saved = false;
@@ -1236,6 +1240,7 @@ function setPositionLvl4() {//changehere
 		signs[i].posY = 0;	
 	}
 	
+
 	miniGame.x = 0;
 	miniGame.y = 0;
 	
@@ -2002,9 +2007,14 @@ function update()
 	}
     if(hitTest(playerObj,miniGame) && closeWindow == false)
     {		
+		if (!miniGame.sound){
+			document.getElementById('sound06').play();
+			miniGame.sound = true;
+		}
+		
 		//if(currentLvl==1)
         {
-            ctx.fillStyle = 'black';
+			ctx.fillStyle = 'black';
             ctx.font = "50px Helvetica";
             playerObj.speed = 0;
 			
@@ -2487,10 +2497,10 @@ function hitTest(r1,r2)
 function render()
 {
 	document.onmousedown = function(e)
-		{
+	{
 			mouse.x = e.pageX - cv.offsetLeft;
 			mouse.y = e.pageY - cv.offsetTop;
-		}
+	}
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
@@ -2612,6 +2622,7 @@ function render()
 				else{
 					if (breakables[i].countB >=0 && breakables[i].countB <6){
 						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
 					}
 					else if (breakables[i].countB >=6 && breakables[i].countB <12){
 						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
@@ -3338,6 +3349,7 @@ function writeText()
 					}
 					sheepPoints--;
 				}
+
 				if(key[81]) // q
 				{
 					if(currentTextBox == textBoxArray[0])
