@@ -2305,7 +2305,22 @@ function update()
 		closeWindow = false;
 	}
     if(hitTest(playerObj,miniGameArray[2]) && closeWindow == false && miniGameArray[2].tutor <= tutorSheep || hitTest(playerObj,miniGameArray[1]) && closeWindow == false && miniGameArray[1].tutor == tutorSheep || hitTest(playerObj,miniGameArray[0]) && closeWindow == false && miniGameArray[0].tutor == tutorSheep)
-    {		
+    {	
+		if(!miniGameArray[2].sound && tutorSheep >= 2)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[2].sound = true;	
+		}
+		if(!miniGameArray[1].sound && tutorSheep == 1)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[1].sound = true;	
+		}
+		if(!miniGameArray[0].sound && tutorSheep == 0)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[0].sound = true;	
+		}	
 		//if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
