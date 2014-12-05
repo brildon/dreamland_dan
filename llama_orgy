@@ -23,7 +23,7 @@ var ctx = cv.getContext('2d');
 
 //var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
 
-document.getElementById('music').play();
+//document.getElementById('music').play();
 
 
 var sheepPoints = 0;	
@@ -1076,6 +1076,7 @@ function setPositionLvl2() {
 	
 	miniGame.x = 4300;
 	miniGame.y = 637+60;
+	miniGame.sound = false;
 	
 	signs[0].posX = 4500;
 	signs[0].posY = 623+46;
@@ -1191,6 +1192,7 @@ function setPositionLvl3() {
 	
 	miniGame.x = 0;
 	miniGame.y = 0;
+	miniGame.sound = false;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
@@ -1243,6 +1245,7 @@ function setPositionLvl4() {//changehere
 
 	miniGame.x = 0;
 	miniGame.y = 0;
+	miniGame.sound = false.
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
