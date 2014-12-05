@@ -14,6 +14,7 @@
 <audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
 <audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
 <audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
+<audio id="sound06" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Magic%20Wand%20Noise-SoundBible.com-375928671.wav" preload="auto"</audio>
 
 <script>
 var cv = document.getElementById("ctx");
@@ -29,6 +30,8 @@ var tempX = 0;
 var tempY = 0;
 var levelWords = new Array(9);
 var regExpFin = false;
+
+var creditsScreen = false;
 
 var tutorSheep = 0;
 var center = 0;
@@ -68,10 +71,6 @@ incorrectWords[3] = levelWords[5];
 incorrectWords[4] = levelWords[6];
 incorrectWords[5] = levelWords[8];
 
-var menuCheck = true;
-var buildCheck = false;
-var creditsScreen = false;
-var optionsScreen = false;
 var collide = false;
 var falling = false;
 var isDucked = false;
@@ -108,7 +107,6 @@ var countS = 0;
 var playerDirec = 0;
 var currentLvl = 1;
 var lvlFlag = false;
-var mainCheck = true;
 var gameTrigger;
 var temp2X = 0;
 var temp2Y = 0;
@@ -225,6 +223,7 @@ var miniGameObj = {
 	y: 0,
 	height: 100,
 	width: 100,
+	sound: false,
 	tutor: 2,
 	
 	centerX: function (){
@@ -567,10 +566,6 @@ characterBoxArray[4].posY = 45;
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
 
-var mainScreen = new Image();	
-mainScreen.addEventListener("load", loadHandler, false);
-mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
-
 var credits = new Image();
 credits.src = "https://cloud.githubusercontent.com/assets/8835208/5195213/79266b5c-74de-11e4-8360-16cd648cebbf.png";
 
@@ -681,7 +676,11 @@ var doubleRegExp = new Image();
 var congJump = new Image();
 var congBreak = new Image();
 var congCrouch = new Image();
+var levelClick = new Image();
+var restartClick = new Image();
 
+restartClick.src ="https://cloud.githubusercontent.com/assets/8864180/5292542/cd59fac2-7b28-11e4-83fa-238025f2b93d.png";
+levelClick.src = "https://cloud.githubusercontent.com/assets/8864180/5292543/cd5f3866-7b28-11e4-9ae5-fca91d31188f.png";
 congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
 congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
 congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
@@ -765,15 +764,15 @@ sign.src = "https://cloud.githubusercontent.com/assets/8864180/5041650/9957a1ee-
 smBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041651/995b5e74-6b8c-11e4-82b2-04469c5f78a3.png";
 medBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041648/9951b5f4-6b8c-11e4-80c0-edfef849f7e6.png";
 lgBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041649/9956489e-6b8c-11e4-9888-9308c77c6744.png";
-moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5136531/321f83b2-70ef-11e4-9b06-37b4a7cd52b9.png";
-jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048073/9b747eda-6be0-11e4-90c4-a691835d6cbb.png";
+moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292536/cd4c684e-7b28-11e4-816b-35d6f2140692.png";
+jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292540/cd595090-7b28-11e4-83b5-50c57d3db824.png";
 crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048076/9b795180-6be0-11e4-9ded-4b3400e4e3ca.png";
 atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048071/9b73d4f8-6be0-11e4-8057-e4904aa96f88.png";
-restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048079/9b82fadc-6be0-11e4-9383-9d98a9213099.png";
+restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292541/cd593bb4-7b28-11e4-8aae-b142ae663a52.png";
 endLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048075/9b78e876-6be0-11e4-88fb-6a12e251ff11.png";
 finishInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048072/9b747c82-6be0-11e4-8c11-8649b6854b0c.png";
-sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048082/9b873502-6be0-11e4-850b-2386d28b8c57.png";
-regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5048077/9b7ea324-6be0-11e4-838b-697931b347ee.png";
+sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292537/cd54e0b4-7b28-11e4-8544-a965f0c29835.png";
+regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5292539/cd590770-7b28-11e4-94de-8a360cfcd57e.png";
 regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84d280-6be0-11e4-872f-525fb0c44fa9.png";
 regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
 regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
@@ -796,55 +795,19 @@ function menu(e)
     	mouse.y = e.pageY - cv.offsetTop;	
 	}
 
-	if(mouse.x < 718 && mouse.y < 484 && mouse.x > 418 && mouse.y > 405 && menuCheck==true && creditsScreen ==false && optionsScreen==false) //enter game
+	if(creditsScreen ==false) //enter game
 	{
 		document.getElementById('sound05').play();
-		buildCheck=false;
-    	menuCheck=false;
-		mainCheck=false;
 		cancelRequestAnimFrame(loadHandler);
-	}
-	if(1046<mouse.x && mouse.x<1331 && 686<mouse.y && mouse.y<749 && optionsScreen == false) //enter credits screen
-	{
-		document.getElementById('sound05').play();
-		creditsScreen = true;
-    	buildCheck=false;
-		mainCheck=false;	
 	}
 	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
 	{
 		document.getElementById('sound05').play();
-		creditsScreen = false;
-		menuFlag = 1;
-		mainCheck=true;
-	}
-	if(107<mouse.x && mouse.x<330 && 719<mouse.y && mouse.y<805 && optionsScreen == true) //out options screen
-	{
-		document.getElementById('sound05').play();
-		optionsScreen = false;
-		mainCheck=true;
+		window.location="llama_menu.html";
 	}
 	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
 	{
 		document.getElementById('sound05').play();
-		mainCheck=false;
-	}
-	if(753<mouse.x && mouse.x<1054 && mouse.y>537 && 614 > mouse.y && creditsScreen == false)  //enter options screen
-	{
-		document.getElementById('sound05').play();
-		optionsScreen = true;
-    	buildCheck=false;
-		mainCheck=false;
-	}
-	if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && soundOn) //deactivate sound
-	{
-		document.getElementById('sound05').play();
-		soundOn = false;
-	}
-	else if(optionsScreen && mouse.x>639 && mouse.x<907 && mouse.y >437 && mouse.y<523 && !soundOn) //activate sound
-	{
-		document.getElementById('sound05').play();
-		soundOn = true;
 	}
 }
 
@@ -865,86 +828,20 @@ function loadHandler()
 
 function renderMenu (){	
 	ctx.restore();
-	if(menuCheck == true)
-	{
-    	if (creditsScreen==true)
-    	{
-        	ctx.drawImage(credits,0,0,1600,900);
-			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
-			{
-		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
-			}
-    	}
-    	else if(optionsScreen==true)
-    	{
-        	if(soundOn)
-        	{
-            	ctx.drawImage(optionSoundOn,0,0,1600,900);
-            	document.getElementById('music').play();
-        	}
-        	else
-        	{
-            	ctx.drawImage(optionSoundOn,0,0,1600,900);
-				ctx.drawImage(soundButton,0, 162,360, 162,587,410, 360, 162);
-				document.getElementById('music').pause();
-        	}
-			if(temp2X > 107 && temp2X < 330 && temp2Y > 719 && temp2Y < 805)
-			{
-		 			ctx.drawImage(backButton,0,162,360, 162,35,692, 360, 162);
-			}
-    	}
-    	else if(buildCheck == false || mainCheck)
-    	{
-			buildCheck = true;
-			ctx.drawImage(mainScreen,0,0,1600,900);
-			
-			document.captureEvents(Event.MOUSEMOVE);
-			document.onmousemove = getMouseXY;
-
-			function getMouseXY(e) 
-			{
-				temp2X = e.pageX
-				temp2Y = e.pageY
-				if (temp2X < 0){tempX = 0}
-				if (temp2Y < 0){tempY = 0}  
-				
-				return true;
-			} 
-			if(temp2X > 418 && temp2X < 718 && temp2Y > 405 && temp2Y < 484)
-			{
-		 		ctx.drawImage(startButton,0,162,360, 162,385,354, 360, 162);
-			}
-			if ( temp2X > 753 && temp2X < 1054 && temp2Y > 537 && temp2Y < 614){
-				ctx.drawImage(optionsButton,0,162,360, 162,717,486, 360, 162);
-			}
-			if (temp2X > 1046 && temp2X < 1331 && temp2Y > 686 && temp2Y < 749){
-				ctx.drawImage(creditsButton,0,162,360, 162,1008,636, 360, 162);
-			}	
-    	}
-    	document.onmousedown = menu;
-	}
-	else
-	{	
-		if(regExpScreen == true)
+    if (creditsScreen==true)
+    {
+       	ctx.drawImage(credits,0,0,1600,900);
+		if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
 		{
-			regExpScreen = false;
+	 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
 		}
-		else if(buildCheck==false)
-		{
-			ctx.drawImage(cutscene,0,0,1600,900);
-			buildCheck = true;
-			gameover = false;
-			window.setTimeout(gameStart,5000);		
-		}
-	}
+    }
+   	document.onmousedown = menu;
 }
 
 function endGame()
 {
-	menuCheck = true;
-	buildCheck = false;
 	creditsScreen = true;
-	optionsScreen = false;
 	loadHandler();
 }
 
@@ -1211,6 +1108,7 @@ function setPositionLvl2() {
 	
 	miniGameArray[2].x = 4300;
 	miniGameArray[2].y = 637+60;
+	miniGameArray[2].sound = false;
 	
 	signs[0].posX = 4500;
 	signs[0].posY = 623+46;
@@ -1361,6 +1259,7 @@ function setPositionLvl3() {
 	
 	miniGameArray[2].x = 0;
 	miniGameArray[2].y = 0;
+	miniGameArray[2].sound = false;
 	
 	playerObj.posX = 200;
 	playerObj.posY = 600+46;
@@ -2023,7 +1922,7 @@ function update()
         //}
     }
     
-    for(var i=0; i<sheep.length; i++)
+   for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -2031,102 +1930,101 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
-				document.getElementById('sound03').play();
+		document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
         {
 			sheep[i].posX--;
+	}
 		
-			sheep[i].collision = false;
-			
-			for(var j=0; j<breakables.length; j++)
-			{
-				if(hitTest(breakables[j],sheep[i])){
-					if(!breakables[j].broken){
-						sheep[i].collision = true;
-					}
-				}
-			}
-			for(var j=0; j<sm_obj.length; j++)
-			{
-				if(hitTest(sm_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			for(var j=0; j<lg_obj.length; j++)
-			{
-				if(hitTest(lg_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			
-			if(!sheep[i].collision){
-				  floorLvlSheep=635+46;
-			  
-				  if (sheep[i].posY<floorLvlSheep)
-				  {
-					  if(!sheep[i].falling)
-					  {		
-						  sheep[i].jumpDecay = 0.5;
-						  sheep[i].falling = true;
-					  }
-					  else
-					  {
-						  for(var j=0; j<breakables.length; j++)
-						  {
-							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[j].broken){
-									  sheep[i].collision=true;
-									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
-										  sheep[i].posY = breakables[j].sheep[i].height+.5;
-										  sheep[i].falling = false;
-									  }
-								  }
-							  }
-						  }
-						  for(var j=0; j<sm_obj.length; j++)
-						  {
-							  if(hitTest(sm_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
-									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-								  }
-							  }
-						  }
-						  for(var j=0; j<lg_obj.length; j++)
-						  {
-							  if(hitTest(lg_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
-									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-							  }
-						  }
-						  if(!sheep[i].collision)
-						  {
-							  sheep[i].posY+= sheep[i].jumpDecay;
-							  sheep[i].jumpDecay += 1;
-							  if(sheep[i].posY > 640+46)
-							  {
-								sheep[i].posY = 640+46;
-							  }
-						  }
-					  }
-				  }
-				  else{
-					  sheep[i].falling = false;
-				  }
+	//sheep gravity
+	sheep[i].collision = false;
+		
+	for(var j=0; j<breakables.length; j++)
+	{
+		if(hitTest(breakables[j],sheep[i])){
+			if(!breakables[j].broken){
+				sheep[i].collision = true;
 			}
 		}
-        
+	}
+	for(var j=0; j<sm_obj.length; j++)
+	{
+		if(hitTest(sm_obj[j],sheep[i]))
+		{
+			sheep[i].collision = true;
+		}
+	}
+	for(var j=0; j<lg_obj.length; j++)
+	{
+		if(hitTest(lg_obj[j],sheep[i]))
+		{
+			sheep[i].collision = true;
+		}
+	}
+		
+	if(!sheep[i].collision){
+		  floorLvlSheep=635+46;
+	  
+		  if (sheep[i].posY<floorLvlSheep)
+		  {
+			  if(!sheep[i].falling)
+			  {		
+				  sheep[i].jumpDecay = 0.5;
+				  sheep[i].falling = true;
+			  }
+			  else
+			  {
+				  for(var j=0; j<breakables.length; j++)
+				  {
+					  if(hitTest(breakables[j],sheep[i])){
+						  if(!breakables[j].broken){
+							  sheep[i].collision=true;
+							  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+								  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
+								  sheep[i].falling = false;
+							  }
+						  }
+					  }
+				  }
+				  for(var j=0; j<sm_obj.length; j++)
+				  {
+					  if(hitTest(sm_obj[j],sheep[i]))
+					  {
+						  sheep[i].collision=true;
+						  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+							  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+							  sheep[i].falling = false;
+						  }
+					  }
+				  }
+				  for(var j=0; j<lg_obj.length; j++)
+				  {
+					  if(hitTest(lg_obj[j],sheep[i]))
+					  {
+						  sheep[i].collision=true;
+						  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+							  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+							  sheep[i].falling = false;
+					  }
+				  }
+				  if(!sheep[i].collision)
+				  {
+					  sheep[i].posY+= sheep[i].jumpDecay;
+					  sheep[i].jumpDecay += 1;
+					  if(sheep[i].posY > 640+46)
+					  {
+						sheep[i].posY = 640+46;
+					  }
+				  }
+			  }
+		  }
+		  else{
+			  sheep[i].falling = false;
+		  }
+	}
     }
-    
     sheepSaved = 0;
     if(cougar.saved==false)
     {
@@ -2173,6 +2071,21 @@ function update()
 	}
     if(hitTest(playerObj,miniGameArray[2]) && closeWindow == false && miniGameArray[2].tutor <= tutorSheep || hitTest(playerObj,miniGameArray[1]) && closeWindow == false && miniGameArray[1].tutor == tutorSheep || hitTest(playerObj,miniGameArray[0]) && closeWindow == false && miniGameArray[0].tutor == tutorSheep)
     {		
+		if(!miniGameArray[2].sound && tutorSheep >= 2)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[2].sound = true;	
+		}
+		if(!miniGameArray[1].sound && tutorSheep == 1)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[1].sound = true;	
+		}
+		if(!miniGameArray[0].sound && tutorSheep == 0)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[0].sound = true;	
+		}
 		//if(currentLvl==1)
         {
             ctx.fillStyle = 'black';
@@ -2671,44 +2584,39 @@ function update()
         render();
     }
     
-    if (playerObj.posX > 6000 && currentLvl === 1){
-        currentLvl = 2;
-        lvlFlag = true;	
-    }
-	if (playerObj.posX > 6005 && currentLvl === 2){
-		currentLvl = 3;
-		lvlFlag = true;
-	}
-	if (playerObj.posX > 6010 && currentLvl === 3){
-		currentLvl = 4;
-		lvlFlag = true;
-	}
-	if (playerObj.posX > 6015 && currentLvl === 4){
-		lvlFlag = true;
-	}
-    
-    if (currentLvl === 2 && lvlFlag){
-		 ctx.drawImage(cutscene,0,0,1600,900);
-         setPositionLvl2();
-	}
-	if (currentLvl === 3 && lvlFlag){
-		 ctx.drawImage(cutscene,0,0,1600,900);
-         setPositionLvl3();
-	}
-	
-	if (currentLvl === 4 && lvlFlag){
-        if(lastLevel==false)
-        {
-            ctx.drawImage(cutscene,0,0,1600,900);
-            setPositionLvl4();
-        }
-        else
-        {
-            ctx.drawImage(endScene,0,0,1600,900);
-            gameOver = true;
-            setTimeout(endGame,5000);
-        }
-    }
+   if (playerObj.posX > 6000)
+	{
+		ctx.drawImage(levelClick,0,0);
+		//here
+		document.onmouseup=function(e){mouseUp()};
+		function mouseUp(e)
+		{
+				if(playerObj.posX > 6000&&currentLvl==1)
+				{
+					currentLvl = 2;
+					lvlFlag = true;	
+					setPositionLvl2();
+				}
+				else if(playerObj.posX > 6005 &&currentLvl==2)
+				{
+					currentLvl = 3;
+					lvlFlag = true;	
+					setPositionLvl3();
+				}
+				else if(playerObj.posX > 6010 &&currentLvl==3)
+				{
+					currentLvl = 4;
+					lvlFlag = true;	
+					setPositionLvl4();
+				}
+				else if(playerObj.posX > 6015 &&currentLvl==4)
+				{
+									ctx.drawImage(endScene,0,0,1600,900);
+					gameOver = true;
+					setTimeout(endGame,5000);
+				}
+		}
+    }    
 
     if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
     && !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) 
@@ -2757,6 +2665,11 @@ function hitTest(r1,r2)
 
 function render()
 {
+	document.onmousedown = function(e)
+	{
+		mouse.x = e.pageX - cv.offsetLeft;
+		mouse.y = e.pageY - cv.offsetTop;
+	}
 	if(gameOver==false)
 	{
     	ctx.clearRect(0,0,1600,900);
@@ -2885,6 +2798,7 @@ function render()
 				else{
 					if (breakables[i].countB >=0 && breakables[i].countB <6){
 						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
 					}
 					else if (breakables[i].countB >=6 && breakables[i].countB <12){
 						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
@@ -3152,6 +3066,7 @@ function render()
         
     	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
     	{
+			ctx.drawImage(restartClick,0,0);
 			playerObj.posX = 50;
 			playerObj.posY = 600+46;	 
     	}
@@ -3868,6 +3783,7 @@ function writeText()
 		}
 	}
 }
+gameStart();
 
 </script>
 </body>
