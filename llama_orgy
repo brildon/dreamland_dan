@@ -1147,7 +1147,7 @@ function setPositionLvl2() {
 		miniGameArray[2].y = 637+60;
 		miniGameArray[2].sound = false;
 		signs[0].posX = 4500;
-		signs[0].posY = 623+46;
+		signs[0].posY = 627+46;
 		
 		sm_obj[6].posX=4800;
 		sm_obj[6].posY=540+46;
@@ -1376,7 +1376,7 @@ function setPositionLvl3() {
 		miniGameArray[2].sound = false;
 		
 		signs[1].posX = 5650;
-		signs[1].posY = 623+46;
+		signs[1].posY = 627+46;
 		
 		
 		lg_obj[5].posX=5800;
@@ -3189,7 +3189,7 @@ function render()
         		{
             			ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}
-			ctx.drawImage(arrow,6000,672);			
+			ctx.drawImage(arrow,6000,665);			
 			for(var i=0; i<10; i++)
 			{
 				if(!breakables[i].broken)
@@ -3245,6 +3245,7 @@ function render()
 					else if (countS >= 10 && countS < 15 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
+
 					else if (countS >= 15 && countS <= 20 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
@@ -3340,7 +3341,7 @@ function render()
 			
 			if(signs[0].active)
 				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-217);
-			ctx.drawImage(arrow,6000,672);			
+			ctx.drawImage(arrow,6000,665);			
 
 		}
 		else if (currentLvl === 3)
@@ -3357,7 +3358,7 @@ function render()
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}			
-			ctx.drawImage(arrow,6000,672);			
+			ctx.drawImage(arrow,6000,665);			
 
 			for(var i=0; i<5; i++)
 			{
@@ -3427,14 +3428,14 @@ function render()
             	if(signs[i].active)
             	{
                 	if(i==0)
-						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-250);
+						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-222);//changew
                 	else if(i==1)
-						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);      
+						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-222);      
 				}
 			}
-			ctx.drawImage(arrow,6000,672);			
+			ctx.drawImage(arrow,6000,665);			
 		}
-		else if (currentLvl === 4)//changehere2
+		else if (currentLvl === 4)
 		{
         	ctx.drawImage(lvl4_background,0,0,6336,900, 0, -6, 6336, 900); //bg
 			ctx.drawImage(lvl4_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
