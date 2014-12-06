@@ -42,7 +42,7 @@ var language = 0;
 
 var mainScreen = new Image();	
 mainScreen.addEventListener("load", loadHandler, false);
-mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5195214/792816dc-74de-11e4-925a-fc8988acae0e.png";
+mainScreen.src = "https://cloud.githubusercontent.com/assets/8835208/5325821/628154a6-7cbe-11e4-9ac0-31c67f3e6996.png";
 var credits = new Image();
 credits.src = "https://cloud.githubusercontent.com/assets/8835208/5275802/d83841e6-7a70-11e4-9a60-0f7041b42b78.png";
 var mainScreenSpa = new Image();
