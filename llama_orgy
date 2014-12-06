@@ -957,14 +957,14 @@ function intialize()
 		sheep[9].saved = false;
 			
 		signs[0].posX = 50;
-		signs[0].posY = 623+46;
+		signs[0].posY = 627+46;
 		signs[0].active = true;
 		signs[1].posX = 450;
-		signs[1].posY = 626+46;
+		signs[1].posY = 627+46;
 		signs[2].posX = 3250;
-		signs[2].posY = 626+46;
+		signs[2].posY = 627+46;
 		signs[3].posX = 4000;
-		signs[3].posY = 626+46;
+		signs[3].posY = 627+46;
 		signs[4].posX = 4525;
 		signs[4].posY = 455+46;
 		
@@ -1803,12 +1803,17 @@ function update()
     //W
     if(key[38] && !hitTest(playerObj, miniGameArray[2]) || key[38] && closeWindow)
     {
-        if(!isJump&&jumpable)
-        {
-            playerObj.posY = playerObj.posY-1;
-            isJump = true;
-			document.getElementById('sound02').play();
-        }	
+        if(playerObj.stopped){
+		isJump = false;
+	}
+	else{
+        	if(!isJump&&jumpable)
+        	{
+            	playerObj.posY = playerObj.posY-1;
+            	isJump = true;
+		document.getElementById('sound02').play();
+        	}
+        }
     }
     //A
     if(key[37] && !hitTest(playerObj, miniGameArray[2]) || key[37] && closeWindow)
@@ -3170,19 +3175,18 @@ function render()
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
 			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
-        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
-        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        		ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        		ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
 			ctx.drawImage(lvl1_background,0,1101,6336,5,0, 781, 6336, 5); //black line 
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
-    
-        	//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+   			//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
 			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
 			ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
 			ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
 
 			for(var i =0; i<5; i++)
-        	{
-            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+        		{
+            			ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}
 			ctx.drawImage(arrow,6000,672);			
 			for(var i=0; i<10; i++)
@@ -3244,21 +3248,21 @@ function render()
 						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 				}
-    		}
+    			}
 			
 			for(var i =0; i<signs.length; i++)  
 			{         
-            	if(signs[i].active)
-            	{
+            			if(signs[i].active)
+            			{
 					console.log(i);
-                	if(i==0)
+                			if(i==0)
 						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
-                	else if(i==1)
+                			else if(i==1)
 						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
-                	else if(i==2)
-                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250); 
+                			else if(i==2)
+                    				ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
 					else if(i==3)
-						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250); 
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-146); 
 					else if(i==4)
 						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
@@ -3266,10 +3270,10 @@ function render()
     	}
     	else if (currentLvl === 2)
 		{
-        	ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+        		ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl2_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
-        	ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
-        	ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
+        		ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        		ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
 			ctx.drawImage(lvl2_background,0,1101,6336,5,0, 781, 6336, 5); //black line
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 			
@@ -3334,7 +3338,7 @@ function render()
 			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
 			
 			if(signs[0].active)
-				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-250);
+				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-217);
 			ctx.drawImage(arrow,6000,672);			
 
 		}
