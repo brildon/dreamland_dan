@@ -36,8 +36,8 @@ var tutorSheep = 0;
 var center = 0;
 var wordChoice = 0;
 var expComplete = false;
+var sheepWalk = true;
 
-console.log(wordChoice);
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
@@ -409,6 +409,7 @@ var sheepObj = {
 	collision: false,
 	falling: false,
 	saved: false,
+	preSaved: false,
 	
 	centerX: function (){
 		return this.posX + (this.width / 2);
@@ -722,13 +723,15 @@ redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af272
 orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
+//TODO: Add Pictures Yo fer Da Helps Yo
 carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
-carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143412/91bfe4c2-7155-11e4-81dc-6de2dc261be0.png";
+carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325612/64a85dfe-7cb6-11e4-80c0-0ff9c71b312e.png"; // currently most recent
 helpHover.src = "https://cloud.githubusercontent.com/assets/8864180/5143414/91c43fc2-7155-11e4-894a-84590dc4a31a.png";
 helpScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5143413/91c32632-7155-11e4-94dc-3e33fbca0d4f.png";
 lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c324-7155-11e4-879a-7536fe03767d.png";
 moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
 questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
+//TODO-END
 submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
 expInstr1.src = "https://cloud.githubusercontent.com/assets/8835240/5311532/6c9e2e20-7c0d-11e4-8a58-7bb625f9e9e2.png";
 expInstr2.src = "https://cloud.githubusercontent.com/assets/8835240/5311534/6f84e5b6-7c0d-11e4-8fc3-01d37bd2dd67.png";
@@ -954,14 +957,14 @@ function intialize()
 		sheep[9].saved = false;
 			
 		signs[0].posX = 50;
-		signs[0].posY = 627+46;
+		signs[0].posY = 623+46;
 		signs[0].active = true;
 		signs[1].posX = 450;
-		signs[1].posY = 627+46;
+		signs[1].posY = 626+46;
 		signs[2].posX = 3250;
-		signs[2].posY = 627+46;
+		signs[2].posY = 626+46;
 		signs[3].posX = 4000;
-		signs[3].posY = 627+46;
+		signs[3].posY = 626+46;
 		signs[4].posX = 4525;
 		signs[4].posY = 455+46;
 		
@@ -1185,7 +1188,7 @@ function setPositionLvl2() {
 			levelWords[3] = "DEMOLISH";
 			levelWords[5] = "DAM";
 	
-			levelWords[6] = "YARD";
+			levelWords[6] = "EARLY";
 			levelWords[8] = "STORM";
 			levelWords[7] = "DESTROY";
 		}
@@ -2351,7 +2354,7 @@ function update()
             }
     }
     
-         for(var i=0; i<sheep.length; i++)
+    for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -2359,14 +2362,14 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
-		document.getElementById('sound03').play();
+				document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
         {
+			sheepWalk = true;
 			sheep[i].posX--;
-	}
-		
+		}	
 	//sheep gravity
 	sheep[i].collision = false;
 		
@@ -3227,16 +3230,17 @@ function render()
 				}
 				else
 				{
-					if (countS >= 0 && countS <5){
+					//TODO: Come back
+					if (countS >= 0 && countS <5 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
-					else if (countS >= 5 && countS <10){
+					else if (countS >= 5 && countS <10 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
-					else if (countS >= 10 && countS < 15){
+					else if (countS >= 10 && countS < 15 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
-					else if (countS >= 15 && countS <= 20){
+					else if (countS >= 15 && countS <= 20 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 				}
@@ -3252,9 +3256,9 @@ function render()
                 	else if(i==1)
 						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==2)
-                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
+                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250); 
 					else if(i==3)
-						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-147); 
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250); 
 					else if(i==4)
 						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
@@ -3495,7 +3499,6 @@ function render()
 					}
 				}
     		}
-
 		}
 		
 		
@@ -3683,9 +3686,17 @@ function render()
     	ctx.fillText(sheepPoints,camera.x+50,50,50);
     	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
     	{
+			for(i = 0; i < sheep.length; i++)
+			{
+				if(sheep[i].saved)
+				{
+					sheep[i].preSaved = true;
+				}
+			}
 			ctx.drawImage(restartClick,0,0);
+			sheepWalk = false;
 			if(currentLvl==1)
-				intialize();//maybe	 
+				intialize();//maybe
 			else if(currentLvl==2)
 				setPositionLvl2();
 			else if(currentLvl==3)
