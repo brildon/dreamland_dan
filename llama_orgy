@@ -1177,31 +1177,31 @@ function setPositionLvl2() {
 		}
 		else if(wordChoice==1)
 		{
-			levelWords[0] = "CAKE";
-			levelWords[1] = "SMELL";
-			levelWords[2] = "SMACK";
+			levelWords[2] = "WRECK";
+			levelWords[1] = "WITH";
+			levelWords[0] = "DUCK";
 	
-			levelWords[3] = "ATTACK";
-			levelWords[4] = "RACE";
-			levelWords[5] = "KITTEN";
+			levelWords[4] = "SHAM";
+			levelWords[3] = "DEMOLISH";
+			levelWords[5] = "DAM";
 	
-			levelWords[6] = "BREACH";
-			levelWords[7] = "BREAK";
-			levelWords[8] = "BAKED";
+			levelWords[6] = "YARD";
+			levelWords[8] = "STORM";
+			levelWords[7] = "DESTROY";
 		}
 		else if(wordChoice==2)
 		{
-			levelWords[0] = "CAKE";
-			levelWords[1] = "SMELL";
-			levelWords[2] = "SMACK";
+			levelWords[0] = "SELL";
+			levelWords[1] = "BEEN";
+			levelWords[2] = "BASH";
 	
-			levelWords[3] = "ATTACK";
-			levelWords[4] = "RACE";
-			levelWords[5] = "KITTEN";
+			levelWords[3] = "CRUSH";
+			levelWords[4] = "CREAM";
+			levelWords[5] = "RUN";
 	
-			levelWords[6] = "BREACH";
-			levelWords[7] = "BREAK";
-			levelWords[8] = "BAKED";
+			levelWords[6] = "THE";
+			levelWords[7] = "HIT";
+			levelWords[8] = "ITCH";
 		}
 		
 		correctWords[0] = levelWords[2];
@@ -1238,7 +1238,6 @@ function setPositionLvl2() {
 		signs[5].posX = 8200;
 		lvl2Started=true;
 	}
-
 }
 
 function setPositionLvl3() {
@@ -1414,31 +1413,32 @@ function setPositionLvl3() {
 		}
 		else if(wordChoice==1)
 		{
-			levelWords[0] = "CRAWL";
-			levelWords[1] = "BRAWL";
-			levelWords[2] = "CAW";
+			levelWords[0] = "KNEEL";
+			levelWords[1] = "KNEE";
+			levelWords[2] = "NOSE";
 	
-			levelWords[3] = "BROOCH";
-			levelWords[4] = "SCRIBE";
-			levelWords[5] = "CROUCH";
+			levelWords[3] = "WORD";
+			levelWords[4] = "REST";
+			levelWords[5] = "LOWER";
 	
-			levelWords[6] = "CHICKEN";
-			levelWords[7] = "DUCK";
-			levelWords[8] = "DONALD";
+			levelWords[6] = "KNUKLE";
+			levelWords[7] = "HUNKER";
+			levelWords[8] = "HUNT";
+
 		}
 		else if(wordChoice==2)
 		{
-			levelWords[0] = "CRAWL";
-			levelWords[1] = "BRAWL";
-			levelWords[2] = "CAW";
+			levelWords[0] = "SCRUNCH";
+			levelWords[1] = "MATCH";
+			levelWords[2] = "SLUMP";
 	
-			levelWords[3] = "BROOCH";
-			levelWords[4] = "SCRIBE";
-			levelWords[5] = "CROUCH";
+			levelWords[3] = "QUICK";
+			levelWords[4] = "DUIT";
+			levelWords[5] = "DUCK";
 	
-			levelWords[6] = "CHICKEN";
-			levelWords[7] = "DUCK";
-			levelWords[8] = "DONALD";
+			levelWords[6] = "SAT";
+			levelWords[7] = "SQUAT";
+			levelWords[8] = "SQUID";
 		}
 		
 		correctWords[0] = levelWords[0];
