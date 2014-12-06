@@ -700,6 +700,7 @@ var arrow = new Image();
 var congJump = new Image();
 var congBreak = new Image();
 var congCrouch = new Image();
+var finalLvlInstr = new Image();
 
 var smallGem = new Image();
 var largeGem  = new Image();
@@ -710,6 +711,8 @@ largeGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316590/27dcf
 congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64fb84-7b28-11e4-869b-43f57c567a08.png";
 congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
 congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
+
+finalLvlInstr.src = "https://cloud.githubusercontent.com/assets/8835240/5326129/6ba7f8f2-7ccb-11e4-96db-8588511928d7.png";
 
 arrow.src = "https://cloud.githubusercontent.com/assets/8864180/5312748/e8fdd274-7c24-11e4-94ca-c47791f82303.png";
 boxInst.src = "https://cloud.githubusercontent.com/assets/8864180/5312209/f44ea324-7c1a-11e4-9ed2-c6db98313dcf.png";
@@ -797,7 +800,7 @@ moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292536/cd4c
 jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292540/cd595090-7b28-11e4-83b5-50c57d3db824.png";
 crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5312208/f44458e2-7c1a-11e4-8cc0-fc7576c0fd00.png";
 atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5312207/f43184ba-7c1a-11e4-898a-b5d3c6588041.png";
-restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292541/cd593bb4-7b28-11e4-8aae-b142ae663a52.png";
+restartInstr.src = "https://cloud.githubusercontent.com/assets/8835240/5326128/6a0dae6a-7ccb-11e4-8783-f3c502f1aa41.png";
 endLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048075/9b78e876-6be0-11e4-88fb-6a12e251ff11.png";
 finishInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048072/9b747c82-6be0-11e4-8c11-8649b6854b0c.png";
 sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5292537/cd54e0b4-7b28-11e4-8544-a965f0c29835.png";
@@ -1233,10 +1236,10 @@ function setPositionLvl2() {
 		breakables[9].posX =5800;
 		breakables[9].posY =540;
 		signs[1].posX = 8200;
-		signs[2].posX = 8200;
-		signs[3].posX = 8200;
-		signs[4].posX = 8200;
-		signs[5].posX = 8200;
+		//signs[2].posX = 8200;
+		//signs[3].posX = 8200;
+		//signs[4].posX = 8200;
+		//signs[5].posX = 8200;
 		lvl2Started=true;
 	}
 }
@@ -1433,13 +1436,13 @@ function setPositionLvl3() {
 			levelWords[1] = "MATCH";
 			levelWords[2] = "SLUMP";
 	
-			levelWords[3] = "QUICK";
+			levelWords[3] = "SULK";
 			levelWords[4] = "DUIT";
 			levelWords[5] = "DUCK";
 	
-			levelWords[6] = "SAT";
-			levelWords[7] = "SQUAT";
-			levelWords[8] = "SQUID";
+			levelWords[6] = "SEAM";
+			levelWords[7] = "SNEAK";
+			levelWords[8] = "SILK";
 		}
 		
 		correctWords[0] = levelWords[0];
