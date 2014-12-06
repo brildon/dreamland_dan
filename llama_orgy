@@ -954,14 +954,14 @@ function intialize()
 		sheep[9].saved = false;
 			
 		signs[0].posX = 50;
-		signs[0].posY = 623+46;
+		signs[0].posY = 627+46;
 		signs[0].active = true;
 		signs[1].posX = 450;
-		signs[1].posY = 626+46;
+		signs[1].posY = 627+46;
 		signs[2].posX = 3250;
-		signs[2].posY = 626+46;
+		signs[2].posY = 627+46;
 		signs[3].posX = 4000;
-		signs[3].posY = 626+46;
+		signs[3].posY = 627+46;
 		signs[4].posX = 4525;
 		signs[4].posY = 455+46;
 		
@@ -3252,9 +3252,9 @@ function render()
                 	else if(i==1)
 						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==2)
-                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-250); 
+                    	ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
 					else if(i==3)
-						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-250); 
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-147); 
 					else if(i==4)
 						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
@@ -3495,6 +3495,7 @@ function render()
 					}
 				}
     		}
+
 		}
 		
 		
