@@ -723,15 +723,13 @@ redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af272
 orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
 emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
 cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
-//TODO: Add Pictures Yo fer Da Helps Yo
-carrotHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143416/91c5d6c0-7155-11e4-951f-acef435a5108.png";
+carrotHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325852/8f2e1b90-7cc0-11e4-86a5-295a755535ec.png";
 carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325612/64a85dfe-7cb6-11e4-80c0-0ff9c71b312e.png"; // currently most recent
 helpHover.src = "https://cloud.githubusercontent.com/assets/8864180/5143414/91c43fc2-7155-11e4-894a-84590dc4a31a.png";
 helpScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5143413/91c32632-7155-11e4-94dc-3e33fbca0d4f.png";
-lineHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143415/91c5c324-7155-11e4-879a-7536fe03767d.png";
-moneyHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143418/91cb1086-7155-11e4-850f-01e0a43d8a71.png";
-questionHelp.src = "https://cloud.githubusercontent.com/assets/8864180/5143419/91cb4bfa-7155-11e4-9458-3455afcf960c.png";
-//TODO-END
+lineHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325853/911899da-7cc0-11e4-8310-9b6684456341.png";
+moneyHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325854/928b8d7c-7cc0-11e4-8be4-dab5824965d4.png";
+questionHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325855/943c050c-7cc0-11e4-9f61-79e539f3e517.png";
 submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5143417/91cb50aa-7155-11e4-8668-f00aaffa6c43.png";
 expInstr1.src = "https://cloud.githubusercontent.com/assets/8835240/5311532/6c9e2e20-7c0d-11e4-8a58-7bb625f9e9e2.png";
 expInstr2.src = "https://cloud.githubusercontent.com/assets/8835240/5311534/6f84e5b6-7c0d-11e4-8fc3-01d37bd2dd67.png";
