@@ -37,6 +37,7 @@ var center = 0;
 var wordChoice = 0;
 var expComplete = false;
 var sheepWalk = true;
+var goldWalk = 0;
 
 var flashCounter = 0;
 var closeWindow = false;
@@ -226,6 +227,7 @@ var miniGameObj = {
 	width: 100,
 	sound: false,
 	tutor: 2,
+	run: false,
 	
 	centerX: function (){
 		return this.x + (this.width / 2);
@@ -705,6 +707,11 @@ var finalLvlInstr = new Image();
 var smallGem = new Image();
 var largeGem  = new Image();
 
+var wizardSheepWalk = new Image();
+
+//TODO: implement
+wizardSheepWalk.src = "https://cloud.githubusercontent.com/assets/8835240/5326316/6f6e9ee8-7cd8-11e4-9a48-a04cb85740dd.png";
+
 smallGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316589/27dce5a6-7c53-11e4-8c9f-ce1ee9b5eb18.png";
 largeGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316590/27dcfd98-7c53-11e4-9d03-9aed33acb83c.png";
 
@@ -712,6 +719,7 @@ congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5292545/cd64f
 congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5292538/cd55f90e-7b28-11e4-8594-aa23b255152f.png";
 congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5292544/cd61637a-7b28-11e4-83b0-bcc760eff016.png";
 
+//TODO: implement
 finalLvlInstr.src = "https://cloud.githubusercontent.com/assets/8835240/5326129/6ba7f8f2-7ccb-11e4-96db-8588511928d7.png";
 
 arrow.src = "https://cloud.githubusercontent.com/assets/8864180/5312748/e8fdd274-7c24-11e4-94ca-c47791f82303.png";
@@ -785,7 +793,7 @@ sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2d
 sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
 box.src = "https://cloud.githubusercontent.com/assets/8835208/5236711/b984f888-780f-11e4-9e0e-6bb9dcac1f89.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
-sheepWizard.src = "https://cloud.githubusercontent.com/assets/8864180/5195318/5c954f88-74e0-11e4-9625-d47f4e527609.png";
+sheepWizard.src = "https://cloud.githubusercontent.com/assets/8835240/5326324/771f5686-7cd9-11e4-8f8c-808311ec2e86.png";
 optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
 //optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
 cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
@@ -1236,6 +1244,7 @@ function setPositionLvl2() {
 		breakables[9].posX =5800;
 		breakables[9].posY =540;
 		signs[1].posX = 8200;
+		miniGameArray[2].run = false;
 		//signs[2].posX = 8200;
 		//signs[3].posX = 8200;
 		//signs[4].posX = 8200;
@@ -1462,6 +1471,7 @@ function setPositionLvl3() {
 		submitButtonArray[0].clicked = false;
 		submitButtonArray[1].clicked = false;
 		submitButtonArray[2].clicked = false;
+		miniGameArray[2].run = false;
 		
 		lvl3Started=true;
 	}
@@ -1643,12 +1653,13 @@ function setPositionLvl4() {//changehere
 		
 		lg_obj[6].posX = 5100;
 		lg_obj[6].posY = 600;
+		miniGameArray[2].run = false;
 		
 		lvl4Started=true;
 	}
 	signs[0].posX = 70; 
 	signs[0].posY = 627+46;
-	
+
 	breakables[0].posX = 800;
 	breakables[0].posY = 686;	
 	breakables[0].broken = false;
@@ -1707,7 +1718,7 @@ function setPositionLvl4() {//changehere
 	breakables[17].broken = false;
 	
 	playerObj.posX = 50;
-	playerObj.posY = 600+46; 
+	playerObj.posY = 600+46;
  }
  
 
@@ -2202,30 +2213,30 @@ function update()
         {
             if(hitTest(boxes[i],playerObj))
             {
-                    if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
+                if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
             }
         }
         for(var i=0; i<sm_obj.length; i++)
         {
             if(hitTest(sm_obj[i],playerObj))
             {
-                    if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
+                if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
             }
         }
         for(var i=0; i<lg_obj.length; i++)
         {
             if(hitTest(lg_obj[i],playerObj))
             {
-                    if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
-                    {
-                        collision = true;
-                    }
+                if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
             }
         }
         if(collision == true)
@@ -3146,9 +3157,8 @@ function update()
 				playerObj.speed = 5;
 			}
 		}
-		
-		
 		//Always Happens
+		miniGameArray[2].run = true;
 		regExpFin = true;
 		textBoxArray[0].canWrite = false;
 		textBoxArray[1].canWrite = false;
@@ -3175,7 +3185,8 @@ function render()
     
     	ctx.save();
     	ctx.translate(-camera.x, -camera.y);
-    	if (currentLvl === 1){
+    	if (currentLvl === 1)
+		{
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
 			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
@@ -3184,15 +3195,44 @@ function render()
 			ctx.drawImage(lvl1_background,0,1101,6336,5,0, 781, 6336, 5); //black line 
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
    			//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
-			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
-			ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
-			ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
-
-			for(var i =0; i<5; i++)
-        		{
-            			ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+				ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
+				ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
 			}
-			ctx.drawImage(arrow,6000,665);			
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				console.log("X" + miniGameArray[2].x);
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
+			for(var i =0; i<5; i++)
+        	{
+            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+			}
+			ctx.drawImage(arrow,6000,665);		
 			for(var i=0; i<10; i++)
 			{
 				if(!breakables[i].broken)
@@ -3248,17 +3288,30 @@ function render()
 					else if (countS >= 10 && countS < 15 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
-
 					else if (countS >= 15 && countS <= 20 && sheepWalk && !sheep[i].preSaved){
 						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 				}
-    			}
+    		}
 			
 			for(var i =0; i<signs.length; i++)  
 			{         
-            	if(signs[i].active)
-            	{
+            			if(signs[i].active)
+            			{
+					console.log(i);
+                			if(i==0)
+						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
+                			else if(i==1)
+						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
+                			else if(i==2)
+                    				ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
+					else if(i==3)
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-146); 
+					else if(i==4)
+						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
+				}
+					if(signs[i].active)
+				{
 						console.log(i);
                 		if(i==0)
 							ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
@@ -3271,14 +3324,14 @@ function render()
 						else if(i==4)
 							ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
-			}
+			}	
     	}
     	else if (currentLvl === 2)
 		{
-        	ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
-			ctx.drawImage(lvl2_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
-        	ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
-        	ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
+        		ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+				ctx.drawImage(lvl2_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        		ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        		ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
 			ctx.drawImage(lvl2_background,0,1101,6336,5,0, 781, 6336, 5); //black line
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
 			
@@ -3340,11 +3393,41 @@ function render()
 					}
 				}
     		}
-			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			}
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				console.log("X" + miniGameArray[2].x);
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
 			
 			if(signs[0].active)
 				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-217);
-			ctx.drawImage(arrow,6000,665);			
+			ctx.drawImage(arrow,6000,665);		
 
 		}
 		else if (currentLvl === 3)
@@ -3355,13 +3438,43 @@ function render()
         	ctx.drawImage(lvl3_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
 			ctx.drawImage(lvl3_background,0,1101,6336,5,0, 781, 6336, 5); //black line
 			
-			ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			}
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				console.log("X" + miniGameArray[2].x);
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
 		
         	for(var i =0; i<3; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}			
-			ctx.drawImage(arrow,6000,665);			
+			ctx.drawImage(arrow,6000,665);		
 
 			for(var i=0; i<5; i++)
 			{
@@ -3401,7 +3514,7 @@ function render()
 			}	
 			for(var i=0; i<9; i++)
 			{
-					ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+				ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
 			}	
 			for (var i=0; i<15;i++)
 			{
@@ -3431,20 +3544,21 @@ function render()
             	if(signs[i].active)
             	{
                 	if(i==0)
-						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-222);//changew
+						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-250);
                 	else if(i==1)
-						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-222);      
+						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);      
 				}
 			}
-			ctx.drawImage(arrow,6000,665);			
+			ctx.drawImage(arrow,6000,665);		
 		}
-		else if (currentLvl === 4)
+		else if (currentLvl === 4)//changehere2
 		{
         	ctx.drawImage(lvl4_background,0,0,6336,900, 0, -6, 6336, 900); //bg
 			ctx.drawImage(lvl4_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
 			
         	ctx.drawImage(lvl4_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
 			ctx.drawImage(lvl4_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			
 			ctx.drawImage(sign,signs[0].posX,signs[0].posY);
 			for(var i=0; i<30; i++)
 			{
@@ -3476,7 +3590,8 @@ function render()
 			}
 			for(var i=0; i<20; i++)
 			{
-				ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
+				if(i < 1)
+					ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
 			}
 			for(var i=0; i<20; i++)
 			{
@@ -3484,7 +3599,7 @@ function render()
 			}	
 			for(var i=0; i<30; i++)
 			{
-					ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+				ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
 			}	
 			for (var i=0; i<15;i++)
 			{
@@ -3509,7 +3624,46 @@ function render()
 				}
     		}
 			if(signs[0].active)
+			{
 				ctx.drawImage(finalLvlInstr,signs[0].posX+70,signs[0].posY-248);
+			}
+			//TODO: make sheep staircase
+			counter = sheepPoints;
+			for(i = 1; i <= counter; i++)
+			{
+				if(i == 1)
+				{
+					sm_obj[1 + i].posX = 5550;
+				}
+				if(i < 5)
+				{
+					if(i != 1)
+					{
+						sm_obj[1 + i].posX = sm_obj[i].posX + 115;
+					}
+					sm_obj[1 + i].posY = 695;
+				}
+				else if(i < 8)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 3].posX + 115;
+					sm_obj[1 + i].posY = 695-75;
+				}
+				else if(i < 10)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 2].posX + 115;
+					sm_obj[1 + i].posY = 695-150;
+				}
+				else if(i == 10)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 1].posX + 115;
+					sm_obj[1 + i].posY = 695-225;
+				}
+				if(counter >= 10)
+				{
+					counter = 10;
+				}
+				ctx.drawImage(sheep_right, sm_obj[1+i].posX, sm_obj[1+i].posY - 15);
+			}
 		}
 		
 		
@@ -4428,7 +4582,7 @@ function writeText()
 		}
 	}
 }
-gameStart();
+gameStart(); // ca-ca doodie bullshit
 </script>
 </body>
 </html>
