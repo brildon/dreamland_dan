@@ -4157,12 +4157,28 @@ function writeText()
 			{
 				regExp1 = new RegExp(regExpOne);
 				submitButtonArray[0].clicked = true;
+				if(counter == 7 && regExp1.test("A"))
+				{
+					counter++;
+				}
+				else if(counter == 9 && regExp1.test("AR") && !regExp1.test("AV"))
+				{
+					counter++;
+				}
 			}
 			if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 254 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 70 && submitButtonArray[0].clicked)
 			{
 				regExp1 = new RegExp(regExpOne);
 				regExp2 = new RegExp(regExpTwo);
 				submitButtonArray[1].clicked = true;
+				if(counter == 16 && regExp2.test("E"))
+				{
+					counter++;
+				}
+				else if(counter == 20 && regExp2.test("AR"))
+				{
+					counter++;
+				}
 			}
 			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 254 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 70 && submitButtonArray[1].clicked)
 			{
@@ -4170,6 +4186,10 @@ function writeText()
 				regExp2 = new RegExp(regExpTwo);
 				regExp3 = new RegExp(regExpThree);
 				submitButtonArray[2].clicked = true;
+				if(counter == 29 && regExp3.test("AR$") && !regExp3.test("R$"))
+				{
+					//suck it!
+				}
 			}
 			if(sheepPoints > 0)
 			{
