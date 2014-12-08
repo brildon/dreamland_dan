@@ -82,7 +82,7 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = true;
+var jumpable = false;
 var crouchable = false;
 var attackable = false;
 var counter = 1;
@@ -790,7 +790,7 @@ llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/48870
 llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156155/3bbf4364-7273-11e4-9a16-575aabe11b67.png";
 sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
 sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
-sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5160851/b888220e-735d-11e4-89c4-fc6939d868da.png"
+sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5335322/efdeac54-7e6c-11e4-9b9b-813bffb9ece7.png"
 box.src = "https://cloud.githubusercontent.com/assets/8835208/5236711/b984f888-780f-11e4-9e0e-6bb9dcac1f89.png";
 sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
 sheepWizard.src = "https://cloud.githubusercontent.com/assets/8835240/5326324/771f5686-7cd9-11e4-8f8c-808311ec2e86.png";
@@ -2394,12 +2394,17 @@ function update()
         if(sheep[i].saved)
         {
 			sheepWalk = true;
-			sheep[i].posX--;
+			if (currentLvl === 4){
+				sheep[i].posX++;
+			}
+			else{
+				sheep[i].posX--;	
+			}
 		}	
 	//sheep gravity
 	sheep[i].collision = false;
 		
-       for(var i=0; i<sheep.length; i++)
+    for(var i=0; i<sheep.length; i++)
     {
         if(hitTest(playerObj,sheep[i]))
         {
@@ -2407,12 +2412,17 @@ function update()
             {
                 sheep[i].saved=true;
                 sheepPoints++;
-		document.getElementById('sound03').play();
+				document.getElementById('sound03').play();
             }
         }
         if(sheep[i].saved)
         {
-			sheep[i].posX--;
+			if (currentLvl === 4){
+				sheep[i].posX++;
+			}
+			else{
+				sheep[i].posX--;	
+			}
 	}
 		
 	//sheep gravity
@@ -2431,7 +2441,12 @@ function update()
         }
         if(sheep[i].saved)
         {
-			sheep[i].posX--;
+			if (currentLvl === 4){
+				sheep[i].posX++;
+			}
+			else{
+				sheep[i].posX--;
+			}
 		
 			sheep[i].collision = false;
 			
@@ -2450,6 +2465,7 @@ function update()
 				}
 			}
 			for(var j=0; j<sm_obj.length; j++)
+
 			{
 				if(hitTest(sm_obj[j],sheep[i]))
 				{
@@ -3286,16 +3302,16 @@ function render()
 				{
 					//TODO: Come back
 					if (countS >= 0 && countS <5 && sheepWalk && !sheep[i].preSaved){
-						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 5 && countS <10 && sheepWalk && !sheep[i].preSaved){
-						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 10 && countS < 15 && sheepWalk && !sheep[i].preSaved){
-						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 15 && countS <= 20 && sheepWalk && !sheep[i].preSaved){
-						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 				}
     		}
@@ -3386,16 +3402,16 @@ function render()
 				else
 				{
 					if (countS >= 0 && countS <5){
-						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 5 && countS <10){
-						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 10 && countS < 15){
-						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 15 && countS <= 20){
-						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 				}
     		}
@@ -3531,16 +3547,16 @@ function render()
 				else
 				{
 					if (countS >= 0 && countS <5){
-						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 5 && countS <10){
-						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 10 && countS < 15){
-						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 					else if (countS >= 15 && countS <= 20){
-						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
 					}
 				}
     		}
@@ -3616,16 +3632,16 @@ function render()
 				else
 				{
 					if (countS >= 0 && countS <5){
-						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 0, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 					else if (countS >= 5 && countS <10){
-						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 105, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 					else if (countS >= 10 && countS < 15){
-						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 210, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 					else if (countS >= 15 && countS <= 20){
-						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+						ctx.drawImage(sheepSprite, 315, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
 					}
 				}
     		}
