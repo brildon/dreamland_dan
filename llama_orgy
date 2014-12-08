@@ -38,7 +38,7 @@ var wordChoice = 0;
 var expComplete = false;
 var sheepWalk = true;
 var goldWalk = 0;
-
+var notHitTopOfWallCauseThatMakesNoScence = false;
 var flashCounter = 0;
 var closeWindow = false;
 var mousePos = {x:0, y:0}
@@ -925,11 +925,11 @@ function intialize()
 		miniGameArray[2].x = 3400;
 		miniGameArray[2].y = 637+60;
 			
-		sheep[0].posX =850;
+		sheep[0].posX =950;
 		sheep[0].posY =640+46;
 		sheep[0].saved = false;
 		
-		sheep[1].posX =1100 ;
+		sheep[1].posX =1250 ;
 		sheep[1].posY =640+46;
 		sheep[1].saved = false;
 		
@@ -953,7 +953,7 @@ function intialize()
 		sheep[6].posY =640+46;
 		sheep[6].saved = false;
 		
-		sheep[7].posX =3065;
+		sheep[7].posX =3050;
 		sheep[7].posY =640+46;
 		sheep[7].saved = false;
 		
@@ -962,7 +962,7 @@ function intialize()
 		sheep[8].saved = false;
 		
 		sheep[9].posX =3200;
-		sheep[9].posY =275+46;
+		sheep[9].posY =260+46;
 		sheep[9].saved = false;
 			
 		signs[0].posX = 50;
@@ -970,7 +970,7 @@ function intialize()
 		signs[0].active = true;
 		signs[1].posX = 450;
 		signs[1].posY = 627+46;
-		signs[2].posX = 1250;
+		signs[2].posX = 3250;
 		signs[2].posY = 627+46;
 		signs[3].posX = 4000;
 		signs[3].posY = 627+46;
@@ -978,9 +978,9 @@ function intialize()
 		signs[4].posY = 455+46;
 		
 		lg_obj[1].posX=3150;
-		lg_obj[1].posY=389+46;
+		lg_obj[1].posY=364+46;
 		
-		sm_obj[3].posX=3555;
+		sm_obj[3].posX=3550;
 		sm_obj[3].posY=447+46;
 		
 		sm_obj[2].posX=3850;
@@ -1087,11 +1087,11 @@ function setPositionLvl2() {
 	breakables[5].posX =4600;
 	breakables[5].posY =640+46;
 	breakables[5].broken=false;
-	breakables[3].posX =3295;
-	breakables[3].posY =330+46;
+	breakables[3].posX =3300;
+	breakables[3].posY =300+46;
 	breakables[3].broken=false;
-	breakables[4].posX =3295;
-	breakables[4].posY =230+46;
+	breakables[4].posX =3300;
+	breakables[4].posY =200+46;
 	breakables[4].broken=false;
 	
 	if(lvl2Started==false)
@@ -1125,36 +1125,30 @@ function setPositionLvl2() {
 	
 		//lg_obj[4].posX=4200;
 		//lg_obj[4].posY=240;
-		lg_obj[0].posX=1710;
-		lg_obj[0].posY=330+46;	
 		
-		sm_obj[4].posX=2010;
-		sm_obj[4].posY=430+46;	
-		
-		sm_obj[3].posX=2305;
-		sm_obj[3].posY=520+46;	
-			
 		sm_obj[2].posX=2600;
 		sm_obj[2].posY=600+46;
-
-		sm_obj[5].posX=2895;
-		sm_obj[5].posY=520+46;
-
-		lg_obj[1].posX=3195;
-		lg_obj[1].posY=430+46;
-		
-		lg_obj[2].posX=3545;
-		lg_obj[2].posY=380+46;
-
+		sm_obj[3].posX=2300;
+		sm_obj[3].posY=500+46;
+		sm_obj[4].posX=2000;
+		sm_obj[4].posY=400+46;
+		sm_obj[5].posX=2900;
+		sm_obj[5].posY=500+46;
+		lg_obj[0].posX=1700;
+		lg_obj[0].posY=300+46;
+		lg_obj[1].posX=3200;
+		lg_obj[1].posY=400+46;
+		lg_obj[2].posX=3550;
+		lg_obj[2].posY=350+46;
 
 		sheep[4].posX =2600;
 		sheep[4].posY =500+46;
 		sheep[4].saved = false;
 		sheep[5].posX =1700;
-		sheep[5].posY =220+46;
+		sheep[5].posY =200+46;
 		sheep[5].saved = false;
-		sheep[6].posX =3645;
-		sheep[6].posY =280+46;
+		sheep[6].posX =3650;
+		sheep[6].posY =250+46;
 		sheep[6].saved = false;
 		
 		miniGameArray[2].x = 4300;
@@ -1407,7 +1401,7 @@ function setPositionLvl3() {
 			breakables[i].posY = 0;	
 		}
 		
-				//Do this for every Lvl
+		//Do this for every Lvl
 		wordChoice = Math.floor(Math.random() * 3);
 		regExp1 = new RegExp();
 		regExp2 = new RegExp();
@@ -1498,7 +1492,8 @@ function setPositionLvl3() {
 	breakables[4].broken=false;
 }
 
-function setPositionLvl4() {//changehere
+function setPositionLvl4() 
+{
 	lvlFlag = false;
 	lastLevel = true;
 	
@@ -1824,7 +1819,7 @@ function update()
     //W
     if(key[38] && !hitTest(playerObj, miniGameArray[2]) || key[38] && closeWindow)
     {
-        if(playerObj.stopped){
+        if(playerObj.stopped || (!notHitTopOfWallCauseThatMakesNoScence && isDucking)){
 		isJump = false;
 	}
 	else{
@@ -1887,7 +1882,7 @@ function update()
         isMoveLeft = false;
     }
     //S
-    if(!key[40])
+    if(!key[40] && notHitTopOfWallCauseThatMakesNoScence)
     {
         isDucking = false;
     }
@@ -2360,7 +2355,7 @@ function update()
         isStanding = false;
 		if (isDucked == false)
         {
-            isDucked = true;	
+            isDucked = true;
             playerObj.height = 88;
             playerObj.posY = playerObj.posY+50;
 			attackBox.posY = playerObj.posY;
@@ -2401,160 +2396,219 @@ function update()
 				sheep[i].posX--;	
 			}
 		}	
-	//sheep gravity
-	sheep[i].collision = false;
+		//sheep gravity
+		sheep[i].collision = false;
 		
-    for(var i=0; i<sheep.length; i++)
-    {
-        if(hitTest(playerObj,sheep[i]))
-        {
-            if(!sheep[i].saved==true)
-            {
-                sheep[i].saved=true;
-                sheepPoints++;
-				document.getElementById('sound03').play();
-            }
-        }
-        if(sheep[i].saved)
-        {
-			if (currentLvl === 4){
-				sheep[i].posX++;
-			}
-			else{
-				sheep[i].posX--;	
-			}
-	}
-		
-	//sheep gravity
-	sheep[i].collision = false;
-		
-    for(var i=0; i<sheep.length; i++)
-    {
-        if(hitTest(playerObj,sheep[i]))
-        {
-            if(!sheep[i].saved==true)
-            {
-                sheep[i].saved=true;
-                sheepPoints++;
-				document.getElementById('sound03').play();
-            }
-        }
-        if(sheep[i].saved)
-        {
-			if (currentLvl === 4){
-				sheep[i].posX++;
-			}
-			else{
-				sheep[i].posX--;
-			}
-		
-			sheep[i].collision = false;
-			
-			for(var j=0; j<breakables.length; j++)
+        for(var i=0; i<sheep.length; i++)
+		{
+			if(hitTest(playerObj,sheep[i]))
 			{
-				if(hitTest(breakables[j],sheep[i])){
-					if(!breakables[j].broken){
-						sheep[i].collision = true;
+				if(!sheep[i].saved==true)
+				{
+					sheep[i].saved=true;
+					sheepPoints++;
+			document.getElementById('sound03').play();
+				}
+			}
+			if(sheep[i].saved)
+			{
+				if (currentLvl === 4){
+					sheep[i].posX++;
+				}
+				else{
+					sheep[i].posX--;	
+				}
+			}
+			
+		//sheep gravity
+		sheep[i].collision = false;
+			
+			for(var i=0; i<sheep.length; i++)
+			{
+				if(hitTest(playerObj,sheep[i]))
+				{
+					if(!sheep[i].saved==true)
+					{
+						sheep[i].saved=true;
+						sheepPoints++;
+						document.getElementById('sound03').play();
+					}
+				}
+				if(sheep[i].saved)
+				{
+					if (currentLvl === 4){
+						sheep[i].posX++;
+					}
+					else{
+						sheep[i].posX--;	
+					}
+				
+					sheep[i].collision = false;
+					
+					for(var j=0; j<breakables.length; j++)
+					{
+						if(hitTest(breakables[j],sheep[i])){
+							if(!breakables[j].broken){
+								sheep[i].collision = true;
+							}
+						}
+					}
+					for(var j=0; j<boxes.length; j++)
+					{
+						if(hitTest(boxes[j],sheep[i])){
+								sheep[i].collision = true;
+						}
+					}
+					for(var j=0; j<sm_obj.length; j++)
+					{
+						if(hitTest(sm_obj[j],sheep[i]))
+						{
+							sheep[i].collision = true;
+						}
+					}
+					for(var j=0; j<lg_obj.length; j++)
+					{
+						if(hitTest(lg_obj[j],sheep[i]))
+						{
+							sheep[i].collision = true;
+						}
+					}
+					
+					if(!sheep[i].collision){
+						  floorLvlSheep=635+46;
+					  
+						  if (sheep[i].posY<floorLvlSheep)
+						  {
+							  if(!sheep[i].falling)
+							  {		
+								  sheep[i].jumpDecay = 0.5;
+								  sheep[i].falling = true;
+							  }
+							  else
+							  {
+								  for(var j=0; j<breakables.length; j++)
+								  {
+									  if(hitTest(breakables[j],sheep[i])){
+										  if(!breakables[j].broken){
+											  sheep[i].collision=true;
+											  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+												  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
+												  sheep[i].falling = false;
+											  }
+										  }
+									  }
+								  }
+								  for(var j=0; j<boxes.length; j++)
+								  {
+									  if(hitTest(boxes[j],sheep[i])){
+
+											  sheep[i].collision=true;
+											  if (sheep[i].posY+sheep[i].height > boxes[j].posY){
+												  sheep[i].posY = boxes[j].posY-sheep[i].height+.5;
+												  sheep[i].falling = false;
+											  }
+										}
+								  }
+								  for(var j=0; j<sm_obj.length; j++)
+								  {
+									  if(hitTest(sm_obj[j],sheep[i]))
+									  {
+										  sheep[i].collision=true;
+										  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+											  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+											  sheep[i].falling = false;
+										  }
+									  }
+								  }
+								  for(var j=0; j<lg_obj.length; j++)
+								  {
+									  if(hitTest(lg_obj[j],sheep[i]))
+									  {
+										  sheep[i].collision=true;
+										  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+											  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+											  sheep[i].falling = false;
+									  }
+								  }
+								  if(!sheep[i].collision)
+								  {
+									  sheep[i].posY+= sheep[i].jumpDecay;
+									  sheep[i].jumpDecay += 1;
+									  if(sheep[i].posY > 640+46)
+									  {
+										sheep[i].posY = 640+46;
+									  }
+								  }
+							  }
+						  }
+						  else{
+							  sheep[i].falling = false;
+						  }
 					}
 				}
 			}
-			for(var j=0; j<boxes.length; j++)
+		}
+	}
+	
+	//TODO: fuckin fuck this shit up
+	for(i = 0; i < sm_obj.length; i++)
+	{
+		if(playerObj.posY - 50 <= sm_obj[i].posY + sm_obj[i].height && playerObj.posY - 50 > sm_obj[i].posY && playerObj.posX + playerObj.width >= sm_obj[i].posX && playerObj.posX <= sm_obj[i].width + sm_obj[i].posX)
+		{
+			notHitTopOfWallCauseThatMakesNoScence = false;
+			i = sm_obj.length;
+		}
+		else if(i == sm_obj.length - 1)
+		{
+			notHitTopOfWallCauseThatMakesNoScence = true;
+		}
+	}
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < lg_obj.length; i++)
+		{
+			if(playerObj.posY - 50 <= lg_obj[i].posY + lg_obj[i].height && playerObj.posY - 50 > lg_obj[i].posY && playerObj.posX + playerObj.width >= lg_obj[i].posX && playerObj.posX <= lg_obj[i].width + lg_obj[i].posX)
 			{
-				if(hitTest(boxes[j],sheep[i])){
-						sheep[i].collision = true;
-				}
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = lg_obj.length;
 			}
-			for(var j=0; j<sm_obj.length; j++)
-
+			else if(i == lg_obj.length - 1)
 			{
-				if(hitTest(sm_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			for(var j=0; j<lg_obj.length; j++)
-			{
-				if(hitTest(lg_obj[j],sheep[i]))
-				{
-					sheep[i].collision = true;
-				}
-			}
-			
-			if(!sheep[i].collision){
-				  floorLvlSheep=635+46;
-			  
-				  if (sheep[i].posY<floorLvlSheep)
-				  {
-					  if(!sheep[i].falling)
-					  {		
-						  sheep[i].jumpDecay = 0.5;
-						  sheep[i].falling = true;
-					  }
-					  else
-					  {
-						  for(var j=0; j<breakables.length; j++)
-						  {
-							  if(hitTest(breakables[j],sheep[i])){
-								  if(!breakables[j].broken){
-									  sheep[i].collision=true;
-									  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
-										  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
-										  sheep[i].falling = false;
-									  }
-								  }
-							  }
-						  }
-						  for(var j=0; j<boxes.length; j++)
-						  {
-							  if(hitTest(boxes[j],sheep[i])){
-
-									  sheep[i].collision=true;
-									  if (sheep[i].posY+sheep[i].height > boxes[j].posY){
-										  sheep[i].posY = boxes[j].posY-sheep[i].height+.5;
-										  sheep[i].falling = false;
-									  }
-						 		}
-						  }
-						  for(var j=0; j<sm_obj.length; j++)
-						  {
-							  if(hitTest(sm_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
-									  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-								  }
-							  }
-						  }
-						  for(var j=0; j<lg_obj.length; j++)
-						  {
-							  if(hitTest(lg_obj[j],sheep[i]))
-							  {
-								  sheep[i].collision=true;
-								  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
-									  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
-									  sheep[i].falling = false;
-							  }
-						  }
-						  if(!sheep[i].collision)
-						  {
-							  sheep[i].posY+= sheep[i].jumpDecay;
-							  sheep[i].jumpDecay += 1;
-							  if(sheep[i].posY > 640+46)
-							  {
-								sheep[i].posY = 640+46;
-							  }
-						  }
-					  }
-				  }
-				  else{
-					  sheep[i].falling = false;
-				  }
+				notHitTopOfWallCauseThatMakesNoScence = true;
 			}
 		}
-	}}
+	}	
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < breakables.length; i++)
+		{
+			if(playerObj.posY - 50 <= breakables[i].posY + breakables[i].height && playerObj.posY - 50 > breakables[i].posY && playerObj.posX + playerObj.width >= breakables[i].posX && playerObj.posX <= breakables[i].width + breakables[i].posX)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = breakables.length;
+			}
+			else if(i == breakables.length - 1)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = true;
+			}
+		}
 	}
-
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < boxes.length; i++)
+		{
+			if(playerObj.posY - 50 <= boxes[i].posY + boxes[i].height && playerObj.posY - 50 > boxes[i].posY && playerObj.posX + playerObj.width >= boxes[i].posX && playerObj.posX <= boxes[i].width + boxes[i].posX)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = boxes.length;
+			}
+			else if(i == boxes.length - 1)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = true;
+			}
+		}
+	}
+	
     if(isAttack)
     {
         
@@ -3092,7 +3146,6 @@ function update()
 			}
 			mouse.x = 0;
 			mouse.y = 0;
-			console.log("test 2: " +helpActive);
         }
     }
     else
@@ -3102,7 +3155,7 @@ function update()
         render();
     }
     
-    if (playerObj.posX > 6000)
+    if (playerObj.posX > 5900)
 	{
 		ctx.drawImage(levelClick,0,0);
 		//here
@@ -3128,12 +3181,16 @@ function update()
 					lvlFlag = true;	
 					setPositionLvl4();
 				}
-				else if(playerObj.posX > 6015 &&currentLvl==4)
+				else if(playerObj.posX > 5890 &&currentLvl==4)
 				{
 					ctx.drawImage(endScene,0,0,1600,900);
 					gameOver = true;
 					setTimeout(endGame,5000);
 				}
+		}
+		if(playerObj.posX > 5900 &&currentLvl==4)
+		{
+			playerObj.posX = 5900;
 		}
     }    
 
@@ -3212,8 +3269,8 @@ function render()
 			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
 			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
 			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
-        		ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
-        		ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
 			ctx.drawImage(lvl1_background,0,1101,6336,5,0, 781, 6336, 5); //black line 
 			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
    			//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
@@ -3227,7 +3284,6 @@ function render()
 			{
 				//TODO gold sheep walk FINISH UP
 				miniGameArray[2].x--;
-				console.log("X" + miniGameArray[2].x);
 				if (goldWalk >= 0 && goldWalk <5)
 				{
 					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
@@ -3283,9 +3339,12 @@ function render()
 					}	
 				}
 			}
+			//Marked
+			ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 			for(var i=0; i<4; i++)
 			{
-				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);
+				ctx.fillRect(sm_obj[i].posX,sm_obj[i].posY, sm_obj[i].width,sm_obj[i].height);
 			}
 			for(var i=0; i<2; i++)
 			{
@@ -3316,8 +3375,8 @@ function render()
 				}
     		}
 			
-			for(var i =0; i<signs.length; i++)  
-			{         
+				for(var i =0; i<signs.length; i++)  
+				{         
             			if(signs[i].active)
             			{
 					console.log(i);
@@ -3332,7 +3391,7 @@ function render()
 					else if(i==4)
 						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
-					if(signs[i].active)
+				if(signs[i].active)
 				{
 						console.log(i);
                 		if(i==0)
@@ -3346,7 +3405,7 @@ function render()
 						else if(i==4)
 							ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
 				}
-			}	
+			}			
     	}
     	else if (currentLvl === 2)
 		{
@@ -3612,7 +3671,7 @@ function render()
 			}
 			for(var i=0; i<20; i++)
 			{
-				if(i < 1)
+				if(i < 2)
 					ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
 			}
 			for(var i=0; i<20; i++)
@@ -3846,7 +3905,7 @@ function render()
 		
 		if(currentLvl==1)
 		{
-			ctx.drawImage(cloud,3120,292+46);
+			ctx.drawImage(cloud,3100,270+46);
 		}
 		if (currentLvl ===4){
 			ctx.drawImage(lvl4_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax		
@@ -4069,7 +4128,8 @@ function writeText()
 				console.log(tutorSheep);
 				if(tutorSheep == 0)
 				{
-					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+					//call back
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) && counter == 14)
 					{
 						closeWindow = true;
 						tutorSheep++;
@@ -4081,7 +4141,7 @@ function writeText()
 				}	
 				if(tutorSheep == 1)
 				{	
-					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+					if(counter == 22 && !regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
 					&& !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
 					{
 						closeWindow = true;
