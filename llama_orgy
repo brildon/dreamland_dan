@@ -3340,11 +3340,11 @@ function render()
 				}
 			}
 			//Marked
-			ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+			//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
 			for(var i=0; i<4; i++)
 			{
 				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);
-				ctx.fillRect(sm_obj[i].posX,sm_obj[i].posY, sm_obj[i].width,sm_obj[i].height);
+				//ctx.fillRect(sm_obj[i].posX,sm_obj[i].posY, sm_obj[i].width,sm_obj[i].height);
 			}
 			for(var i=0; i<2; i++)
 			{
