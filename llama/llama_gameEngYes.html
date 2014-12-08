@@ -892,7 +892,13 @@ function gameStart()
 }
 function intialize()
 {
-	distantBackground.sourceY = 2854;
+
+	
+	playerObj.posX = 50;  //50
+	playerObj.posY = 600+46;
+	if(lvl1Started==false)
+	{
+			distantBackground.sourceY = 2854;
 	distantBackground.sourceX = 0;
 	distantBackground.sourceWidth = 6336;
 	distantBackground.sourceHeight = 415;
@@ -909,11 +915,6 @@ function intialize()
 	foregroundBackground.height = 49;
 	foregroundBackground.x = 0;
 	foregroundBackground.y = 736;
-	
-	playerObj.posX = 50;  //50
-	playerObj.posY = 600+46;
-	if(lvl1Started==false)
-	{
 		sheepPoints = 0;
 		
 		miniGameArray[0].x = 1400;
@@ -1041,24 +1042,7 @@ function intialize()
 
 function setPositionLvl2() {
 	lvlFlag = false;
-	
-	distantBackground.sourceY = 2854;
-	distantBackground.sourceX = 0;
-	distantBackground.sourceWidth = 6336;
-	distantBackground.sourceHeight = 789;
-	distantBackground.width = 6336;
-	distantBackground.height = 789;
-	distantBackground.x = 0;
-	distantBackground.y = 0;
-	
-	foregroundBackground.sourceY = 1180;
-	foregroundBackground.sourceX = 0;
-	foregroundBackground.sourceWidth = 6336;
-	foregroundBackground.sourceHeight = 789;
-	foregroundBackground.width = 6336;
-	foregroundBackground.height = 789
-	foregroundBackground.x = 0;
-	foregroundBackground.y = -3;
+
 	
 	for (var i = 0; i < breakables.length; i++){
 		breakables[i].countB = 0;	
@@ -1097,6 +1081,24 @@ function setPositionLvl2() {
 	if(lvl2Started==false)
 	{
 	
+		
+	distantBackground.sourceY = 2854;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = 0;
+	
+	foregroundBackground.sourceY = 1180;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 789;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 789
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -3;
 		sheep[0].posX =1100;
 		sheep[0].posY =640+46;
 		sheep[0].saved = false;
@@ -1256,6 +1258,17 @@ function setPositionLvl2() {
 function setPositionLvl3() {
 	lvlFlag = false;
 	
+
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
+	playerObj.posX = 10;
+	playerObj.posY = 646;
+	
+	if(lvl3Started==false)
+	{
 	distantBackground.sourceY = 1180;
 	distantBackground.sourceX = 0;
 	distantBackground.sourceWidth = 6336;
@@ -1273,17 +1286,6 @@ function setPositionLvl3() {
 	foregroundBackground.height = 789
 	foregroundBackground.x = 0;
 	foregroundBackground.y = -2;
-	
-	for (var i = 0; i < breakables.length; i++){
-		breakables[i].countB = 0;	
-	}
-	
-	playerObj.posX = 50;
-	playerObj.posY = 646;
-	
-	if(lvl3Started==false)
-	{
-
 		sm_obj[0].posX=350;
 		sm_obj[0].posY=625;
 		sm_obj[1].posX=500;
@@ -1365,7 +1367,7 @@ function setPositionLvl3() {
 		boxes[7].posY =586;
 		
 		
-		lg_obj[4].posX=4600;
+		lg_obj[4].posX=4690; //bug2
 		lg_obj[4].posY=625;
 		sheep[11].posX =4700;
 		sheep[11].posY =525;
@@ -1484,7 +1486,7 @@ function setPositionLvl3() {
 	breakables[2].posX =1225;
 	breakables[2].posY =200;
 	breakables[2].broken=false;
-	breakables[0].posX =210;
+	breakables[0].posX =150;//bug1
 	breakables[0].posY =686;
 	breakables[0].broken=false;
 	breakables[4].posX =5100;
@@ -1497,7 +1499,14 @@ function setPositionLvl4()
 	lvlFlag = false;
 	lastLevel = true;
 	
-	distantBackground.sourceY = 1180;
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
+	if(lvl4Started==false)
+	{
+			distantBackground.sourceY = 1180;
 	distantBackground.sourceX = 0;
 	distantBackground.sourceWidth = 6336;
 	distantBackground.sourceHeight = 789;
@@ -1513,13 +1522,8 @@ function setPositionLvl4()
 	foregroundBackground.width = 5329;
 	foregroundBackground.height = 797
 	foregroundBackground.x = 0;
-	foregroundBackground.y = -5;	
-	for (var i = 0; i < breakables.length; i++){
-		breakables[i].countB = 0;	
-	}
-	
-	if(lvl4Started==false)
-	{
+	foregroundBackground.y = -5;
+		
 		for (var i = 0; i < breakables.length; i++){
 			breakables[i].posX = 0;
 			breakables[i].posY = 0;	
