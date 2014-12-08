@@ -1,0 +1,4700 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sheep! Heard Dan</title>
+</head>
+<body>
+<div id="container" style="width:1500px; height:500px; position:relative;" >
+<canvas id="ctx" width="1584" height="884" style="z-index:2"></canvas>
+
+</div>
+<audio id="music" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/SheepHeard_Backtrack1.wav" preload="auto" loop></audio>
+<audio id="sound01" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Box_Break.wav" preload="auto"</audio>
+<audio id="sound02" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Woosh-Mark_DiAngelo-4778593.wav" preload="auto"</audio>
+<audio id="sound03" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Sheep.wav" preload="auto"</audio>
+<audio id="sound04" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Galloping%20Horse-SoundBible.com-1411555122.wav" preload="auto"</audio>
+<audio id="sound05" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/button-30.wav" preload="auto"</audio>
+<audio id="sound06" src="https://raw.githubusercontent.com/brildon/dreamland_dan/master/sounds/Magic%20Wand%20Noise-SoundBible.com-375928671.wav" preload="auto"</audio>
+
+<script>
+var cv = document.getElementById("ctx");
+var ctx = cv.getContext('2d');
+
+//var music = 'https://raw.githubusercontent.com/brildon/dreamland_dan/master/music.wav';
+
+document.getElementById('music').play();
+
+
+var sheepPoints = 0;	
+var levelAt = 0;
+var tempX = 0;
+var tempY = 0;
+var levelWords = new Array(9);
+var regExpFin = false;
+var creditsScreen = false;
+var tutorSheep = 0;
+var center = 0;
+var wordChoice = 0;
+var expComplete = false;
+var sheepWalk = true;
+var goldWalk = 0;
+var notHitTopOfWallCauseThatMakesNoScence = false;
+var flashCounter = 0;
+var closeWindow = false;
+var mousePos = {x:0, y:0}
+levelWords[0] = "HORN";
+levelWords[1] = "HEART";
+levelWords[2] = "HOP";
+
+levelWords[3] = "LEAP";
+levelWords[4] = "EAT";
+levelWords[5] = "STUNT";
+
+levelWords[6] = "SLEEP";
+levelWords[7] = "JUMP";
+levelWords[8] = "JACK";
+
+var correctWords = new Array(3);
+
+correctWords[0] = levelWords[2];
+correctWords[1] = levelWords[3];
+correctWords[2] = levelWords[7];
+
+var incorrectWords = new Array(6);
+
+incorrectWords[0] = levelWords[0];
+incorrectWords[1] = levelWords[1];
+incorrectWords[2] = levelWords[4];
+incorrectWords[3] = levelWords[5];
+incorrectWords[4] = levelWords[6];
+incorrectWords[5] = levelWords[8];
+
+var collide = false;
+var falling = false;
+var isDucked = false;
+var isStanding = true;
+var sheepTotal = 0;
+var collision = false;
+var collision2 = false;
+var movingRight = true;
+var regExpScreen = true;
+var soundOn = true;
+var cutScene = false;
+var lastLevel = false;
+var gameOver = false;
+var jumpable = false;
+var crouchable = false;
+var attackable = false;
+var counter = 1;
+var helpActive = false;
+var regExpOne = "";
+var regExpTwo = "";
+var regExpThree = "";
+var lvl1Started = false;
+var lvl2Started = false;
+var lvl3Started = false;
+var lvl4Started = false;
+
+var lvlTwoStart = false;
+var lvlThreeStart = false;
+
+var mouse = {x:0,y:0};
+
+var collisionIndex = -1;
+var signIndex = -1;
+var count = 0;
+var countR = 0;
+var countA = 0;
+var countS = 0;
+var playerDirec = 0;
+var currentLvl = 1;
+var lvlFlag = false;
+var gameTrigger;
+var temp2X = 0;
+var temp2Y = 0;
+
+var key = [];
+
+var distantBackground = {
+	sourceY: 0,
+	sourceX: 0,
+	sourceWidth: 0,
+	sourceHeight: 0,
+	width: 0,
+	height: 0,
+	x: 0,
+	y: 0
+}
+
+var foregroundBackground = {
+	sourceY: 0,
+	sourceX: 0,
+	sourceWidth: 0,
+	sourceHeight: 0,
+	width: 0,
+	height: 0,
+	x: 0,
+	y: 0
+}
+
+var foreground2Background = {
+	sourceY: 938,
+	sourceX: 0,
+	sourceWidth: 6336,
+	sourceHeight: 37,
+	width: 6336,
+	height: 53,
+	x: 0,
+	y: 695
+}
+
+var gameWorld = {
+	x: 0,
+	y: 0,
+	width: 6336,
+	heigth: 884	
+}
+
+var camera = {
+	x: 0,
+	y: 0,
+	width: cv.width,
+	height: cv.height,
+	vx: 0,
+	previousX: 0,
+	
+	rightInnerBoundary: function (){
+		return this.x + (this.width * 0.75);	
+	},	
+	leftInnerBoundary: function (){
+		return this.x+ (this.width * 0.25);	
+	},
+	topInnerBoundary: function (){
+		return this.y + (this.height * 0.25);	
+	},
+	bottomInnerBoundary: function (){
+		return this.y + (this.height * 0.75);	
+	}
+}
+
+var signObj = {
+	posX: 0,
+	posY: 0,
+	height: 113,
+	width: 102,
+	active: false,
+	read: false,
+	timesRead: -1,
+
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+
+var collisionObj = {
+	x: 0,
+	y: 0,
+	height: 10,
+	width: 75,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+
+var miniGameObj = {
+	x: 0,
+	y: 0,
+	height: 100,
+	width: 100,
+	sound: false,
+	tutor: 2,
+	run: false,
+	
+	centerX: function (){
+		return this.x + (this.width / 2);
+	},
+	centerY: function (){
+		return this.y + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
+}
+
+var miniGameArray = new Array(3);
+for(i = 0; i < miniGameArray.length; i++)
+{
+	miniGameArray[i] = Object.create(miniGameObj);
+}
+
+miniGameArray[0].tutor = 0;
+miniGameArray[1].tutor = 1;
+
+var playerObj = {
+	posY: 600,
+	posX: 200,
+	height: 137,
+	width: 140,
+	hMask: 10,
+	wMask: 75,
+	jumpStrength: 18,
+	jumpDecay: 0.5,
+	fallStrengh: 0,
+	speed: 5,
+	state: 0,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}
+}
+
+var branchObj = {
+	posX: 0,
+	posY: 0,
+	height: 5,
+	width : 100,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
+var aBranch = new Array (6);
+for (var i=0;i<aBranch.length;i++){
+	aBranch[i] = Object.create(branchObj);	
+}
+
+aBranch[0].posX = 150;
+aBranch[0].posY = 580;
+
+aBranch[1].posX = 300;
+aBranch[1].posY = 400;
+
+aBranch[2].posX = 2450;
+aBranch[2].posY = 580;
+
+aBranch[3].posX = 0;
+aBranch[3].posY = 737+46;
+aBranch[3].width = gameWorld.width;
+
+aBranch[4].posX = 150;
+aBranch[4].posY = 220;
+
+aBranch[5].posX = 500;
+aBranch[5].posY = 450;
+
+var breakObj = {
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width: 100,
+	countB: 0,
+	broken: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+var boxObj = {
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width: 100,
+
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+var largeObj = {
+	posX: 0,
+	posY: 0,
+	height: 63,
+	width: 213,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+var smallObj = {
+	posX: 0,
+	posY: 0,
+	height: 55,
+	width: 113,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}	
+}
+
+var sheepObj = {
+	posX: 0,
+	posY: 0,
+	height: 100,
+	width : 80,
+	jumpDecay: 0.5,
+	collision: false,
+	falling: false,
+	saved: false,
+	preSaved: false,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);	
+	}		
+}
+
+
+var playerObj = Object.create(playerObj);
+
+var hitBox = {
+	posX: playerObj.posX+playerObj.width,
+	posY: playerObj.posY,
+	height: 50,
+	width : 5,
+	
+	centerX: function (){
+		return this.posX + (this.width / 2);
+	},
+	centerY: function (){
+		return this.posY + (this.height / 2);	
+	},
+	halfWidth: function(){
+		return (this.width / 2);	
+	},
+	halfHeight: function(){
+		return (this.height / 2);
+	}
+}
+
+var attackBox = Object.create(hitBox);
+
+var signs = new Array(5);
+for(var i =0; i<signs.length; i++)
+{
+	signs[i] = Object.create(signObj);
+}
+
+var breakables = new Array (30);
+
+for (var i =0; i<breakables.length; i++)
+{
+	breakables[i]=Object.create(breakObj);
+}
+
+var boxes = new Array (30);
+
+for (var i =0; i<boxes.length; i++)
+{
+	boxes[i]=Object.create(boxObj);
+}
+
+
+var sm_obj = new Array (20);
+for (var i =0; i<sm_obj.length; i++)
+{
+	sm_obj[i]=Object.create(smallObj);
+}
+
+var lg_obj = new Array (20);
+for (var i =0; i<lg_obj.length; i++)
+{
+	lg_obj[i]=Object.create(largeObj);
+}
+
+
+var sheep = new Array (17);
+
+for (var i=0; i<sheep.length; i++)
+{
+	sheep[i]=Object.create(sheepObj);
+}
+
+var hitVar = false;
+var floorLvl = 737+46;
+var floorLvlSheep = 737+46;
+
+camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
+camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
+
+var isAttack = false;
+var isDucking = false;
+var isMoveLeft = false;
+var isMoveRight = false;
+var isJump = false;
+
+var textOpen = false;
+
+
+var textBox = {
+	xCoord: 0,
+	yCoord: 0,
+	canWrite: false,
+	typerX: 0
+}
+
+var textBoxArray = new Array(3);
+
+for(i = 1; i <= textBoxArray.length; i++)
+{
+	textBoxArray[i - 1] = Object.create(textBox);
+}
+textBoxArray[0].xCoord = 100;
+textBoxArray[1].xCoord = 600;
+
+textBoxArray[2].xCoord = 1000;
+
+textBoxArray[0].yCoord = 650;
+textBoxArray[1].yCoord = 650;
+textBoxArray[2].yCoord = 650;
+
+var submitButton = {
+	posX: 0,
+	posY: 0,
+	clicked: false
+}
+
+var currentTextBox = null;
+
+var submitButtonArray = new Array(3);
+
+for(j = 0; j < submitButtonArray.length; j++)
+{
+	submitButtonArray[j] = Object.create(submitButton);
+	console.log(submitButtonArray[j]);
+}
+
+submitButtonArray[0].posX = 210;
+submitButtonArray[1].posX = 670;
+submitButtonArray[2].posX = 1130;
+
+submitButtonArray[0].posY = 795;
+submitButtonArray[1].posY = 795;
+submitButtonArray[2].posY = 795;
+
+var regExp1 = new RegExp(" ");
+var regExp2 = new RegExp(" ");
+var regExp3 = new RegExp(" ");
+
+var CharacterBox ={
+	posX: 0,
+	posY: 0
+}
+
+var characterBoxArray = new Array(5);
+
+for(i = 0; i < characterBoxArray.length; i++)
+{
+	characterBoxArray[i] = Object.create(CharacterBox);
+}
+
+characterBoxArray[0].posX = 710;
+characterBoxArray[4].posX = 835;
+characterBoxArray[2].posX = 960;
+characterBoxArray[1].posX = 1075;
+characterBoxArray[3].posX = 1200;
+
+
+characterBoxArray[0].posY = 45;
+characterBoxArray[1].posY = 45;
+characterBoxArray[2].posY = 45;
+characterBoxArray[3].posY = 45;
+characterBoxArray[4].posY = 45;
+
+// event listeners for key's and click's
+window.addEventListener("keydown", keyDown, false);
+window.addEventListener("keyup", keyUp, false);
+
+
+var credits = new Image();
+credits.src = "https://cloud.githubusercontent.com/assets/8864180/5309490/b6b67378-7bea-11e4-949a-24324d2863a0.png";
+
+var lvl1_background = new Image();	
+lvl1_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160133/9eaf675e-7347-11e4-8aea-927623f8f998.png";
+var lvl2_background = new Image();	
+lvl2_background.src = "https://cloud.githubusercontent.com/assets/8835208/5160595/24480b4c-7356-11e4-8565-c5cddc8d0582.png";
+var lvl3_background = new Image();
+lvl3_background.src = "https://cloud.githubusercontent.com/assets/8835208/5236669/9ccc57b0-780d-11e4-890c-df5cef37c58b.png";
+var lvl4_background = new Image();
+lvl4_background.src = "https://cloud.githubusercontent.com/assets/8864180/5311784/254b3c7a-7c12-11e4-97f0-ecdf0f50a7f0.png";
+
+var regExp = new Image();
+regExp.src = "https://cloud.githubusercontent.com/assets/8835240/4980483/7803107a-6900-11e4-8122-75563d0efbb5.png";
+
+var llama_left = new Image();	
+var llama_right = new Image();
+var llama_duck_left = new Image();
+var llama_duck_right = new Image();
+var llama_attack_right = new Image();
+var llama_attack_left = new Image();
+var llama_jump_sprite = new Image();
+var llama_run_sprite = new Image();
+var llama_duck_sprite = new Image();
+var sheep_right = new Image();
+var sheep_left = new Image();
+var box = new Image();
+var sheepIcon = new Image();
+var sheepWizard = new Image();
+var sheepSprite = new Image();
+var optionSoundOn = new Image();
+var endScene = new Image();
+var optionSoundOff = new Image();
+var cutscene = new Image();
+var restart = new Image();
+var smallPlatform = new Image();
+var largePlatform = new Image();
+var sign = new Image();
+var smBubble = new Image();
+var medBubble = new Image();
+var lgBubble = new Image();
+var moveInstr =  new Image();
+var jumpInstr =  new Image();
+var crouchInstr =  new Image();
+var atkInstr =  new Image();
+var restartInstr =  new Image();
+var endLvlInstr =  new Image();
+var sheepInstr =  new Image();
+var regInstr1 =  new Image();
+var regInstr2 =  new Image();
+var regInstr3 =  new Image();
+var regInstr4 =  new Image();
+var finishInstr = new Image();
+var submitImg = new Image();
+var regScreen = new Image();
+
+var startButton = new Image();
+var optionsButton = new Image();
+var creditsButton = new Image();
+var backButton = new Image();
+var soundButton = new Image();
+
+var expInstr1 = new Image();
+var expInstr2 = new Image();
+var expInstr3 = new Image();
+var expInstr4 = new Image();
+var expInstr5 = new Image();
+var expInstr6 = new Image();
+var expInstr7 = new Image();
+var expInstr8 = new Image();
+var expInstr9 = new Image();
+var expInstr10 = new Image();
+var expInstr11 = new Image();
+var expInstr12 = new Image();
+var expInstr13 = new Image();
+var expInstr14 = new Image();
+var expInstr15 = new Image();
+var expInstr16 = new Image();
+var expInstr17 = new Image();
+var expInstr18 = new Image();
+var expInstr19 = new Image();
+var expInstr20 = new Image();
+var expInstr21 = new Image();
+var expInstr22 = new Image();
+var expInstr23 = new Image();
+var expInstr24 = new Image();
+var carrotHelp = new Image();
+var expInstr25 = new Image();
+var expInstr26 = new Image();
+var expInstr27 = new Image();
+var expInstr28 = new Image();
+var carrotBracketHelp = new Image();
+var helpHover = new Image();
+var helpScreen = new Image();
+var lineHelp = new Image();
+var moneyHelp = new Image();
+var questionHelp = new Image();
+var submitHover = new Image();
+var cloud = new Image();
+var blueStar = new Image();
+var redStar = new Image();
+var orangeStar = new Image();
+var emptyStar = new Image();
+var singleRegExp = new Image();
+var doubleRegExp = new Image();
+var levelClick = new Image();
+var restartClick = new Image();
+var box2 = new Image();
+var boxInst = new Image();
+var arrow = new Image();
+var congJump = new Image();
+var congBreak = new Image();
+var congCrouch = new Image();
+var finalLvlInstr = new Image();
+
+var smallGem = new Image();
+var largeGem  = new Image();
+var subButton = new Image();
+subButton.src = "https://cloud.githubusercontent.com/assets/8864180/5341538/6312b9f0-7ebc-11e4-8761-624be797e5db.png";
+
+var wizardSheepWalk = new Image();
+var helpButton = new Image();
+helpButton.src = "https://cloud.githubusercontent.com/assets/8864180/5341533/63071442-7ebc-11e4-99de-e71077bf943d.png";
+
+//TODO: implement
+wizardSheepWalk.src = "https://cloud.githubusercontent.com/assets/8835240/5326316/6f6e9ee8-7cd8-11e4-9a48-a04cb85740dd.png";
+
+smallGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316589/27dce5a6-7c53-11e4-8c9f-ce1ee9b5eb18.png";
+largeGem.src = "https://cloud.githubusercontent.com/assets/8864180/5316590/27dcfd98-7c53-11e4-9d03-9aed33acb83c.png";
+
+congJump.src = "https://cloud.githubusercontent.com/assets/8864180/5341535/630a9c52-7ebc-11e4-9fa2-79e37ff521fe.png";
+congBreak.src = "https://cloud.githubusercontent.com/assets/8864180/5341530/6301d9b4-7ebc-11e4-9254-875b822833fe.png";
+congCrouch.src = "https://cloud.githubusercontent.com/assets/8864180/5341534/630a44fa-7ebc-11e4-9d69-5cf1ef83014a.png";
+
+//TODO: implement
+finalLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341529/62ff82fe-7ebc-11e4-986c-860c3d7a0491.png";
+
+arrow.src = "https://cloud.githubusercontent.com/assets/8864180/5312748/e8fdd274-7c24-11e4-94ca-c47791f82303.png";
+boxInst.src = "https://cloud.githubusercontent.com/assets/8864180/5341528/62fe7e54-7ebc-11e4-8d5f-8139301f2e3f.png";
+box2.src = "https://cloud.githubusercontent.com/assets/8864180/5309191/108de96c-7be6-11e4-8ee6-6d0a921a281f.png";
+restartClick.src ="https://cloud.githubusercontent.com/assets/8864180/5292542/cd59fac2-7b28-11e4-83fa-238025f2b93d.png";
+levelClick.src = "https://cloud.githubusercontent.com/assets/8864180/5341537/630e5ee6-7ebc-11e4-8383-75a2cd78898e.png";
+singleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275877/950cd470-7a72-11e4-8a1b-96702456ff91.png";
+doubleRegExp.src = "https://cloud.githubusercontent.com/assets/8835240/5275924/26bcd7ac-7a74-11e4-9466-ae76f4d044fb.png";
+blueStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160460/544736f0-7352-11e4-90bd-b8fa1617af65.png";
+redStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160446/0af27208-7352-11e4-9e90-0b0f0bbe6a9c.png";
+orangeStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160438/ee052c80-7351-11e4-8cc9-410d444f3bb2.png";
+emptyStar.src = "https://cloud.githubusercontent.com/assets/8835240/5160181/7940f1e8-7349-11e4-97d5-e5adb78001a8.png"; 
+cloud.src = "https://cloud.githubusercontent.com/assets/8864180/5156452/678e56aa-7288-11e4-8c52-6d7680044c51.png";
+carrotHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325852/8f2e1b90-7cc0-11e4-86a5-295a755535ec.png";
+carrotBracketHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325612/64a85dfe-7cb6-11e4-80c0-0ff9c71b312e.png"; // currently most recent
+helpHover.src = "https://cloud.githubusercontent.com/assets/8864180/5341536/630b6524-7ebc-11e4-954a-a82532852dbc.png";
+helpScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5143413/91c32632-7155-11e4-94dc-3e33fbca0d4f.png";
+lineHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325853/911899da-7cc0-11e4-8310-9b6684456341.png";
+moneyHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325854/928b8d7c-7cc0-11e4-8be4-dab5824965d4.png";
+questionHelp.src = "https://cloud.githubusercontent.com/assets/8835240/5325855/943c050c-7cc0-11e4-9f61-79e539f3e517.png";
+submitHover.src ="https://cloud.githubusercontent.com/assets/8864180/5341539/63135464-7ebc-11e4-849e-d3ffe88fa956.png";
+expInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5341551/749070f0-7ebc-11e4-9631-34114cc07085.png";
+expInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5341554/74951664-7ebc-11e4-8420-269f53f236f4.png";
+expInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5341553/7491bb9a-7ebc-11e4-9211-62990552fab2.png";
+expInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5341556/7496baa0-7ebc-11e4-9eac-ddbbcb916034.png";
+expInstr5.src = "https://cloud.githubusercontent.com/assets/8864180/5341552/74919dfe-7ebc-11e4-961a-2a15f3361a0e.png";
+expInstr6.src = "https://cloud.githubusercontent.com/assets/8864180/5341555/74957faa-7ebc-11e4-8d3a-3a7788919a09.png";
+expInstr7.src = "https://cloud.githubusercontent.com/assets/8864180/5341557/74982ffc-7ebc-11e4-82fa-fa5527d01c9a.png";
+expInstr8.src = "https://cloud.githubusercontent.com/assets/8864180/5341561/74a101fe-7ebc-11e4-9a75-b1e8b3418263.png";
+expInstr9.src = "https://cloud.githubusercontent.com/assets/8864180/5341558/749d104e-7ebc-11e4-82b4-ff4c1370d7dd.png";
+expInstr10.src = "https://cloud.githubusercontent.com/assets/8864180/5341562/74a12378-7ebc-11e4-996f-7e9a4914f02a.png";
+expInstr11.src = "https://cloud.githubusercontent.com/assets/8864180/5341559/749d9032-7ebc-11e4-9e40-d0d3913f4052.png";
+expInstr12.src = "https://cloud.githubusercontent.com/assets/8864180/5341563/74a3a620-7ebc-11e4-9b2e-6bb915cda334.png";
+expInstr13.src = "https://cloud.githubusercontent.com/assets/8864180/5341560/74a02e50-7ebc-11e4-861a-9385125ce8d8.png";
+expInstr14.src = "https://cloud.githubusercontent.com/assets/8864180/5341575/86fc9912-7ebc-11e4-8bd9-27765891737c.png";
+expInstr15.src = "https://cloud.githubusercontent.com/assets/8864180/5341580/8702b086-7ebc-11e4-8aee-17fa0edc5e90.png";
+expInstr16.src = "https://cloud.githubusercontent.com/assets/8864180/5341577/86fd1194-7ebc-11e4-8c6f-31b71748577d.png";
+expInstr17.src = "https://cloud.githubusercontent.com/assets/8864180/5341576/86fce87c-7ebc-11e4-9992-7915d3233631.png";
+expInstr18.src = "https://cloud.githubusercontent.com/assets/8864180/5341579/8702ccba-7ebc-11e4-8b4d-5ce6ab74a0a0.png";
+expInstr19.src = "https://cloud.githubusercontent.com/assets/8864180/5341578/86fe37c2-7ebc-11e4-8d9d-199e314dd764.png";
+expInstr20.src = "https://cloud.githubusercontent.com/assets/8864180/5341582/870897e4-7ebc-11e4-80ba-190cdac7645c.png";
+expInstr21.src = "https://cloud.githubusercontent.com/assets/8864180/5341581/87056a56-7ebc-11e4-9716-6409b8750811.png";
+expInstr22.src = "https://cloud.githubusercontent.com/assets/8864180/5341588/901df540-7ebc-11e4-87b0-22bcd5132575.png";
+expInstr23.src = "https://cloud.githubusercontent.com/assets/8864180/5341589/9022e4ce-7ebc-11e4-99fb-733f1949ab51.png";
+expInstr24.src = "https://cloud.githubusercontent.com/assets/8864180/5341590/902aca36-7ebc-11e4-9fe1-7775909cf8c8.png";
+expInstr25.src = "https://cloud.githubusercontent.com/assets/8864180/5341594/90738f78-7ebc-11e4-9281-7c2cff542bd3.png";
+expInstr26.src = "https://cloud.githubusercontent.com/assets/8864180/5341591/906b6c4e-7ebc-11e4-9775-9c78bc139518.png";
+expInstr27.src = "https://cloud.githubusercontent.com/assets/8864180/5341593/90706140-7ebc-11e4-8756-4c54717e3873.png";
+expInstr28.src = "https://cloud.githubusercontent.com/assets/8864180/5341592/906dd2fe-7ebc-11e4-9627-95e213432d9e.png";
+
+startButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111427/046ffba4-6fe6-11e4-8bc6-ea7619ea3fb4.png";
+optionsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111428/046fff28-6fe6-11e4-9c5c-d48681a25549.png";
+creditsButton.src = "https://cloud.githubusercontent.com/assets/8835208/5111426/046ff550-6fe6-11e4-8a7c-c53baadc6a94.png";
+backButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195212/7918d2da-74de-11e4-8f36-1e69ef195989.png";
+soundButton.src = "https://cloud.githubusercontent.com/assets/8835208/5195215/79284788-74de-11e4-8b41-10194215c6f8.png";
+regScreen.src = "https://cloud.githubusercontent.com/assets/8864180/5100959/980625da-6f75-11e4-818d-30b00f9e71bd.png";
+endScene.src = "https://cloud.githubusercontent.com/assets/8864180/4950698/acadc788-665e-11e4-86e0-f0785f8c70ad.png";
+llama_duck_left.src = "https://cloud.githubusercontent.com/assets/8835208/5016392/8546051e-6a6b-11e4-91bf-6ba99b15650b.png";
+llama_duck_right.src = "https://cloud.githubusercontent.com/assets/8835208/5016391/854281a0-6a6b-11e4-9513-e08d42f7a49f.png";
+llama_left.src = "https://cloud.githubusercontent.com/assets/8864180/4795555/605328ba-5dfd-11e4-84cc-ae20cb6a6bc7.png";
+llama_right.src = "https://cloud.githubusercontent.com/assets/8864180/4829890/ce132354-5f89-11e4-9974-202eac5b9acf.png";
+llama_attack_right.src = "https://cloud.githubusercontent.com/assets/8835208/5062958/a7abe51c-6d98-11e4-99cc-74d2b7923bf7.png";
+llama_attack_left.src = "https://cloud.githubusercontent.com/assets/8835208/5062957/a7aba7c8-6d98-11e4-81fb-78030bf9cdeb.png";
+llama_jump_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4864808/544aa76c-611f-11e4-886c-1bb7ab06455e.png";
+llama_run_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/4887001/2b7ee352-6381-11e4-9fec-bebe95a67152.png";
+llama_duck_sprite.src = "https://cloud.githubusercontent.com/assets/8835208/5156155/3bbf4364-7273-11e4-9a16-575aabe11b67.png";
+sheep_right.src = "https://cloud.githubusercontent.com/assets/8864180/4830603/f2ee51ee-5f8e-11e4-8988-4a3363eedb69.png	";
+sheep_left.src = "https://cloud.githubusercontent.com/assets/8864180/4830605/f2de05e6-5f8e-11e4-81e8-cf0a3439ef18.png";
+sheepSprite.src = "https://cloud.githubusercontent.com/assets/8835208/5335322/efdeac54-7e6c-11e4-9b9b-813bffb9ece7.png"
+box.src = "https://cloud.githubusercontent.com/assets/8835208/5236711/b984f888-780f-11e4-9e0e-6bb9dcac1f89.png";
+sheepIcon.src = "https://cloud.githubusercontent.com/assets/8864180/4947733/9eed3f92-65f6-11e4-8f5c-49c5afecbe15.png";
+sheepWizard.src = "https://cloud.githubusercontent.com/assets/8835240/5326324/771f5686-7cd9-11e4-8f8c-808311ec2e86.png";
+optionSoundOn.src = "https://cloud.githubusercontent.com/assets/8835208/5195216/792b37a4-74de-11e4-909e-a8ae1e28419c.png";
+//optionSoundOff.src = "https://cloud.githubusercontent.com/assets/8864180/4950024/2ba8ccbe-6654-11e4-970b-2b07b3f59527.png";
+cutscene.src = "https://cloud.githubusercontent.com/assets/8864180/4950462/38b342a2-665b-11e4-9e81-03a12903a1a4.png";
+restart.src = "https://cloud.githubusercontent.com/assets/8864180/5312210/f4553e14-7c1a-11e4-9a89-4717be1e4623.png";
+smallPlatform.src = "https://cloud.githubusercontent.com/assets/8864180/4951669/2d30d3f4-666a-11e4-947c-19d5196a0dc8.png";
+largePlatform.src = "https://cloud.githubusercontent.com/assets/8864180/4951668/2d3073fa-666a-11e4-86a1-5ce1fe80e8fe.png";
+sign.src = "https://cloud.githubusercontent.com/assets/8864180/5041650/9957a1ee-6b8c-11e4-941e-b37410114261.png	";
+smBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041651/995b5e74-6b8c-11e4-82b2-04469c5f78a3.png";
+medBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041648/9951b5f4-6b8c-11e4-80c0-edfef849f7e6.png";
+lgBubble.src = "https://cloud.githubusercontent.com/assets/8864180/5041649/9956489e-6b8c-11e4-9888-9308c77c6744.png";
+moveInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341525/62f7406c-7ebc-11e4-9226-2fbf3ba74213.png";
+jumpInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341526/62f97f94-7ebc-11e4-9f62-ef6562052e94.png";
+crouchInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341532/63062b7c-7ebc-11e4-852e-9831d8fe34a5.png";
+atkInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341531/630326b6-7ebc-11e4-9bce-ad2bd7f10ad4.png";
+restartInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341527/62fe1e0a-7ebc-11e4-92c1-1ce3660360e9.png";
+endLvlInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048075/9b78e876-6be0-11e4-88fb-6a12e251ff11.png";
+finishInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5048072/9b747c82-6be0-11e4-8c11-8649b6854b0c.png";
+sheepInstr.src = "https://cloud.githubusercontent.com/assets/8864180/5341523/62f1cde4-7ebc-11e4-93ab-870c61f5f03e.png";
+regInstr1.src = "https://cloud.githubusercontent.com/assets/8864180/5341524/62f6164c-7ebc-11e4-9e93-1e8ad27206a9.png";
+regInstr2.src = "https://cloud.githubusercontent.com/assets/8864180/5048080/9b84d280-6be0-11e4-872f-525fb0c44fa9.png";
+regInstr3.src = "https://cloud.githubusercontent.com/assets/8864180/5048078/9b816e60-6be0-11e4-916f-3087311590dc.png";
+regInstr4.src = "https://cloud.githubusercontent.com/assets/8864180/5048081/9b86a15a-6be0-11e4-8457-705190846e47.png";
+
+document.onkeydown = function (e) 
+{
+    if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+	{
+		e.preventDefault();
+    }
+};
+
+function menu(e)
+{
+	var tempStartH;
+	var tempStartW;
+
+	if(e.layerX || e.layerY == 0){
+    	mouse.x = e.pageX - cv.offsetLeft;
+    	mouse.y = e.pageY - cv.offsetTop;	
+	}
+
+	if(creditsScreen ==false) //enter game
+	{
+		document.getElementById('sound05').play();
+		cancelRequestAnimFrame(loadHandler);
+	}
+	if(93<mouse.x && mouse.x<323 && 80<mouse.y && mouse.y<184 && creditsScreen == true) //out credits screen
+	{
+		document.getElementById('sound05').play();
+		window.location="llama_menu.html";
+	}
+	if(buildCheck==false && regExpScreen ==false && mouse.x <= 1000 && mouse.x >= 500) // enter game
+	{
+		document.getElementById('sound05').play();
+	}
+}
+
+window.cancelRequestAnimFrame = ( function() {
+    return window.cancelAnimationFrame          ||
+        window.webkitCancelRequestAnimationFrame    ||
+        window.mozCancelRequestAnimationFrame       ||
+        window.oCancelRequestAnimationFrame     ||
+        window.msCancelRequestAnimationFrame        ||
+        clearTimeout
+} )();
+
+function loadHandler()
+{  
+	renderMenu();
+	gameTrigger = requestAnimationFrame(loadHandler);
+}
+
+function renderMenu (){	
+	ctx.restore();
+    	if (creditsScreen==true)
+    	{
+        	ctx.drawImage(credits,0,0,1600,900);
+			if(temp2X > 93 && temp2X < 323 && temp2Y > 80 && temp2Y < 184)
+			{
+		 		ctx.drawImage(backButton,0,162,360, 162,25,44, 360, 162);
+			}
+    	}
+    	document.onmousedown = menu;
+}
+
+function endGame()
+{
+	creditsScreen = true;
+	loadHandler();
+}
+
+function gameStart()
+{
+	intialize();
+	var game = setInterval(gameScreen, 1000/50);
+}
+function intialize()
+{
+	distantBackground.sourceY = 2854;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 415;
+	distantBackground.width = 6336;
+	distantBackground.height = 415;
+	distantBackground.x = 0;
+	distantBackground.y = 0;
+	
+	foregroundBackground.sourceY = 1919;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 49;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 49;
+	foregroundBackground.x = 0;
+	foregroundBackground.y = 736;
+	
+	playerObj.posX = 50;  //50
+	playerObj.posY = 600+46;
+	if(lvl1Started==false)
+	{
+		sheepPoints = 0;
+		
+		miniGameArray[0].x = 1400;
+		miniGameArray[0].y = 637+60;
+	
+		miniGameArray[1].x = 2400;
+		miniGameArray[1].y = 637+60;
+	
+		miniGameArray[2].x = 3400;
+		miniGameArray[2].y = 637+60;
+			
+		sheep[0].posX =850;
+		sheep[0].posY =640+46;
+		sheep[0].saved = false;
+		
+		sheep[1].posX =1100 ;
+		sheep[1].posY =640+46;
+		sheep[1].saved = false;
+		
+		sheep[2].posX =1550 ;
+		sheep[2].posY =640+46;
+		sheep[2].saved = false;
+		
+		sheep[3].posX =1850;
+		sheep[3].posY =640+46;
+		sheep[3].saved = false;
+		
+		sheep[4].posX =2150;
+		sheep[4].posY =640+46;
+		sheep[4].saved = false;
+		
+		sheep[5].posX =650;
+		sheep[5].posY =640+46;
+		sheep[5].saved = false;
+		
+		sheep[6].posX =2750;
+		sheep[6].posY =640+46;
+		sheep[6].saved = false;
+		
+		sheep[7].posX =3065;
+		sheep[7].posY =640+46;
+		sheep[7].saved = false;
+		
+		sheep[8].posX =3750;
+		sheep[8].posY =640+46;
+		sheep[8].saved = false;
+		
+		sheep[9].posX =3200;
+		sheep[9].posY =275+46;
+		sheep[9].saved = false;
+			
+		signs[0].posX = 50;
+		signs[0].posY = 627+46;
+		signs[0].active = true;
+		signs[1].posX = 450;
+		signs[1].posY = 627+46;
+		signs[2].posX = 1250;
+		signs[2].posY = 627+46;
+		signs[3].posX = 4000;
+		signs[3].posY = 627+46;
+		signs[4].posX = 4525;
+		signs[4].posY = 455+46;
+		
+		lg_obj[1].posX=3150;
+		lg_obj[1].posY=389+46;
+		
+		sm_obj[3].posX=3555;
+		sm_obj[3].posY=447+46;
+		
+		sm_obj[2].posX=3850;
+		sm_obj[2].posY=530+46;
+		
+		lg_obj[0].posX=4114;
+		lg_obj[0].posY=617+46;
+		
+		sm_obj[0].posX=4524;
+		sm_obj[0].posY=570+46;
+		
+		sm_obj[1].posX=4788;
+		sm_obj[1].posY=570+46;
+		
+		lvl1Started = true;
+	}
+	breakables[0].posX =5100;
+	breakables[0].posY =540+46;
+	breakables[0].broken=false;
+	
+	breakables[1].posX =5100;
+	breakables[1].posY =640+46;
+	breakables[1].broken=false;
+	
+	breakables[2].posX =5250;
+	breakables[2].posY =640+46;
+	breakables[2].broken=false;
+	
+	breakables[3].posX =5400;
+	breakables[3].posY =540+46;
+	breakables[3].broken=false;
+	
+	breakables[4].posX =5400;
+	breakables[4].posY =640+46;
+	breakables[4].broken=false;
+	
+	breakables[5].posX =5500;
+	breakables[5].posY =640+46;
+	breakables[5].broken=false;
+	
+	breakables[6].posX =5500;
+	breakables[6].posY =540+46;
+	breakables[6].broken=false;
+	
+	breakables[7].posX =5500;
+	breakables[7].posY =440+46;
+	breakables[7].broken=false;
+	
+	breakables[8].posX =5600;
+	breakables[8].posY =640+46;
+	breakables[8].broken=false;
+	
+	breakables[9].posX =5700;
+	breakables[9].posY =640+46;
+	breakables[9].broken=false;
+	
+}
+
+function setPositionLvl2() {
+	lvlFlag = false;
+	
+	distantBackground.sourceY = 2854;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = 0;
+	
+	foregroundBackground.sourceY = 1180;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 789;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 789
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -3;
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
+	playerObj.posX = 50;
+	playerObj.posY = 600+46;
+	
+	breakables[0].posX =1000;
+	breakables[0].posY =640+46;
+	breakables[0].broken=false;
+	breakables[1].posX =1100;
+	breakables[1].posY =540+46;
+	breakables[1].broken=false;
+	breakables[2].posX =1200;
+	breakables[2].posY =640+46;
+	breakables[2].broken=false;
+	
+	breakables[6].posX =5800;
+	breakables[6].posY =640+46;
+	breakables[6].broken=false;
+	breakables[7].posX =5800;
+	breakables[7].posY =540+46;
+	breakables[7].broken=false;
+	
+	breakables[5].posX =4600;
+	breakables[5].posY =640+46;
+	breakables[5].broken=false;
+	breakables[3].posX =3295;
+	breakables[3].posY =330+46;
+	breakables[3].broken=false;
+	breakables[4].posX =3295;
+	breakables[4].posY =230+46;
+	breakables[4].broken=false;
+	
+	if(lvl2Started==false)
+	{
+	
+		sheep[0].posX =1100;
+		sheep[0].posY =640+46;
+		sheep[0].saved = false;
+		sheep[1].posX =1100;
+		sheep[1].posY =440+46;
+		sheep[1].saved = false;
+		sheep[2].posX =1700;
+		sheep[2].posY =640+46;
+		sheep[2].saved = false;
+		sheep[3].posX =600;
+		sheep[3].posY =310+46;
+		sheep[3].saved = false;
+	
+	
+		sheep[7].posX =5700;
+		sheep[7].posY =640+46;
+		sheep[7].saved = false;
+		sheep[8].posX =5300;
+		sheep[8].posY =240+46;
+		sheep[8].saved = false;
+		
+		sm_obj[0].posX=740;
+		sm_obj[0].posY=530+46;
+		sm_obj[1].posX=600;
+		sm_obj[1].posY=410+46;
+	
+		//lg_obj[4].posX=4200;
+		//lg_obj[4].posY=240;
+		
+		sm_obj[2].posX=2600;
+		sm_obj[2].posY=600+46;
+		sm_obj[3].posX=2305;
+		sm_obj[3].posY=520+46;
+		sm_obj[4].posX=2010;
+		sm_obj[4].posY=430+46;
+		sm_obj[5].posX=2895;
+		sm_obj[5].posY=520+46;
+		lg_obj[0].posX=1710;
+		lg_obj[0].posY=330+46;
+		lg_obj[1].posX=3195;
+		lg_obj[1].posY=430+46;
+		lg_obj[2].posX=3545;
+		lg_obj[2].posY=380+46;
+
+		sheep[4].posX =2600;
+		sheep[4].posY =500+46;
+		sheep[4].saved = false;
+		sheep[5].posX =1700;
+		sheep[5].posY =225+46;
+		sheep[5].saved = false;
+		sheep[6].posX =3645;
+		sheep[6].posY =280+46;
+		sheep[6].saved = false;
+		
+		miniGameArray[2].x = 4300;
+		miniGameArray[2].y = 637+60;
+		miniGameArray[2].sound = false;
+		signs[0].posX = 4500;
+		signs[0].posY = 627+46;
+		
+		sm_obj[6].posX=4800;
+		sm_obj[6].posY=540+46;
+		sm_obj[7].posX=5000;
+		sm_obj[7].posY=440+46;
+		lg_obj[3].posX=5200;
+		lg_obj[3].posY=340+46;
+		
+		//Do this for every Lvl
+		wordChoice = Math.floor(Math.random() * 3);
+		regExp1 = new RegExp();
+		regExp2 = new RegExp();
+		regExp3 = new RegExp();
+		
+		regExpOne = "";
+		regExpTwo = "";
+		regExpThree = "";
+		if(wordChoice==0)
+		{
+			levelWords[0] = "CAKE";
+			levelWords[1] = "SMELL";
+			levelWords[2] = "SMACK";
+	
+			levelWords[3] = "ATTACK";
+			levelWords[4] = "RACE";
+			levelWords[5] = "KITTEN";
+	
+			levelWords[6] = "BREACH";
+			levelWords[7] = "BREAK";
+			levelWords[8] = "BAKED";
+		}
+		else if(wordChoice==1)
+		{
+			levelWords[2] = "WRECK";
+			levelWords[1] = "WITH";
+			levelWords[0] = "DUCK";
+	
+			levelWords[4] = "SHAM";
+			levelWords[3] = "DEMOLISH";
+			levelWords[5] = "DAM";
+	
+			levelWords[6] = "EARLY";
+			levelWords[8] = "STORM";
+			levelWords[7] = "DESTROY";
+		}
+		else if(wordChoice==2)
+		{
+			levelWords[0] = "SELL";
+			levelWords[1] = "BEEN";
+			levelWords[2] = "BASH";
+	
+			levelWords[3] = "CRUSH";
+			levelWords[4] = "CREAM";
+			levelWords[5] = "RUN";
+	
+			levelWords[6] = "THE";
+			levelWords[7] = "HIT";
+			levelWords[8] = "ITCH";
+		}
+		
+		correctWords[0] = levelWords[2];
+		correctWords[1] = levelWords[3];
+		correctWords[2] = levelWords[7];
+		
+		incorrectWords[0] = levelWords[0];
+		incorrectWords[1] = levelWords[1];
+		incorrectWords[2] = levelWords[4];
+		incorrectWords[3] = levelWords[5];
+		incorrectWords[4] = levelWords[6];
+		incorrectWords[5] = levelWords[8];
+		
+		lvlTwoStart = true;
+		regExpFin = false;
+		
+		submitButtonArray[0].clicked = false;
+		submitButtonArray[1].clicked = false;
+		submitButtonArray[2].clicked = false;
+		//Everything above for every Lvl 
+		
+		//extra stuff from first lvl
+		sheep[9].posX =0;
+		sheep[9].posY =0;
+		sheep[9].saved = false;
+		breakables[8].posX =5800;
+		breakables[8].posY =540;
+		breakables[9].posX =5800;
+		breakables[9].posY =540;
+		signs[1].posX = 8200;
+		miniGameArray[2].run = false;
+		//signs[2].posX = 8200;
+		//signs[3].posX = 8200;
+		//signs[4].posX = 8200;
+		//signs[5].posX = 8200;
+		lvl2Started=true;
+	}
+}
+
+function setPositionLvl3() {
+	lvlFlag = false;
+	
+	distantBackground.sourceY = 1180;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = -3;
+	
+	foregroundBackground.sourceY = 2854;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 6336;
+	foregroundBackground.sourceHeight = 789;
+	foregroundBackground.width = 6336;
+	foregroundBackground.height = 789
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -2;
+	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
+	playerObj.posX = 50;
+	playerObj.posY = 646;
+	
+	if(lvl3Started==false)
+	{
+
+		sm_obj[0].posX=350;
+		sm_obj[0].posY=625;
+		sm_obj[1].posX=500;
+		sm_obj[1].posY=550;
+		sm_obj[2].posX=650;
+		sm_obj[2].posY=600;
+		sheep[0].posX =500;
+		sheep[0].posY =686;
+		sheep[0].saved = false;
+		sheep[1].posX =500;
+		sheep[1].posY =450;
+		sheep[1].saved = false;
+		
+		sheep[2].posX =1200;
+		sheep[2].posY =686;
+		sheep[2].saved = false;
+		sheep[3].posX =1450;
+		sheep[3].posY =400;
+		sheep[3].saved = false;	
+		lg_obj[0].posX=1150;
+		lg_obj[0].posY=400;
+
+		sm_obj[3].posX=925;
+		sm_obj[3].posY=500;
+		sm_obj[4].posX=1450;
+		sm_obj[4].posY=500;
+		
+		signs[0].posX = 1725;
+		signs[0].posY = 525;	
+		sheep[4].posX =2000;
+		sheep[4].posY =486;
+		sheep[4].saved = false;
+		sheep[5].posX =2300;
+		sheep[5].posY =686;
+		sheep[5].saved = false;
+		sheep[6].posX =2675;
+		sheep[6].posY =450;
+		sheep[6].saved = false;
+		boxes[0].posX =2000;
+		boxes[0].posY =686;
+		boxes[1].posX =2000;
+		boxes[1].posY =586;
+		boxes[2].posX =2650;
+		boxes[2].posY =686;
+		lg_obj[1].posX=2275;
+		lg_obj[1].posY=550;
+		lg_obj[2].posX=2650;
+		lg_obj[2].posY=550;
+		sm_obj[5].posX=1725;
+		sm_obj[5].posY=625;
+		
+		lg_obj[3].posX=3425;
+		lg_obj[3].posY=550;
+		sm_obj[6].posX=3150;
+		sm_obj[6].posY=675;
+		sm_obj[7].posX=3800;
+		sm_obj[7].posY=375;
+		sheep[7].posX =3000;
+		sheep[7].posY =686;
+		sheep[7].saved = false;
+		sheep[8].posX =3425;
+		sheep[8].posY =686;
+		sheep[8].saved = false;
+		sheep[9].posX =3800;
+		sheep[9].posY =275;
+		sheep[9].saved = false;
+		sheep[10].posX =4075;
+		sheep[10].posY =686;
+		sheep[10].saved = false;
+		boxes[3].posX =3525;
+		boxes[3].posY =450;
+		boxes[4].posX =3950;
+		boxes[4].posY =686;
+		boxes[5].posX =3950;
+		boxes[5].posY =586;
+		boxes[6].posX =4230;
+		boxes[6].posY =686;
+		boxes[7].posX =4230;
+		boxes[7].posY =586;
+		
+		
+		lg_obj[4].posX=4600;
+		lg_obj[4].posY=625;
+		sheep[11].posX =4700;
+		sheep[11].posY =525;
+		sheep[11].saved = false;
+		sheep[12].posX =4700;
+		sheep[12].posY =686;
+		sheep[12].saved = false;
+
+		boxes[8].posX =5100;
+		boxes[8].posY =686;
+		sheep[13].posX =5300;
+		sheep[13].posY =686;
+		sheep[13].saved = false;
+		
+		miniGameArray[2].x = 5500;
+		miniGameArray[2].y = 697;
+		miniGameArray[2].sound = false;
+		
+		signs[1].posX = 5650;
+		signs[1].posY = 627+46;
+		
+		
+		lg_obj[5].posX=5800;
+		lg_obj[5].posY=625;
+		
+		sheep[14].posX =5825;
+		sheep[14].posY =686;
+		sheep[14].saved = false;
+		
+		for (var i = 5; i < breakables.length; i++){
+			breakables[i].countB = 0;
+			breakables[i].posX = 0;
+			breakables[i].posY = 0;	
+		}
+		
+		//Do this for every Lvl
+		wordChoice = Math.floor(Math.random() * 3);
+		regExp1 = new RegExp();
+		regExp2 = new RegExp();
+		regExp3 = new RegExp();
+		
+		regExpOne = "";
+		regExpTwo = "";
+		regExpThree = "";
+		if(wordChoice==0)
+		{
+			levelWords[0] = "CRAWL";
+			levelWords[1] = "BRAWL";
+			levelWords[2] = "CAW";
+	
+			levelWords[3] = "BROOCH";
+			levelWords[4] = "SCRIBE";
+			levelWords[5] = "CROUCH";
+	
+			levelWords[6] = "CHICKEN";
+			levelWords[7] = "DUCK";
+			levelWords[8] = "DONALD";
+		}
+		else if(wordChoice==1)
+		{
+			levelWords[0] = "KNEEL";
+			levelWords[1] = "KNEE";
+			levelWords[2] = "NOSE";
+	
+			levelWords[3] = "WORD";
+			levelWords[4] = "REST";
+			levelWords[5] = "LOWER";
+	
+			levelWords[6] = "KNUKLE";
+			levelWords[7] = "HUNKER";
+			levelWords[8] = "HUNT";
+
+		}
+		else if(wordChoice==2)
+		{
+			levelWords[0] = "SCRUNCH";
+			levelWords[1] = "MATCH";
+			levelWords[2] = "SLUMP";
+	
+			levelWords[3] = "SULK";
+			levelWords[4] = "DUIT";
+			levelWords[5] = "DUCK";
+	
+			levelWords[6] = "SEAM";
+			levelWords[7] = "SNEAK";
+			levelWords[8] = "SILK";
+		}
+		
+		correctWords[0] = levelWords[0];
+		correctWords[1] = levelWords[5];
+		correctWords[2] = levelWords[7];
+		
+		incorrectWords[0] = levelWords[1];
+		incorrectWords[1] = levelWords[2];
+		incorrectWords[2] = levelWords[3];
+		incorrectWords[3] = levelWords[4];
+		incorrectWords[4] = levelWords[6];
+		incorrectWords[5] = levelWords[8];
+		
+		lvlThreeStart = true;
+		regExpFin = false;
+		
+		submitButtonArray[0].clicked = false;
+		submitButtonArray[1].clicked = false;
+		submitButtonArray[2].clicked = false;
+		miniGameArray[2].run = false;
+		
+		lvl3Started=true;
+	}
+	breakables[3].posX =4500;
+	breakables[3].posY =686;
+	breakables[3].broken=false;
+	breakables[1].posX =1225;
+	breakables[1].posY =300;
+	breakables[1].broken=false;
+	breakables[2].posX =1225;
+	breakables[2].posY =200;
+	breakables[2].broken=false;
+	breakables[0].posX =210;
+	breakables[0].posY =686;
+	breakables[0].broken=false;
+	breakables[4].posX =5100;
+	breakables[4].posY =586;
+	breakables[4].broken=false;
+}
+
+function setPositionLvl4() 
+{
+	lvlFlag = false;
+	lastLevel = true;
+	
+	distantBackground.sourceY = 1180;
+	distantBackground.sourceX = 0;
+	distantBackground.sourceWidth = 6336;
+	distantBackground.sourceHeight = 789;
+	distantBackground.width = 6336;
+	distantBackground.height = 789;
+	distantBackground.x = 0;
+	distantBackground.y = -3;
+	
+	foregroundBackground.sourceY = 2761;
+	foregroundBackground.sourceX = 0;
+	foregroundBackground.sourceWidth = 5329;
+	foregroundBackground.sourceHeight = 797;
+	foregroundBackground.width = 5329;
+	foregroundBackground.height = 797
+	foregroundBackground.x = 0;
+	foregroundBackground.y = -5;	
+	for (var i = 0; i < breakables.length; i++){
+		breakables[i].countB = 0;	
+	}
+	
+	if(lvl4Started==false)
+	{
+		for (var i = 0; i < breakables.length; i++){
+			breakables[i].posX = 0;
+			breakables[i].posY = 0;	
+		}
+		for (var i = 0; i < sheep.length; i++){
+			sheep[i].posX = 0;
+			sheep[i].posY = 0;	
+		}
+		for (var i = 0; i < sm_obj.length; i++){
+			sm_obj[i].posX = 0;
+			sm_obj[i].posY = 0;	
+		}
+		for (var i = 0; i < lg_obj.length; i++){
+			lg_obj[i].posX = 0;
+			lg_obj[i].posY = 0;	
+		}
+		for (var i = 0; i < signs.length; i++){
+			signs[i].posX = 0;
+			signs[i].posY = 0;	
+		}
+		for (var i = 0; i < boxes.length; i++){
+			boxes[i].posX = 0;
+			boxes[i].posY = 0;	
+		}
+	
+		sm_obj[0].posX = 500;
+		sm_obj[0].posY = 625;
+		boxes[0].posX = 500;
+		boxes[0].posY = 525;
+		sm_obj[1].posX = 1100;
+		sm_obj[1].posY = 650;
+		lg_obj[0].posX = 1300;
+		lg_obj[0].posY = 550;
+		sm_obj[2].posX = 1600;
+		sm_obj[2].posY = 350;
+		sm_obj[3].posX = 1599;
+		sm_obj[3].posY = 350;
+		lg_obj[7].posX = 1599;
+		lg_obj[7].posY = 350;
+		lg_obj[1].posX = 1900;
+		lg_obj[1].posY = 350;
+		lg_obj[2].posX = 2120;
+		lg_obj[2].posY = 350;
+		lg_obj[3].posX = 2120;
+		lg_obj[3].posY = 175;
+		boxes[1].posX = 2230;
+		boxes[1].posY = 75;
+		boxes[2].posX = 2230;
+		boxes[2].posY = -25;
+		sheep[0].posX =2120;
+		sheep[0].posY =75;
+		sheep[0].saved = false;
+		sheep[1].posX =2230;
+		sheep[1].posY =250;
+		sheep[1].saved = false;
+		sheep[2].posX =2600;
+		sheep[2].posY =686;
+		sheep[2].saved = false;
+		sheep[3].posX =2770;
+		sheep[3].posY =286;
+		sheep[3].saved = false;
+		sheep[4].posX =2860;
+		sheep[4].posY =586;
+		sheep[4].saved = false;
+		
+		boxes[3].posX = 3400;
+		boxes[3].posY = 586;
+		boxes[4].posX = 3500;
+		boxes[4].posY = 586;
+		boxes[5].posX = 3600;
+		boxes[5].posY = 586;
+		boxes[6].posX = 3700;
+		boxes[6].posY = 586;
+		boxes[7].posX = 3800;
+		boxes[7].posY = 586;
+		boxes[8].posX = 3900;
+		boxes[8].posY = 586;
+		boxes[9].posX = 4000;
+		boxes[9].posY = 586;
+		boxes[10].posX = 4100;
+		boxes[10].posY = 586;
+		boxes[11].posX = 4200;
+		boxes[11].posY = 586;
+		boxes[12].posX = 4200;
+		boxes[12].posY = 686;
+		
+		boxes[13].posX = 3600;
+		boxes[13].posY = 386;
+		boxes[14].posX = 3700;
+		boxes[14].posY = 386;
+		boxes[15].posX = 3800;
+		boxes[15].posY = 386;
+		boxes[16].posX = 3900;
+		boxes[16].posY = 386;
+		boxes[17].posX = 4000;
+		boxes[17].posY = 386;
+		boxes[18].posX = 4100;
+		boxes[18].posY = 386;
+		boxes[19].posX = 4200;
+		boxes[19].posY = 386;
+		
+		boxes[20].posX = 3800;
+		boxes[20].posY = 186;
+		boxes[21].posX = 3900;
+		boxes[21].posY = 186;
+		boxes[22].posX = 4000;
+		boxes[22].posY = 186;
+		boxes[23].posX = 4100;
+		boxes[23].posY = 186;
+		boxes[24].posX = 4200;
+		boxes[24].posY = 186;
+		boxes[25].posX = 4200;
+		boxes[25].posY = 286;
+		boxes[26].posX = 4200;
+		boxes[26].posY = -14;
+		boxes[27].posX = 4200;
+		boxes[27].posY = 86;
+		sheep[5].posX =3700;
+		sheep[5].posY =686;
+		sheep[5].saved = false;
+		sheep[6].posX =4000;
+		sheep[6].posY =486;
+		sheep[6].saved = false;
+		sheep[7].posX =3900;
+		sheep[7].posY =286;
+		sheep[7].saved = false;
+		sheep[8].posX =4000;
+		sheep[8].posY =86;
+		sheep[8].saved = false;
+		
+		lg_obj[4].posX = 4300;
+		lg_obj[4].posY = 600;
+		
+		lg_obj[5].posX = 4700;
+		lg_obj[5].posY = 600;
+		
+		lg_obj[6].posX = 5100;
+		lg_obj[6].posY = 600;
+		miniGameArray[2].run = false;
+		
+		lvl4Started=true;
+	}
+	signs[0].posX = 70; 
+	signs[0].posY = 627+46;
+
+	breakables[0].posX = 800;
+	breakables[0].posY = 686;	
+	breakables[0].broken = false;
+	breakables[1].posX = 800;
+	breakables[1].posY = 586;
+	breakables[1].broken = false;
+	breakables[2].posX = 1400;
+	breakables[2].posY = 450;
+	breakables[2].broken = false;
+	breakables[3].posX = 2000;
+	breakables[3].posY = 250;
+	breakables[3].broken = false;
+	
+	breakables[4].posX = 2500;
+	breakables[4].posY = 686;
+	breakables[4].broken = false;
+	breakables[5].posX = 2680;
+	breakables[5].posY = 686;
+	breakables[5].broken = false;
+	breakables[6].posX = 2860;
+	breakables[6].posY = 686;
+	breakables[6].broken = false;
+	breakables[7].posX = 3040;
+	breakables[7].posY = 686;
+	breakables[7].broken = false;
+	breakables[8].posX = 2590;
+	breakables[8].posY = 586;
+	breakables[8].broken = false;
+	breakables[9].posX = 2770;
+	breakables[9].posY = 586;
+	breakables[9].broken = false;
+	breakables[10].posX = 2950;
+	breakables[10].posY = 586;
+	breakables[10].broken = false;
+	breakables[11].posX = 2680;
+	breakables[11].posY = 486;
+	breakables[11].broken = false;
+	breakables[12].posX = 2860;
+	breakables[12].posY = 486;
+	breakables[12].broken = false;
+	breakables[13].posX = 2770;
+	breakables[13].posY = 386;
+	breakables[13].broken = false;
+
+	breakables[14].posX = 3300;
+	breakables[14].posY = 686;
+	breakables[14].broken = false;
+	breakables[15].posX = 3500;
+	breakables[15].posY = 486;
+	breakables[15].broken = false;
+	breakables[16].posX = 4200;
+	breakables[16].posY = 486;
+	breakables[16].broken = false;
+	breakables[17].posX = 3700;
+	breakables[17].posY = 286;
+	breakables[17].broken = false;
+	
+	playerObj.posX = 50;
+	playerObj.posY = 600+46;
+ }
+ 
+
+function gameScreen()
+{
+	update();
+	side_scroller();
+}
+
+function side_scroller(){
+	playerObj.posX = Math.max(0, Math.min(playerObj.posX, gameWorld.width - playerObj.width));
+    
+	camera.x = Math.floor(playerObj.posX + (playerObj.width/2) - (camera.width/2));
+	camera.y = Math.floor(playerObj.posY + (playerObj.height/2) - (camera.height/2));
+
+	if (playerObj.posX < camera.leftInnerBoundary()){
+    	camera.x = Math.floor(playerObj.posX - (camera.width * 0.25));
+	}
+	if (playerObj.posY < camera.topInnerBoundary()){
+    	camera.y = Math.floor(playerObj.posY - (camera.height*0.25));	
+	}
+	if (playerObj.posX + playerObj.width > camera.rightInnerBoundary()){
+    	camera.x = Math.floor(playerObj.posX + playerObj.width - (camera.width *0.75));	
+	}
+	if (playerObj.posY + playerObj.height > camera.bottomInnerBoundary()){
+    	camera.y = Math.floor(playerObj.posY + playerObj.height - (camera.height * 0.75));
+	}
+
+	if (camera.x < gameWorld.x){
+    	camera.x = gameWorld.x;	
+	}
+	if (camera.y < gameWorld.y){
+    	camera.y = gameWorld.y;	
+	}
+	if (camera.x + camera.width > gameWorld.x + gameWorld.width){
+    	camera.x = gameWorld.x + gameWorld.width - camera.width;	
+	}
+	if (camera.y + camera.height > gameWorld.heigth){
+    	camera.y = gameWorld.heigth - camera.height;	
+	}
+
+	camera.vx = camera.x - camera.previousX;
+
+	if (currentLvl != 3){
+	distantBackground.x += camera.vx / 4;
+	}
+	if (currentLvl === 4){
+		foregroundBackground.x -= camera.vx / 2;
+	}
+
+	camera.previousX = camera.x;
+}
+
+collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+collisionObj.x = playerObj.posX+10;
+
+function update()
+{
+	//console.log(regExpFin);
+	if(gameOver==false)
+    {
+    
+    collisionObj.y = (playerObj.posY + playerObj.height - collisionObj.height)+1;
+    if (isMoveRight){
+        collisionObj.x = playerObj.posX+10;
+    }
+    else if (isMoveLeft){
+        collisionObj.x = playerObj.posX+53;	
+    }
+    
+    //SpaceBar
+		if(key[32] && !hitTest(playerObj, miniGameArray[2]) || key[32] && closeWindow)
+		{
+			if(attackable){
+				if (countA >= 0 && countA < 10){
+					isAttack = true;
+					document.getElementById('sound02').play();
+				}
+				else{
+					isAttack = false;
+				}
+				countA++;
+			}
+			playerObj.stopped = false;		
+			if (signs[0].active)
+			{
+				signs[0].active = false;
+				signs[0].read = true;
+				signs[0].timesRead = 0;	
+			}
+			if (signIndex != -1 && !signs[signIndex].read){
+				signs[signIndex].active = false;
+				signs[signIndex].read = true;
+				signs[signIndex].timesRead = 0;
+			}
+		}
+    //W
+    if(key[38] && !hitTest(playerObj, miniGameArray[2]) || key[38] && closeWindow)
+    {
+        if(playerObj.stopped || (!notHitTopOfWallCauseThatMakesNoScence && isDucking)){
+		isJump = false;
+	}
+	else{
+        	if(!isJump&&jumpable)
+        	{
+            	playerObj.posY = playerObj.posY-1;
+            	isJump = true;
+		document.getElementById('sound02').play();
+        	}
+        }
+    }
+    //A
+    if(key[37] && !hitTest(playerObj, miniGameArray[2]) || key[37] && closeWindow)
+    {
+        if(playerObj.stopped || signs[0].timesRead === -1){
+            isMoveLeft = false;
+        }
+        else{
+            isMoveLeft = true;
+            playerObj.state = 1;
+            movingRight = false;
+        }
+    }
+    //S
+    if(key[40] && !hitTest(playerObj, miniGameArray[2]) || key[40] && closeWindow)
+    {
+        if(playerObj.stopped){
+            isDucking = false;
+        }
+        else{
+            if(crouchable){
+                isDucking = true;
+            }
+        }
+    }
+    //D
+    if(key[39] && !hitTest(playerObj, miniGameArray[2]) || key[39] && closeWindow)
+    {
+        if (playerObj.stopped || signs[0].timesRead === -1){
+            isMoveRight = false;
+        }
+        else{
+            isMoveRight = true;
+            playerObj.state = 0;
+            movingRight = true;
+        }
+    }
+    
+    //SpaceBar
+    if(!key[32])
+    {
+        isAttack = false;
+        countA = 0;
+    }
+    //W
+    
+    //A 
+    if(!key[37])
+    {
+        isMoveLeft = false;
+    }
+    //S
+    if(!key[40] && notHitTopOfWallCauseThatMakesNoScence)
+    {
+        isDucking = false;
+    }
+    //D
+    if(!key[39])
+    {
+        isMoveRight = false;
+    }
+    
+		for(var i =0; i<signs.length; i++)
+		{
+			if(playerObj.posX+40 === signs[i].posX && signs[i].posY > playerObj.posY && playerObj.posY < playerObj.posY+playerObj.height)
+       		{
+            	if (!signs[i].read){
+					//console.log("collsion with sign");
+            		playerObj.stopped = true;
+            		signs[i].active = true;
+            		signIndex = i;
+				}
+        	}
+			else if( (hitTest(playerObj, signs[i]) && signs[i].read) && signs[i].timesRead !=0){
+				signs[i].active = true;
+			}
+			else if( (!hitTest(playerObj,signs[i])) && signs[i].timesRead === 0){
+				signs[i].timesRead++;
+			}
+			else if (signs[i].timesRead > 0){
+				signs[i].active = false;	
+			}
+		}
+    
+    collision=false;
+	collision2=false;
+    // Preform actions
+    if(isJump)
+    {
+		if( ((playerObj.posY + playerObj.height) >= floorLvl)) //quando passa do nivel do chao
+            {
+				playerObj.jumpDecay = .5;
+                playerObj.jumpStrength = 18;
+                playerObj.posY = (floorLvl-playerObj.height);
+                playerDirec = 0;
+                isJump = false;
+                //falling = true;
+            }
+         
+        //Gravity equation...
+		
+		else if(playerObj.posY != floorLvl)
+		{
+			playerDirec = playerObj.jumpStrength - playerObj.jumpDecay
+			//collide = false;
+			if (playerDirec < 0 ){ //caindo
+				for (var i = 0; i< breakables.length; i++){
+					if (hitTest(collisionObj,breakables[i])&&breakables[i].broken==false){
+							floorLvl = breakables[i].posY;
+							playerObj.posY =breakables[i].posY-playerObj.height;
+							collision = true;
+					}
+				}
+				for (var i = 0; i< boxes.length; i++){
+						if (hitTest(collisionObj,boxes[i])){
+						floorLvl = boxes[i].posY;
+						playerObj.posY =boxes[i].posY-playerObj.height;
+						collision = true;
+					}
+				}
+				for (var i = 0; i< sm_obj.length; i++){
+					if (hitTest(collisionObj,sm_obj[i])){
+							floorLvl = sm_obj[i].posY;
+							playerObj.posY =sm_obj[i].posY-playerObj.height;
+							collision = true;
+					}
+				}
+				for (var i = 0; i< lg_obj.length; i++){
+					if (hitTest(collisionObj,lg_obj[i])){
+							floorLvl = lg_obj[i].posY;
+							playerObj.posY =lg_obj[i].posY-playerObj.height;
+							collision = true;
+					}
+				}
+				
+				//change
+				
+				if (!collision){
+					for (var i = 0; i< breakables.length; i++){
+						if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false){    
+							collision2 = true;
+						}
+					}
+					for (var i = 0; i< boxes.length; i++){
+						if (hitTest(playerObj,boxes[i])){    
+							collision2 = true;
+						}
+					}
+					for (var i = 0; i< sm_obj.length; i++){
+						if (hitTest(playerObj,sm_obj[i])){	
+							collision2 = true;	  
+						}
+					}
+					for (var i = 0; i< lg_obj.length; i++){
+						if (hitTest(playerObj,lg_obj[i])){   
+							collision2 = true;	 
+						}
+					}
+					if (collision2){
+						if (playerObj.state === 0){
+							playerObj.posX = playerObj.posX-10;	
+						}
+						else{
+							playerObj.posX = playerObj.posX+10;
+						}
+						 
+					}
+				}
+			}
+			else
+			{
+				for (var i = 0; i< breakables.length; i++)
+				{
+					if (hitTest(playerObj,breakables[i])&&breakables[i].broken==false)
+					{
+						playerObj.posY = breakables[i].posY+breakables[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< boxes.length; i++)
+				{
+					if (hitTest(playerObj,boxes[i]))
+					{
+						playerObj.posY = boxes[i].posY+boxes[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< sm_obj.length; i++)
+				{
+					if (hitTest(playerObj,sm_obj[i]))
+					{
+						playerObj.posY = sm_obj[i].posY+sm_obj[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				for (var i = 0; i< lg_obj.length; i++)
+				{
+					if (hitTest(playerObj,lg_obj[i]))
+					{
+						playerObj.posY = lg_obj[i].posY+lg_obj[i].height+1;
+						playerObj.jumpStrength = 10;
+						falling = true;
+					}
+				}
+				if (falling){
+					playerDirec = 0;
+					falling = false;
+				}
+			}
+
+			if(!collision)
+			{
+				floorLvl = 737+46;
+				// constantly updates playerOne's Y position
+				playerObj.posY -= playerDirec;
+				// constantly increases the amount of pull downwards by one. 
+				playerObj.jumpDecay += 1;
+			}
+		}
+    }
+    
+    collide=false;
+   
+        if (hitTest(collisionObj,aBranch[3])){
+                collide = true;	
+                falling = false;
+                collisionIndex = i;
+                //floorLvl = aBranch[i].posY;
+        }
+  
+    
+    if (!collide&&!isJump){
+        floorLvl=737+46;
+        
+        if (playerObj.posY<floorLvl)
+        {
+            if(!falling)
+            {		
+                playerObj.jumpDecay = 0.5;
+                falling = true;
+            }
+            else
+            {
+                for(var i=0; i<breakables.length; i++)
+                {
+                    if(hitTest(breakables[i],playerObj))
+                    {
+                        if(!breakables[i].broken)
+                        {
+                            collision=true;
+                            if (playerObj.posY+playerObj.height > breakables[i].posY)
+                                playerObj.posY = breakables[i].posY-playerObj.height+.5;
+                                falling = false;
+                        }
+                    }
+                }
+				for(var i=0; i<boxes.length; i++)
+                {
+                    if(hitTest(boxes[i],playerObj))
+                    {
+                            collision=true;
+                            if (playerObj.posY+playerObj.height > boxes[i].posY)
+                                playerObj.posY = boxes[i].posY-playerObj.height+.5;
+                                falling = false;
+                    }
+                }
+                for(var i=0; i<sm_obj.length; i++)
+                {
+                    if(hitTest(sm_obj[i],playerObj))
+                    {
+                        collision=true;
+                        if (playerObj.posY+playerObj.height > sm_obj[i].posY)
+                            playerObj.posY = sm_obj[i].posY-playerObj.height+.5;
+                            falling = false;
+                    }
+                }
+                for(var i=0; i<lg_obj.length; i++)
+                {
+                    if(hitTest(lg_obj[i],playerObj))
+                    {
+                        collision=true;
+                        if (playerObj.posY+playerObj.height > lg_obj[i].posY)
+                            playerObj.posY = lg_obj[i].posY-playerObj.height+.5;
+                            falling = false;
+                    }
+                }
+                if(!collision)
+                {
+                    playerObj.posY+= playerObj.jumpDecay;
+                    playerObj.jumpDecay += 1;
+                    if(!isDucking)
+                    {
+                        if (playerObj.posY >600+46){
+                            playerObj.posY = 600+46;	
+                        }
+                    }
+                    else
+                    {
+                            if (playerObj.posY >650+46)
+                            {
+                                playerObj.posY = 650+46;
+                            }
+                    }
+                }
+            }
+        }
+        else{
+            falling = false;
+
+        }
+    }
+    collision = false;
+    if(isMoveLeft)
+    {
+		var playerX = playerObj.posX;
+        for(var i=0; i<breakables.length; i++)
+        {
+            if(hitTest(breakables[i],playerObj))
+            {
+                if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > boxes[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        for(var i=0; i<sm_obj.length; i++)
+        {
+            if(hitTest(sm_obj[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        for(var i=0; i<lg_obj.length; i++)
+        {
+            if(hitTest(lg_obj[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        if (collision == false)
+        {
+            playerObj.posX -= playerObj.speed;
+        }
+        
+        for(var i=0; i<breakables.length; i++)
+        {
+            if(hitTest(breakables[i],playerObj))
+            {
+                if(!breakables[i].broken)
+                {
+                    if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+                    {
+                        collision = true;
+                    }
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
+            }
+        }
+        for(var i=0; i<sm_obj.length; i++)
+        {
+            if(hitTest(sm_obj[i],playerObj))
+            {
+                if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
+            }
+        }
+        for(var i=0; i<lg_obj.length; i++)
+        {
+            if(hitTest(lg_obj[i],playerObj))
+            {
+                if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
+            }
+        }
+        if(collision == true)
+        {
+            playerObj.posX= playerX;	
+        }
+    }
+    
+    collision = false;
+    if(isMoveRight)
+    {
+        var playerX = playerObj.posX;
+        for(var i=0; i<breakables.length; i++)
+        {
+            if(hitTest(breakables[i],playerObj))
+            {
+                if(!breakables[i].broken && (playerObj.posY-playerObj.height) > breakables[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > boxes[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        for(var i=0; i<sm_obj.length; i++)
+        {
+            if(hitTest(sm_obj[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > sm_obj[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        for(var i=0; i<lg_obj.length; i++)
+        {
+            if(hitTest(lg_obj[i],playerObj))
+            {
+                if((playerObj.posY-playerObj.height) > lg_obj[i].posY)
+                {
+                    console.log("hit");
+                    collision=true;
+                }
+            }
+        }
+        if (collision == false)
+        {
+            playerObj.posX += playerObj.speed;
+        }
+        
+        for(var i=0; i<breakables.length; i++)
+        {
+            if(hitTest(breakables[i],playerObj))
+            {
+                if(!breakables[i].broken)
+                {
+                    if(breakables[i].posY<(playerObj.posY+playerObj.height)-1)
+                    {
+                        collision = true;
+                    }
+                }
+            }
+        }
+		for(var i=0; i<boxes.length; i++)
+        {
+            if(hitTest(boxes[i],playerObj))
+            {
+                    if(boxes[i].posY<(playerObj.posY+playerObj.height)-1)
+                    {
+                        collision = true;
+                    }
+            }
+        }
+        for(var i=0; i<sm_obj.length; i++)
+        {
+            if(hitTest(sm_obj[i],playerObj))
+            {
+                if(sm_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
+            }
+        }
+        for(var i=0; i<lg_obj.length; i++)
+        {
+            if(hitTest(lg_obj[i],playerObj))
+            {
+
+                if(lg_obj[i].posY<(playerObj.posY+playerObj.height)-1)
+                {
+                    collision = true;
+                }
+
+            }
+        }
+        if(collision == true)
+        {
+            playerObj.posX= playerX;	
+        }
+    }
+    
+    if(isDucking)
+    {
+        isStanding = false;
+		if (isDucked == false)
+        {
+            isDucked = true;
+            playerObj.height = 88;
+            playerObj.posY = playerObj.posY+50;
+			attackBox.posY = playerObj.posY;
+            //floorlvl = floorlvl+50;
+        }	
+    }
+    if(!isDucking)
+    {
+            isDucked = false;
+            if(isStanding == false)
+            {
+				isStanding = true;
+                playerObj.height = 138;	
+                playerObj.posY = playerObj.posY-50;
+				attackBox.posY = playerObj.posY;
+                //floorlvl = floorlvl-50;
+            }
+    }
+    
+    for(var i=0; i<sheep.length; i++)
+    {
+        if(hitTest(playerObj,sheep[i]))
+        {
+            if(!sheep[i].saved==true)
+            {
+                sheep[i].saved=true;
+                sheepPoints++;
+				document.getElementById('sound03').play();
+            }
+        }
+        if(sheep[i].saved)
+        {
+			sheepWalk = true;
+			if (currentLvl === 4){
+				sheep[i].posX++;
+			}
+			else{
+				sheep[i].posX--;	
+			}
+		}	
+		//sheep gravity
+		sheep[i].collision = false;
+		
+        for(var i=0; i<sheep.length; i++)
+		{
+			if(hitTest(playerObj,sheep[i]))
+			{
+				if(!sheep[i].saved==true)
+				{
+					sheep[i].saved=true;
+					sheepPoints++;
+			document.getElementById('sound03').play();
+				}
+			}
+			if(sheep[i].saved)
+			{
+				if (currentLvl === 4){
+					sheep[i].posX++;
+				}
+				else{
+					sheep[i].posX--;	
+				}
+			}
+			
+		//sheep gravity
+		sheep[i].collision = false;
+			
+			for(var i=0; i<sheep.length; i++)
+			{
+				if(hitTest(playerObj,sheep[i]))
+				{
+					if(!sheep[i].saved==true)
+					{
+						sheep[i].saved=true;
+						sheepPoints++;
+						document.getElementById('sound03').play();
+					}
+				}
+				if(sheep[i].saved)
+				{
+					if (currentLvl === 4){
+						sheep[i].posX++;
+					}
+					else{
+						sheep[i].posX--;	
+					}
+				
+					sheep[i].collision = false;
+					
+					for(var j=0; j<breakables.length; j++)
+					{
+						if(hitTest(breakables[j],sheep[i])){
+							if(!breakables[j].broken){
+								sheep[i].collision = true;
+							}
+						}
+					}
+					for(var j=0; j<boxes.length; j++)
+					{
+						if(hitTest(boxes[j],sheep[i])){
+								sheep[i].collision = true;
+						}
+					}
+					for(var j=0; j<sm_obj.length; j++)
+					{
+						if(hitTest(sm_obj[j],sheep[i]))
+						{
+							sheep[i].collision = true;
+						}
+					}
+					for(var j=0; j<lg_obj.length; j++)
+					{
+						if(hitTest(lg_obj[j],sheep[i]))
+						{
+							sheep[i].collision = true;
+						}
+					}
+					
+					if(!sheep[i].collision){
+						  floorLvlSheep=635+46;
+					  
+						  if (sheep[i].posY<floorLvlSheep)
+						  {
+							  if(!sheep[i].falling)
+							  {		
+								  sheep[i].jumpDecay = 0.5;
+								  sheep[i].falling = true;
+							  }
+							  else
+							  {
+								  for(var j=0; j<breakables.length; j++)
+								  {
+									  if(hitTest(breakables[j],sheep[i])){
+										  if(!breakables[j].broken){
+											  sheep[i].collision=true;
+											  if (sheep[i].posY+sheep[i].height > breakables[j].posY){
+												  sheep[i].posY = breakables[j].posY-sheep[i].height+.5;
+												  sheep[i].falling = false;
+											  }
+										  }
+									  }
+								  }
+								  for(var j=0; j<boxes.length; j++)
+								  {
+									  if(hitTest(boxes[j],sheep[i])){
+
+											  sheep[i].collision=true;
+											  if (sheep[i].posY+sheep[i].height > boxes[j].posY){
+												  sheep[i].posY = boxes[j].posY-sheep[i].height+.5;
+												  sheep[i].falling = false;
+											  }
+										}
+								  }
+								  for(var j=0; j<sm_obj.length; j++)
+								  {
+									  if(hitTest(sm_obj[j],sheep[i]))
+									  {
+										  sheep[i].collision=true;
+										  if (sheep[i].posY+sheep[i].height > sm_obj[j].posY){
+											  sheep[i].posY = sm_obj[j].posY-sheep[i].height+.5;
+											  sheep[i].falling = false;
+										  }
+									  }
+								  }
+								  for(var j=0; j<lg_obj.length; j++)
+								  {
+									  if(hitTest(lg_obj[j],sheep[i]))
+									  {
+										  sheep[i].collision=true;
+										  if (sheep[i].posY+sheep[i].height > lg_obj[j].posY)
+											  sheep[i].posY = lg_obj[j].posY-sheep[i].height+.5;
+											  sheep[i].falling = false;
+									  }
+								  }
+								  if(!sheep[i].collision)
+								  {
+									  sheep[i].posY+= sheep[i].jumpDecay;
+									  sheep[i].jumpDecay += 1;
+									  if(sheep[i].posY > 640+46)
+									  {
+										sheep[i].posY = 640+46;
+									  }
+								  }
+							  }
+						  }
+						  else{
+							  sheep[i].falling = false;
+						  }
+					}
+				}
+			}
+		}
+	}
+	
+	//TODO: fuckin fuck this shit up
+	for(i = 0; i < sm_obj.length; i++)
+	{
+		if(playerObj.posY - 50 <= sm_obj[i].posY + sm_obj[i].height && playerObj.posY - 50 > sm_obj[i].posY && playerObj.posX + playerObj.width >= sm_obj[i].posX && playerObj.posX <= sm_obj[i].width + sm_obj[i].posX)
+		{
+			notHitTopOfWallCauseThatMakesNoScence = false;
+			i = sm_obj.length;
+		}
+		else if(i == sm_obj.length - 1)
+		{
+			notHitTopOfWallCauseThatMakesNoScence = true;
+		}
+	}
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < lg_obj.length; i++)
+		{
+			if(playerObj.posY - 50 <= lg_obj[i].posY + lg_obj[i].height && playerObj.posY - 50 > lg_obj[i].posY && playerObj.posX + playerObj.width >= lg_obj[i].posX && playerObj.posX <= lg_obj[i].width + lg_obj[i].posX)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = lg_obj.length;
+			}
+			else if(i == lg_obj.length - 1)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = true;
+			}
+		}
+	}	
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < breakables.length; i++)
+		{
+			if(playerObj.posY - 50 <= breakables[i].posY + breakables[i].height && playerObj.posY - 50 > breakables[i].posY && playerObj.posX + playerObj.width >= breakables[i].posX && playerObj.posX <= breakables[i].width + breakables[i].posX)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = breakables.length;
+			}
+			else if(i == breakables.length - 1)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = true;
+			}
+		}
+	}
+	if(notHitTopOfWallCauseThatMakesNoScence)
+	{
+		for(i = 0; i < boxes.length; i++)
+		{
+			if(playerObj.posY - 50 <= boxes[i].posY + boxes[i].height && playerObj.posY - 50 > boxes[i].posY && playerObj.posX + playerObj.width >= boxes[i].posX && playerObj.posX <= boxes[i].width + boxes[i].posX)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = false;
+				i = boxes.length;
+			}
+			else if(i == boxes.length - 1)
+			{
+				notHitTopOfWallCauseThatMakesNoScence = true;
+			}
+		}
+	}
+	
+    if(isAttack)
+    {
+        
+        for(var i=0; i<breakables.length; i++)
+        {
+            
+            if(hitTest(attackBox,breakables[i]))
+            {
+                breakables[i].broken = true;
+            }
+        }
+    }
+
+    if(movingRight)
+    {
+        attackBox.posX = playerObj.posX+playerObj.width;
+        attackBox.posY = playerObj.posY;
+    }
+    else
+    {
+        attackBox.posX = playerObj.posX-3;
+        attackBox.posY = playerObj.posY;
+    }
+    
+    if(!hitTest(playerObj, miniGameArray[2]) && !hitTest(playerObj, miniGameArray[1]) && !hitTest(playerObj, miniGameArray[1]) && !regExpFin)
+	{
+		closeWindow = false;
+	}
+    if(hitTest(playerObj,miniGameArray[2]) && closeWindow == false && miniGameArray[2].tutor <= tutorSheep || hitTest(playerObj,miniGameArray[1]) && closeWindow == false && miniGameArray[1].tutor == tutorSheep || hitTest(playerObj,miniGameArray[0]) && closeWindow == false && miniGameArray[0].tutor == tutorSheep)
+    {	
+		if(!miniGameArray[2].sound && tutorSheep >= 2)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[2].sound = true;	
+		}
+		if(!miniGameArray[1].sound && tutorSheep == 1)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[1].sound = true;	
+		}
+		if(!miniGameArray[0].sound && tutorSheep == 0)
+		{
+			document.getElementById('sound06').play();
+			miniGameArray[0].sound = true;	
+		}	
+		//if(currentLvl==1)
+        {
+            ctx.fillStyle = 'black';
+            ctx.font = "50px Helvetica";
+            playerObj.speed = 0;
+			
+			if(tutorSheep == 0)
+			{
+				center = 455;
+			}
+			if(tutorSheep == 1)
+			{
+				center = 239;
+			}
+			if(tutorSheep >= 2 || currentLvl > 1)
+			{
+				center = 0;
+			}
+			console.log(center);
+			submitButtonArray[0].posX = 210 + center;
+			submitButtonArray[1].posX = 670 + center;
+			submitButtonArray[2].posX = 1130 + center;
+			textBoxArray[0].xCoord = 100 + center;
+			textBoxArray[1].xCoord = 600 + center;
+			textBoxArray[2].xCoord = 1000 + center;
+            
+			textOpen = true;
+            writeText();
+            //ctx.clearRect(0,0,1600,900);
+			if(tutorSheep >= 2 || currentLvl > 1)
+			{
+				ctx.drawImage(regScreen,0,0);
+			}
+			if(tutorSheep == 1)
+			{
+				ctx.drawImage(doubleRegExp,0,0);
+			}
+			if(tutorSheep == 0)
+			{
+				ctx.drawImage(singleRegExp,0,0);
+			}
+			
+			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			//TODO: Finish dis shite
+			if(tutorSheep == 1)
+			{
+				center = 231;
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295 - 8, textBoxArray[1].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345 - 8, textBoxArray[1].yCoord);
+			}
+			if(tutorSheep == 2 || currentLvl > 1)
+			{
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+			
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+				ctx.drawImage(emptyStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+			}
+			
+			if(textBoxArray[0].canWrite && !regExpFin)
+			{
+				if(tutorSheep == 1)
+				{
+					center = 239;
+				}
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpOne + "|", textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+			}
+			if(textBoxArray[1].canWrite && !regExpFin)
+			{
+				if(tutorSheep == 1)
+				{
+					center = 231;
+				}
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpTwo + "|", textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+			}
+			
+			if(textBoxArray[2].canWrite && !regExpFin)
+			{
+				if(flashCounter >= 0 && flashCounter <= 20)
+				{
+					ctx.fillText(regExpThree + "|", textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+				}
+				else
+				{
+					ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+				}
+				flashCounter++;
+				if(flashCounter == 40)
+				{
+					flashCounter = 0;
+				}
+			}
+			
+            ctx.fillText(regExpOne, textBoxArray[0].xCoord + 35, textBoxArray[0].yCoord + 60);
+            ctx.fillText(regExpTwo, textBoxArray[1].xCoord, textBoxArray[1].yCoord + 60);
+            ctx.fillText(regExpThree, textBoxArray[2].xCoord + 60, textBoxArray[2].yCoord + 60);
+            
+            for(i = 0; i < levelWords.length; i++)
+            {
+                var coordX;
+                if(i < 3)
+                {
+                    if(tutorSheep == 1)
+					{
+						center = 239;
+					}
+					coordX = 235 + center;
+                    if(regExp1.test(levelWords[i]) && submitButtonArray[0].clicked)
+                    {
+                        ctx.fillStyle = "#FEA301"; // yellow
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 75);
+						ctx.fillStyle = 'black';
+                    }
+					if(levelWords[i] == correctWords[0])
+					{
+						ctx.drawImage(orangeStar, coordX - 100, (i + 1)*100 + 163);
+					}
+					if(regExp2.test(levelWords[i]) && submitButtonArray[1].clicked)
+                    {
+						ctx.fillStyle = "#F2561A"; // red
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 145, 394, 10);
+						ctx.fillRect(coordX - 100, (i + 1)*100 + 210, 394, 10);
+						ctx.fillStyle = 'black';
+                    }
+					if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
+                    {
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i + 1)*100 + 200);
+						ctx.fillStyle = "#00BC9F"; // blue
+                    }
+					ctx.fillText(levelWords[i], coordX, (i + 1)*100 + 200);
+					ctx.fillStyle = 'black';
+                }
+                else if(i < 6 && tutorSheep >= 1)
+                {
+                    if(tutorSheep == 1)
+					{
+						center = 231;
+					}
+					coordX = 675 + center;
+					if(levelWords[i] == correctWords[1])
+					{
+						ctx.drawImage(redStar, coordX - 85, (i - 3 + 1)*100 + 163);
+					}
+                    if(regExp2.test(levelWords[i]) && submitButtonArray[1].clicked)
+                    {
+                        ctx.fillStyle = "#F2561A"; // red
+						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 145, 394, 10);
+						ctx.fillRect(coordX - 85, (i - 3 + 1)*100 + 210, 394, 10);
+						ctx.fillStyle = 'black';
+                    }
+					if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
+                    {
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 3 + 1)*100 + 200);
+						ctx.fillStyle = "#00BC9F"; // blue
+                    }
+                    ctx.fillText(levelWords[i], coordX, (i - 3)*100 + 300);
+                    ctx.fillStyle = 'black';
+                }
+                else if(i < 9 && tutorSheep >= 2)
+                {
+                    coordX = 1140 + center;
+					if(levelWords[i] == correctWords[2])
+					{
+						ctx.drawImage(blueStar, coordX - 95, (i - 6 + 1)*100 + 163);
+					}
+                    if(regExp3.test(levelWords[i]) && submitButtonArray[2].clicked)
+                    {
+						ctx.strokeStyle = 'black';
+						ctx.miterLimit=2;
+						ctx.lineWidth = 6;
+						ctx.strokeText(levelWords[i], coordX, (i - 6)*100 + 300);
+						ctx.fillStyle = "#00BC9F"; // blue
+                    }
+                    ctx.fillText(levelWords[i], coordX, (i - 6)*100 + 300);
+                    ctx.fillStyle = 'black';
+                }
+            }
+			
+			if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
+			}
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && tutorSheep == 1)
+			{
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295 - 8, textBoxArray[1].yCoord);
+			}
+			if(!regExp2.test(incorrectWords[0]) && !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && tutorSheep != 1)
+			{
+				ctx.drawImage(orangeStar, textBoxArray[1].xCoord + 295, textBoxArray[1].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[0]) && !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]))
+			{
+				ctx.drawImage(orangeStar, textBoxArray[2].xCoord + 300, textBoxArray[2].yCoord);
+			}
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) && tutorSheep == 1)
+			{
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345 - 8, textBoxArray[1].yCoord);
+			}
+			if(regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) && tutorSheep != 1)
+			{
+				ctx.drawImage(redStar, textBoxArray[1].xCoord + 345, textBoxArray[1].yCoord);
+			}
+			if(regExp3.test(correctWords[1]) && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]))
+			{
+				ctx.drawImage(redStar, textBoxArray[2].xCoord + 350, textBoxArray[2].yCoord);
+			}
+			if(!regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
+			{
+				ctx.drawImage(blueStar, textBoxArray[2].xCoord + 400, textBoxArray[2].yCoord);
+			}
+            
+			ctx.fillText(sheepPoints,210,100,50);
+			if(hitTest(playerObj, miniGameArray[1]))
+			{
+				if(counter == 14)
+				{
+					counter ++;
+				}	
+			}
+			if(hitTest(playerObj, miniGameArray[2]))
+			{
+				if(counter == 22)
+				{
+					counter++;
+				}
+			}
+			// Start of part A
+		   	if(counter==1)
+			{
+		   		ctx.drawImage(expInstr1,0,0); //help me
+			}
+			else if(counter==2)
+			{
+				ctx.drawImage(expInstr2,0,0);
+			}
+			else if(counter==3)
+			{
+				ctx.drawImage(expInstr3,0,0);
+			}
+			else if(counter==4)
+			{
+				ctx.drawImage(expInstr4,0,0);
+			}
+			else if(counter==5)
+			{
+				ctx.drawImage(expInstr5,0,0);
+			}
+			else if(counter==6)
+			{
+				ctx.drawImage(expInstr6,0,0);
+			}
+			else if(counter==7)
+			{
+				ctx.drawImage(expInstr7,0,0);
+			}
+			else if(counter==8)
+			{
+				ctx.drawImage(expInstr8,0,0);
+			}
+			else if(counter==9)
+			{
+				ctx.drawImage(expInstr9,0,0);
+			}
+			else if(counter==10)
+			{
+				ctx.drawImage(expInstr10,0,0);
+			}
+			else if(counter==11)
+			{
+				ctx.drawImage(expInstr11,0,0);
+			}
+			else if(counter==12)
+			{
+				ctx.drawImage(expInstr12,0,0);
+			}
+			else if(counter==13)
+			{
+				ctx.drawImage(expInstr13,0,0);
+			}
+			else if(counter==14)
+			{
+				ctx.drawImage(expInstr21,0,0);
+			}
+			//PART B
+			else if(counter==15)
+			{
+				ctx.drawImage(expInstr14,0,0);
+			}
+			else if(counter==16)
+			{
+				ctx.drawImage(expInstr15,0,0);
+			}
+			else if(counter==17)
+			{
+				ctx.drawImage(expInstr16,0,0);
+			}
+			else if(counter==18)
+			{
+				ctx.drawImage(expInstr17,0,0);
+			}
+			else if(counter==19)
+			{
+				ctx.drawImage(expInstr18,0,0);
+			}
+			else if(counter==20)
+			{
+				ctx.drawImage(expInstr19,0,0);
+			}
+			else if(counter==21)
+			{
+				ctx.drawImage(expInstr20,0,0);
+			}
+			//PART C
+			else if(counter==22)
+			{
+				ctx.drawImage(expInstr21,0,0);
+			}
+			else if(counter==23)
+			{
+				ctx.drawImage(expInstr22,0,0);
+			}
+			else if(counter==24)
+			{
+				ctx.drawImage(expInstr23,0,0);
+			}
+			else if(counter==25)
+			{
+ 				ctx.drawImage(expInstr24,0,0);
+ 			}
+			else if(counter==26)
+			{
+				ctx.drawImage(expInstr25,0,0);
+			}
+			else if(counter==27)
+			{
+				ctx.drawImage(expInstr26,0,0);
+			}
+			else if(counter==28)
+			{
+				ctx.drawImage(expInstr27,0,0);
+			}
+			else if(counter==29)
+			{
+				ctx.drawImage(expInstr28,0,0);
+			}
+			document.captureEvents(Event.MOUSEMOVE);
+			document.onmousemove = getMouseXY;
+
+			function getMouseXY(e) 
+			{
+				tempX = e.pageX
+				tempY = e.pageY
+				if (tempX < 0){tempX = 0}
+				if (tempY < 0){tempY = 0}  
+				
+				return true;
+			}  
+			if(tempX>720 && tempX<800 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(questionHelp,0,0);	
+			}
+			if(tempX>845 && tempX<920 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(lineHelp,0,0);	
+			}
+			if(tempX>965 && tempX<1045 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(carrotHelp,0,0);	
+			}
+			if(tempX>1080 && tempX<1165 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(carrotBracketHelp,0,0);	
+			}
+			if(tempX>1200 && tempX<1285 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(moneyHelp,0,0);	
+			}
+			if(tempX>1325 && tempX<1405 && tempY>60 &&tempY<100 && tutorSheep >= 2)
+			{
+				ctx.drawImage(helpHover,0,0);	
+			}
+			else
+			{
+				ctx.drawImage(helpButton,0,0);	
+
+			}
+			if(tempX>240 + center && tempX<435 + center && tempY>795 && tempY<835)
+			{
+				if(tutorSheep == 1)
+				{
+					ctx.drawImage(submitHover,208 + center,770);
+				}
+				else
+				{
+					ctx.drawImage(submitHover,200 + center,770);
+				}	
+			}
+			else
+			{
+				if(tutorSheep == 1)
+				{
+					ctx.drawImage(subButton,212 + center,765);
+				}
+				else
+				{
+					ctx.drawImage(subButton,204 + center,765);
+				}		
+			}
+			if(tempX>690 + center && tempX<890 + center && tempY>795 && tempY<835 && tutorSheep > 0)
+			{
+				ctx.drawImage(submitHover,658 + center,770);	
+			}
+			else if(tutorSheep>0)
+			{
+				ctx.drawImage(subButton,660 + center,765);	
+			}
+			if(tempX>1160 + center && tempX<1360 + center && tempY>795 && tempY<835 && tutorSheep > 1)
+			{
+				ctx.drawImage(submitHover,1112 + center,770);	
+			}
+			else if(tutorSheep>1)
+			{
+				ctx.drawImage(subButton,1115 + center,765);	
+			}
+			if(mouse.x>1325 && mouse.x<1405 && mouse.y>60 &&mouse.y<100 && tutorSheep >= 2 && !expComplete)
+			{
+				helpActive = true;	
+			}
+			if(helpActive)
+			{
+				console.log("test 1: " +helpActive);
+				ctx.drawImage(helpScreen,0,0);	
+			}
+			document.onkeyup = function(e)
+			{
+   				key[e.keyCode] = true;
+            	if(key[32]) // spacebar
+           		{
+					if(counter < 14 && hitTest(playerObj, miniGameArray[0]))
+					{
+						if(counter == 7 && regExp1.test("O"))
+						{
+							counter++;
+						}
+						else if(counter == 9 && regExp1.test("OP") && !regExp1.test("OV"))
+						{
+							counter++;
+						}
+						else if(counter != 7 && counter != 9)
+						{
+							counter++;
+						}
+					}
+					else if(counter < 22 && hitTest(playerObj, miniGameArray[1]))
+					{
+						if(counter == 16 && regExp2.test("E"))
+						{
+							counter++;
+						}
+						else if(counter == 20 && regExp2.test("P"))
+						{
+							counter++;
+						}
+						else if(counter != 16 && counter != 20)
+						{
+							counter++;
+						}
+					}
+					else if(counter > 21 && hitTest(playerObj, miniGameArray[2]))
+					{
+						if(counter == 29 && regExp3.test("[^E]P") && !regExp3.test("[^E]"))
+						{
+							//suck it!
+						}
+						else if(counter != 29)
+						{
+							counter++;
+						}
+					}
+					helpActive = false;
+				}
+				
+			}
+			mouse.x = 0;
+			mouse.y = 0;
+        }
+    }
+    else
+    {
+        currentTextBox = null;
+        textOpen = false;
+        render();
+    }
+    
+    if (playerObj.posX > 5900)
+	{
+		if(currentLvl!=4)
+			ctx.drawImage(levelClick,0,0);
+		//here
+		//document.onkey=function(e){key()};
+		//function key(e)
+		if(key[32])
+		{
+				if(playerObj.posX > 6000&&currentLvl==1)
+				{
+					currentLvl = 2;
+					lvlFlag = true;	
+					setPositionLvl2();
+				}
+				else if(playerObj.posX > 6005 &&currentLvl==2)
+				{
+					currentLvl = 3;
+					lvlFlag = true;	
+					setPositionLvl3();
+				}
+				else if(playerObj.posX > 6010 &&currentLvl==3)
+				{
+					currentLvl = 4;
+					lvlFlag = true;	
+					setPositionLvl4();
+				}
+				else if(playerObj.posX > 5890 &&currentLvl==4)//end here
+				{
+					cancelRequestAnimFrame(loadHandler);
+					window.location.href=("endSpnYes.html");
+				}
+		}
+		if(playerObj.posX > 5900 &&currentLvl==4)
+		{
+			playerObj.posX = 5900;
+		}
+    }    
+
+    if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+    && !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]) 
+    && !regExp3.test(incorrectWords[0])&& !regExp3.test(incorrectWords[1]) && regExp3.test(correctWords[0]) && regExp3.test(correctWords[1]) 
+    && !regExp3.test(incorrectWords[2]) && !regExp3.test(incorrectWords[3]) && !regExp3.test(incorrectWords[4]) && regExp3.test(correctWords[2]) && !regExp3.test(incorrectWords[5]))
+    {
+		if(currentLvl==1 && !closeWindow)
+		{
+        	jumpable = true;
+			expComplete = true;
+			counter++;
+			ctx.drawImage(congJump, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
+		}
+		else if(currentLvl==2 && lvlTwoStart && !closeWindow)
+		{
+			attackable = true;
+			expComplete = true;
+			ctx.drawImage(congBreak, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
+		}
+		else if(currentLvl==3 && lvlThreeStart && !closeWindow)
+		{
+			crouchable = true;
+			expComplete = true;
+			ctx.drawImage(congCrouch, 0, 0);
+			if(key[32])
+			{
+				closeWindow = true;
+				expComplete = false;
+				playerObj.speed = 5;
+			}
+		}
+		//Always Happens
+		miniGameArray[2].run = true;
+		regExpFin = true;
+		textBoxArray[0].canWrite = false;
+		textBoxArray[1].canWrite = false;
+		textBoxArray[2].canWrite = false;
+    }
+}
+}
+
+function hitTest(r1,r2)
+{
+	return Math.abs(r1.centerX() - r2.centerX()) < r1.halfWidth() + r2.halfWidth() && Math.abs(r1.centerY() - r2.centerY()) < r1.halfHeight()+r2.halfHeight();	
+}
+
+function render()
+{
+	document.onmousedown = function(e)
+		{
+			mouse.x = e.pageX - cv.offsetLeft;
+			mouse.y = e.pageY - cv.offsetTop;
+		}
+	if(gameOver==false)
+	{
+    	ctx.clearRect(0,0,1600,900);
+    
+    	ctx.save();
+    	ctx.translate(-camera.x, -camera.y);
+    	if (currentLvl === 1)
+		{
+			ctx.drawImage(lvl1_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+			ctx.drawImage(lvl1_background,0,2145,6336,527,0, 255, 6336, 527) //house
+			ctx.drawImage(lvl1_background,0,1442,6336,136,0, 645, 6336, 136); //hill
+        	ctx.drawImage(lvl1_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        	ctx.drawImage(lvl1_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+			ctx.drawImage(lvl1_background,0,1101,6336,5,0, 781, 6336, 5); //black line 
+			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+   			//ctx.fillRect(attackBox.posX, attackBox.posY, attackBox.width, attackBox.height);
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+				ctx.drawImage(sheepWizard,miniGameArray[1].x, miniGameArray[1].y);
+				ctx.drawImage(sheepWizard,miniGameArray[0].x, miniGameArray[0].y);
+			}
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
+			for(var i =0; i<5; i++)
+        	{
+            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+			}
+			ctx.drawImage(arrow,6000,665);		
+			for(var i=0; i<10; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			//Marked
+			//ctx.fillRect(playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+			for(var i=0; i<4; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);
+				//ctx.fillRect(sm_obj[i].posX,sm_obj[i].posY, sm_obj[i].width,sm_obj[i].height);
+			}
+			for(var i=0; i<2; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			
+			for (var i=0; i<10;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					//TODO: Come back
+					if (countS >= 0 && countS <5 && sheepWalk && !sheep[i].preSaved){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 5 && countS <10 && sheepWalk && !sheep[i].preSaved){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 10 && countS < 15 && sheepWalk && !sheep[i].preSaved){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 15 && countS <= 20 && sheepWalk && !sheep[i].preSaved){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+				}
+    		}
+			
+				for(var i =0; i<signs.length; i++)  
+				{         
+            			if(signs[i].active)
+            			{
+					console.log(i);
+                			if(i==0)
+						ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
+                			else if(i==1)
+						ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
+                			else if(i==2)
+                    				ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
+					else if(i==3)
+						ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-146); 
+					else if(i==4)
+						ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
+				}
+				if(signs[i].active)
+				{
+						console.log(i);
+                		if(i==0)
+							ctx.drawImage(moveInstr,signs[i].posX+70,signs[i].posY-250);
+                		else if(i==1)
+							ctx.drawImage(sheepInstr,signs[i].posX+70,signs[i].posY-250);
+                		else if(i==2)
+                   			ctx.drawImage(regInstr1,signs[i].posX+70,signs[i].posY-220); 
+						else if(i==3)
+							ctx.drawImage(jumpInstr,signs[i].posX+70,signs[i].posY-146); 
+						else if(i==4)
+							ctx.drawImage(restartInstr,signs[i].posX+70,signs[i].posY-250); 
+				}
+			}			
+    	}
+    	else if (currentLvl === 2)
+		{
+        		ctx.drawImage(lvl2_background,0,0,6336,900, 0, 0, 6336, 900); //bg
+				ctx.drawImage(lvl2_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+        		ctx.drawImage(lvl2_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax
+        		ctx.drawImage(lvl2_background,5423,3670,913,789, 5741,-3, 913, 789); //red trees
+			ctx.drawImage(lvl2_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			//ctx.drawImage(lvl1_background,foreground2Background.sourceX,foreground2Background.sourceY,foreground2Background.sourceWidth,foreground2Background.sourceHeight, Math.floor(foreground2Background.x), Math.floor(foreground2Background.y), foreground2Background.width, foreground2Background.height);
+			
+			ctx.drawImage(sign,signs[0].posX,signs[0].posY);
+			for(var i=0; i<8; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			for(var i=0; i<8; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<4; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}
+			for (var i=0; i<9;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+				}
+    		}
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			}
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				console.log("X" + miniGameArray[2].x);
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
+			
+			if(signs[0].active)
+				ctx.drawImage(atkInstr,signs[0].posX+70,signs[0].posY-217);
+			ctx.drawImage(arrow,6000,665);		
+
+		}
+		else if (currentLvl === 3)
+		{
+        	ctx.drawImage(lvl3_background,0,0,6336,900, 0, -6, 6336, 900); //bg
+			ctx.drawImage(lvl3_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+			
+        	ctx.drawImage(lvl3_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
+			ctx.drawImage(lvl3_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			
+			if(!miniGameArray[2].run)
+			{
+				ctx.drawImage(sheepWizard,miniGameArray[2].x, miniGameArray[2].y);
+			}
+			else if(miniGameArray[2].run)
+			{
+				//TODO gold sheep walk FINISH UP
+				miniGameArray[2].x--;
+				console.log("X" + miniGameArray[2].x);
+				if (goldWalk >= 0 && goldWalk <5)
+				{
+					ctx.drawImage(wizardSheepWalk, 0, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				else if (goldWalk >= 5 && goldWalk <10)
+				{
+					ctx.drawImage(wizardSheepWalk, 109, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 10 && goldWalk < 15)
+				{
+					ctx.drawImage(wizardSheepWalk, 214, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);	
+				}
+				else if (goldWalk >= 15 && goldWalk <= 20)
+				{
+					ctx.drawImage(wizardSheepWalk, 319, 0, miniGameArray[2].width+10, miniGameArray[2].height, miniGameArray[2].x, miniGameArray[2].y+2, miniGameArray[2].width+10, miniGameArray[2].height);
+				}
+				goldWalk++;
+				if(goldWalk == 20)
+				{
+					goldWalk = 0;
+				}
+			}
+		
+        	for(var i =0; i<3; i++)
+        	{
+            	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
+			}			
+			ctx.drawImage(arrow,6000,665);		
+
+			for(var i=0; i<5; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			for(var i=0; i<8; i++)
+			{
+				ctx.drawImage(smallPlatform,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<6; i++)
+			{
+				ctx.drawImage(largePlatform,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			for(var i=0; i<9; i++)
+			{
+				ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+			}	
+			for (var i=0; i<15;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 0, sheep[i].width+26, sheep[i].height-10, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height-10);	
+					}
+				}
+    		}
+			
+			for(var i =0; i<2; i++)  
+			{         
+            	if(signs[i].active)
+            	{
+                	if(i==0)
+						ctx.drawImage(boxInst,signs[i].posX+70,signs[i].posY-250);
+                	else if(i==1)
+						ctx.drawImage(crouchInstr,signs[i].posX+70,signs[i].posY-250);      
+				}
+			}
+			ctx.drawImage(arrow,6000,665);		
+		}
+		else if (currentLvl === 4)//changehere2
+		{
+        	ctx.drawImage(lvl4_background,0,0,6336,900, 0, -6, 6336, 900); //bg
+			ctx.drawImage(lvl4_background,distantBackground.sourceX,distantBackground.sourceY,distantBackground.sourceWidth,distantBackground.sourceHeight, Math.floor(distantBackground.x), Math.floor(distantBackground.y), distantBackground.width, distantBackground.height); //clould parallax
+			
+        	ctx.drawImage(lvl4_background,4878,3670,1463,789, 4878,-5, 1463, 789); //cave
+			ctx.drawImage(lvl4_background,0,1101,6336,5,0, 781, 6336, 5); //black line
+			
+			ctx.drawImage(sign,signs[0].posX,signs[0].posY);
+			for(var i=0; i<18; i++)
+			{
+				if(!breakables[i].broken)
+				{
+					ctx.drawImage(box,0,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+				}
+				else{
+					if (breakables[i].countB >=0 && breakables[i].countB <6){
+						ctx.drawImage(box,100,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+						document.getElementById('sound01').play();
+					}
+					else if (breakables[i].countB >=6 && breakables[i].countB <12){
+						ctx.drawImage(box,200,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=12 && breakables[i].countB <=18){
+						ctx.drawImage(box,300,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=18 && breakables[i].countB <=24){
+						ctx.drawImage(box,400,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					else if (breakables[i].countB >=24 && breakables[i].countB <=30){
+						ctx.drawImage(box,500,0, breakables[i].width, breakables[i].height, breakables[i].posX, breakables[i].posY, breakables[i].width, breakables[i].height);
+					}
+					if (breakables[i].countB >=0 && breakables[i].countB <=30){
+						breakables[i].countB++;
+					}	
+				}
+			}
+			for(var i=0; i<4; i++)
+			{
+					ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
+			}
+			for(var i=0; i<8; i++)//#grr
+			{
+				ctx.drawImage(largeGem,lg_obj[i].posX-4,lg_obj[i].posY-30);	
+			}	
+			for(var i=0; i<28; i++)
+			{
+				ctx.drawImage(box2,0,0, boxes[i].width, boxes[i].height, boxes[i].posX, boxes[i].posY, boxes[i].width, boxes[i].height);
+			}	
+			for (var i=0; i<9;i++)
+			{
+				if(sheep[i].saved==false)
+				{
+					ctx.drawImage(sheep_right,sheep[i].posX, sheep[i].posY);	
+				}
+				else
+				{
+					if (countS >= 0 && countS <5){
+						ctx.drawImage(sheepSprite, 0, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 5 && countS <10){
+						ctx.drawImage(sheepSprite, 105, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 10 && countS < 15){
+						ctx.drawImage(sheepSprite, 210, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+					else if (countS >= 15 && countS <= 20){
+						ctx.drawImage(sheepSprite, 315, 88, sheep[i].width+26, sheep[i].height, sheep[i].posX, sheep[i].posY+12, sheep[i].width+26, sheep[i].height);	
+					}
+				}
+    		}
+			if(signs[0].active)
+			{
+				ctx.drawImage(finalLvlInstr,signs[0].posX+70,signs[0].posY-248);
+			}
+			//TODO: make sheep staircase
+			counter = sheepPoints;
+			for(i = 1; i <= counter; i++)
+			{
+				if(i == 1)
+				{
+					sm_obj[1 + i].posX = 5550;
+				}
+				if(i < 5)
+				{
+					if(i != 1)
+					{
+						sm_obj[1 + i].posX = sm_obj[i].posX + 115;
+					}
+					sm_obj[1 + i].posY = 695;
+				}
+				else if(i < 8)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 3].posX + 115;
+					sm_obj[1 + i].posY = 695-75;
+				}
+				else if(i < 10)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 2].posX + 115;
+					sm_obj[1 + i].posY = 695-150;
+				}
+				else if(i == 10)
+				{
+					sm_obj[1 + i].posX = sm_obj[i - 1].posX + 115;
+					sm_obj[1 + i].posY = 695-225;
+				}
+				if(counter >= 10)
+				{
+					counter = 10;
+				}
+				ctx.drawImage(sheep_right, sm_obj[1+i].posX, sm_obj[1+i].posY - 15);
+			}
+		}
+		
+		
+
+    
+    	if(playerObj.state == 0){ //right
+			if(isJump){
+            	if (isDucking){
+                	ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+            	} 
+            	else{
+                	if (playerDirec < 0){
+                    	ctx.drawImage(llama_jump_sprite, 315, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+                	}
+                	else{
+                    	if (count >= 0 && count <20){
+                        	ctx.drawImage(llama_jump_sprite, 0, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+                    	}
+                    	else if (count>=20 && count <=40){
+                        	ctx.drawImage(llama_jump_sprite, 156, 138, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+                    	}
+                	}
+            	}
+        	}
+			else if(isMoveRight){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 89, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 88, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX+6, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 317, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 460, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 602, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 137, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+				}
+			}
+			else{
+				if(isDucking){
+					ctx.drawImage(llama_duck_right,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_right, playerObj.posX+6, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_right,playerObj.posX+9, playerObj.posY);
+				}
+			}
+		}
+		if(playerObj.state == 1){ //left
+			if(isJump){
+				if (isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);	
+				}
+				else{
+					if (playerDirec < 0){
+						ctx.drawImage(llama_jump_sprite, 294, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else{
+						if (count >= 0 && count <20){
+						  ctx.drawImage(llama_jump_sprite, 6, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);		
+						}
+						else if (count>=20 && count <=40){
+						  ctx.drawImage(llama_jump_sprite, 152, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+						}
+					}
+				}
+			}
+			else if (isMoveLeft){
+				if (isDucking){
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_duck_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_duck_sprite, 141, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);	
+	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_duck_sprite, 282, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_duck_sprite, 423, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_duck_sprite, 564, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_duck_sprite, 705, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY, playerObj.width, playerObj.height);
+					}
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX-6, playerObj.posY);
+				}
+				else{
+					if (countR >= 0 && countR<5){
+						ctx.drawImage(llama_run_sprite, 0, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 5 && countR<10){
+						ctx.drawImage(llama_run_sprite, 163, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);	
+					}
+					else if (countR >= 10 && countR<15){
+						ctx.drawImage(llama_run_sprite, 287, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 15 && countR<20){
+						ctx.drawImage(llama_run_sprite, 443, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 20 && countR<25){
+						ctx.drawImage(llama_run_sprite, 599, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}
+					else if (countR >= 25 && countR<=30){
+						ctx.drawImage(llama_run_sprite, 744, 0, playerObj.width, playerObj.height, playerObj.posX, playerObj.posY+13, playerObj.width, playerObj.height);
+					}	
+				}
+			}
+			else
+				if(isDucking){
+					ctx.drawImage(llama_duck_left,playerObj.posX, playerObj.posY);
+				}
+				else if (isAttack){
+					ctx.drawImage(llama_attack_left, playerObj.posX-6, playerObj.posY);
+				}
+				else{
+					ctx.drawImage(llama_left,playerObj.posX+9, playerObj.posY);
+				}
+			}	
+		
+		if(currentLvl==1)
+		{
+			ctx.drawImage(cloud,3120,292+46);
+		}
+		if (currentLvl ===4){
+			ctx.drawImage(lvl4_background,foregroundBackground.sourceX,foregroundBackground.sourceY,foregroundBackground.sourceWidth,foregroundBackground.sourceHeight, Math.floor(foregroundBackground.x), Math.floor(foregroundBackground.y), foregroundBackground.width, foregroundBackground.height); //grass parallax		
+		}
+		
+		count++;
+		if (count ==40){
+			count = 0;	
+		}
+		countR++;
+		if (countR ==30){
+			countR = 0;	
+		}
+		countS++;
+		if (countS ==20){
+			countS = 0;	
+		}
+//draw HERE bitch
+    	ctx.drawImage(restart,1534+camera.x,10);
+        console.log(mouse.x+", "+mouse.y);
+		ctx.drawImage(sheepIcon,camera.x,0);
+    	ctx.fillStyle = 'black';
+    	ctx.font = "50px Arial";
+    	ctx.fillText(sheepPoints,camera.x+50,50,50);
+    	if(1534<mouse.x && mouse.x<1600 && 0<mouse.y && mouse.y<50)
+    	{
+			for(i = 0; i < sheep.length; i++)
+			{
+				if(sheep[i].saved)
+				{
+					sheep[i].preSaved = true;
+				}
+			}
+			ctx.drawImage(restartClick,0,0);
+			sheepWalk = false;
+			if(currentLvl==1)
+				intialize();//maybe
+			else if(currentLvl==2)
+				setPositionLvl2();
+			else if(currentLvl==3)
+				setPositionLvl3();
+			else if(currentLvl==4)
+				setPositionLvl4();
+    	}
+        
+  		ctx.restore();
+	}
+}
+
+function keyDown(e)
+{
+    key[e.keyCode] = true;
+}
+
+function keyUp(e)
+{
+    delete key[e.keyCode];
+}
+
+function writeText()
+{
+	if(textOpen)
+	{
+		document.onmousedown = function(e)
+		{
+			mouse.x = e.pageX - cv.offsetLeft;
+			mouse.y = e.pageY - cv.offsetTop;
+			
+			for(i = 0; i < textBoxArray.length; i++)
+			{
+				if(mouse.x > textBoxArray[i].xCoord && mouse.y > textBoxArray[i].yCoord && mouse.x < textBoxArray[i].xCoord+600 && mouse.y < textBoxArray[i].yCoord+100)
+				{
+					if(currentTextBox == null)
+					{
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{						
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}	
+					}
+					else
+					{
+						if(textBoxArray[i] == textBoxArray[0] && tutorSheep >= 0 || textBoxArray[i] == textBoxArray[1] && tutorSheep >= 1 || textBoxArray[i] == textBoxArray[2] && tutorSheep >= 2)
+						{
+							currentTextBox.canWrite = false;
+							currentTextBox = textBoxArray[i];
+							currentTextBox.canWrite = true;
+						}
+					}
+				}	
+			}
+			
+			if(mouse.x >= submitButtonArray[0].posX && mouse.x <= submitButtonArray[0].posX + 254 && mouse.y >= submitButtonArray[0].posY && mouse.y <= submitButtonArray[0].posY + 70)
+			{
+				regExp1 = new RegExp(regExpOne);
+				submitButtonArray[0].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[1].posX && mouse.x <= submitButtonArray[1].posX + 254 && mouse.y >= submitButtonArray[1].posY && mouse.y <= submitButtonArray[1].posY + 70 && submitButtonArray[0].clicked)
+			{
+				regExp1 = new RegExp(regExpOne);
+				regExp2 = new RegExp(regExpTwo);
+				submitButtonArray[1].clicked = true;
+			}
+			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 254 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 70 && submitButtonArray[1].clicked)
+			{
+				regExp1 = new RegExp(regExpOne);
+				regExp2 = new RegExp(regExpTwo);
+				regExp3 = new RegExp(regExpThree);
+				submitButtonArray[2].clicked = true;
+			}
+			if(sheepPoints > 0)
+			{
+				//?
+				if(mouse.x >= characterBoxArray[0].posX && mouse.x <= characterBoxArray[0].posX + 98 && mouse.y >= characterBoxArray[0].posY && mouse.y <= characterBoxArray[0].posY + 59 && tutorSheep >= 2 && !expComplete)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "?";
+						sheepPoints --;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "?";
+						sheepPoints --;
+					}
+				}
+				//[^] 98, 54
+				if(mouse.x >= characterBoxArray[1].posX && mouse.x <= characterBoxArray[1].posX + 98 && mouse.y >= characterBoxArray[1].posY && mouse.y <= characterBoxArray[1].posY + 59 && tutorSheep >= 2 && !expComplete)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "[^" + regExpOne + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "[^" + regExpTwo + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "[^" + regExpThree + "]";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//^
+				if(mouse.x >= characterBoxArray[2].posX && mouse.x <= characterBoxArray[2].posX + 98 && mouse.y >= characterBoxArray[2].posY && mouse.y <= characterBoxArray[2].posY + 59 && tutorSheep >= 2 && !expComplete)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = "^" + regExpOne;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = "^" + regExpTwo;
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = "^" + regExpThree;
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//$
+				if(mouse.x >= characterBoxArray[3].posX && mouse.x <= characterBoxArray[3].posX + 98 && mouse.y >= characterBoxArray[3].posY && mouse.y <= characterBoxArray[3].posY + 59 && tutorSheep >= 2 && !expComplete)
+				{
+					if(sheepPoints > 1)
+					{
+						if(currentTextBox == textBoxArray[0])
+						{
+							regExpOne = regExpOne + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[1])
+						{
+							regExpTwo = regExpTwo + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+						if(currentTextBox == textBoxArray[2])
+						{
+							regExpThree = regExpThree + "$";
+							sheepPoints = sheepPoints - 2;
+						}
+					}
+				}
+				//|
+				if(mouse.x >= characterBoxArray[4].posX && mouse.x <= characterBoxArray[4].posX + 98 && mouse.y >= characterBoxArray[4].posY && mouse.y <= characterBoxArray[4].posY + 59 && tutorSheep >= 2 && !expComplete)
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "|";
+						sheepPoints--;
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "|";
+						sheepPoints--;
+					}
+				}
+			}
+			if(mouse.x >= 1450 && mouse.x <= 1548 && mouse.y >= 45 && mouse.y <= 104)
+			{
+				console.log(tutorSheep);
+				if(tutorSheep == 0)
+				{
+					//call back
+					if(!regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) && counter == 14)
+					{
+						closeWindow = true;
+						tutorSheep++;
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
+				}	
+				if(tutorSheep == 1)
+				{	
+					if(counter == 22 && !regExp1.test(incorrectWords[0]) && !regExp1.test(incorrectWords[1]) && regExp1.test(correctWords[0]) 
+					&& !regExp2.test(incorrectWords[0])&& !regExp2.test(incorrectWords[1]) && regExp2.test(correctWords[0]) && regExp2.test(correctWords[1]) && !regExp2.test(incorrectWords[2]) && !regExp2.test(incorrectWords[3]))
+					{
+						closeWindow = true;
+						tutorSheep++;
+						playerObj.speed = 5;
+						textBoxArray[0].canWrite = false;
+						textBoxArray[1].canWrite = false;
+						textBoxArray[2].canWrite = false;
+					}
+				}
+				else if(tutorSheep >= 2)
+				{
+					closeWindow = true;
+					if(tutorSheep < 3)
+					{
+						tutorSheep++;
+					}
+					playerObj.speed = 5;
+					textBoxArray[0].canWrite = false;
+					textBoxArray[1].canWrite = false;
+					textBoxArray[2].canWrite = false;
+					console.log(playerObj.speed);
+				}
+			}
+		}
+	}
+
+	document.onkeydown = function(e)
+	{
+    	if (e.which === 8 || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40 || e.which === 32) 
+		{
+			e.preventDefault();
+		}
+	
+		key[e.keyCode] = true;
+		if(currentTextBox != null && sheepPoints != 0 && !regExpFin)
+		{
+			if(currentTextBox.canWrite == true)
+			{
+				ctx.fillStyle = 'black';
+				ctx.font = "50px Arial";
+				if(key[65]) // a
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "A";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "A";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "A"; 
+					}
+					sheepPoints--;
+				}
+				if(key[66]) // b
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "B";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "B";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "B"; 
+					}
+					sheepPoints--;
+				}
+				if(key[67]) // c
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "C";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "C";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "C"; 
+					}
+					sheepPoints--;
+				}
+				if(key[68]) // d
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "D";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "D";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "D"; 
+					}
+					sheepPoints--;
+				}
+				if(key[69]) // e
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "E";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "E";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "E"; 
+					}
+					sheepPoints--;
+				}
+				if(key[70]) // f
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "F";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "F";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "F"; 
+					}
+					sheepPoints--;
+				}
+				if(key[71]) // g
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "G";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "G";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "G"; 
+					}
+					sheepPoints--;
+				}
+				if(key[72]) // h
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "H";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "H";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "H"; 
+					}
+					sheepPoints--;
+				}
+				if(key[73]) // i
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "I";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "I";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "I"; 
+					}
+					sheepPoints--;
+				}
+				if(key[74]) // j
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "J";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "J";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "J"; 
+					}
+					sheepPoints--;
+				}
+				if(key[75]) // k
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "K";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "K";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "K"; 
+					}
+					sheepPoints--;
+				}
+				if(key[76]) // l
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "L";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "L";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "L"; 
+					}
+					sheepPoints--;
+				}
+				if(key[77]) // m
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "M";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "M";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "M"; 
+					}
+					sheepPoints--;
+				}
+				if(key[78]) // n
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "N";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "N";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "N"; 
+					}
+					sheepPoints--;
+				}
+				if(key[79]) // o
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "O";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "O";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "O"; 
+					}
+					sheepPoints--;
+				}
+				if(key[80]) // p
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "P";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "P";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "P"; 
+					}
+					sheepPoints--;
+				}
+				if(key[81]) // q
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Q";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Q";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Q"; 
+					}
+					sheepPoints--;
+				}
+				if(key[82]) // r
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "R";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "R";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "R"; 
+					}
+					sheepPoints--;
+				}
+				if(key[83]) // s
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "S";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "S";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "S"; 
+					}
+					sheepPoints--;
+				}
+				if(key[84]) // t
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "T";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "T";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "T"; 
+					}
+					sheepPoints--;
+				}
+				if(key[85]) // u
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "U";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "U";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "U"; 
+					}
+					sheepPoints--;
+				}
+				if(key[86]) // v
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "V";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "V";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "V"; 
+					}
+					sheepPoints--;
+				}
+				if(key[87]) // w
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "W";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "W";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "W"; 
+					}
+					sheepPoints--;
+				}
+				if(key[88]) // x
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "X";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "X";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "X"; 
+					}
+					sheepPoints--;
+				}
+				if(key[89]) // y
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Y";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Y";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Y"; 
+					}
+					sheepPoints--;
+				}
+				if(key[90]) // z
+				{
+					if(currentTextBox == textBoxArray[0])
+					{
+						regExpOne = regExpOne + "Z";
+					}
+					if(currentTextBox == textBoxArray[1])
+					{
+						regExpTwo = regExpTwo + "Z";
+					}
+					if(currentTextBox == textBoxArray[2])
+					{
+						regExpThree = regExpThree + "Z"; 
+					}
+					sheepPoints--;
+				}
+			}
+		}
+		
+		if(key[8] && !regExpFin) //delete button
+		{
+			if(currentTextBox == textBoxArray[0] && regExpOne.length != 0)
+			{
+				if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "]")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					regExpOne = regExpOne.substr(2, regExpOne.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpOne.substr(regExpOne.length-1, regExpOne.length) == "^" || regExpOne.substr(regExpOne.length-1, regExpOne.length) == "$")
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpOne = regExpOne.substr(0, regExpOne.length - 1);
+					sheepPoints++;
+				}
+			}
+			if(currentTextBox == textBoxArray[1] && regExpTwo.length != 0)
+			{
+				if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "]")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					regExpTwo = regExpTwo.substr(2, regExpTwo.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "^" || regExpTwo.substr(regExpTwo.length-1, regExpTwo.length) == "$")
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpTwo = regExpTwo.substr(0, regExpTwo.length - 1);
+					sheepPoints++;
+				}
+			}
+			if(currentTextBox == textBoxArray[2] && regExpThree.length != 0)
+			{
+				if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "]")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					regExpThree = regExpThree.substr(2, regExpThree.length);
+					sheepPoints = sheepPoints + 2;
+				}
+				else if(regExpThree.substr(regExpThree.length-1, regExpThree.length) == "^" || regExpThree.substr(regExpThree.length-1, regExpThree.length) == "$")
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints = sheepPoints + 2;
+				}
+				else
+				{
+					regExpThree = regExpThree.substr(0, regExpThree.length - 1);
+					sheepPoints++;
+				}	
+			}
+		}
+	}
+}
+gameStart(); // ca-ca doodie bullshit
+</script>
+</body>
+</html>
