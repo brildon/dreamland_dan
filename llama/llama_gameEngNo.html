@@ -82,7 +82,7 @@ var soundOn = true;
 var cutScene = false;
 var lastLevel = false;
 var gameOver = false;
-var jumpable = false;
+var jumpable = true;
 var crouchable = false;
 var attackable = false;
 var counter = 1;
@@ -1288,7 +1288,7 @@ function setPositionLvl3() {
 	foregroundBackground.x = 0;
 	foregroundBackground.y = -2;
 		sm_obj[0].posX=350;
-		sm_obj[0].posY=625;
+		sm_obj[0].posY=650;
 		sm_obj[1].posX=500;
 		sm_obj[1].posY=550;
 		sm_obj[2].posX=650;
@@ -1487,7 +1487,7 @@ function setPositionLvl3() {
 	breakables[2].posX =1225;
 	breakables[2].posY =200;
 	breakables[2].broken=false;
-	breakables[0].posX =150;//bug1
+	breakables[0].posX =15000;//bug1
 	breakables[0].posY =686;
 	breakables[0].broken=false;
 	breakables[4].posX =5100;
@@ -1558,12 +1558,12 @@ function setPositionLvl4()
 		sm_obj[1].posY = 650;
 		lg_obj[0].posX = 1300;
 		lg_obj[0].posY = 550;
-		sm_obj[2].posX = 1600;
-		sm_obj[2].posY = 350;
+		//sm_obj[2].posX = 1600;
+		//sm_obj[2].posY = 350;
 		lg_obj[7].posX = 1600;
 		lg_obj[7].posY = 350;
-		sm_obj[3].posX = 1600;
-		sm_obj[3].posY = 350;
+		//sm_obj[3].posX = 1600;
+		//sm_obj[3].posY = 350;
 		lg_obj[1].posX = 1900;
 		lg_obj[1].posY = 350;
 		lg_obj[2].posX = 2120;
@@ -2559,7 +2559,6 @@ function update()
 		}
 	}
 	
-	//TODO: fuckin fuck this shit up
 	for(i = 0; i < sm_obj.length; i++)
 	{
 		if(playerObj.posY - 50 <= sm_obj[i].posY + sm_obj[i].height && playerObj.posY - 50 > sm_obj[i].posY && playerObj.posX + playerObj.width >= sm_obj[i].posX && playerObj.posX <= sm_obj[i].width + sm_obj[i].posX)
@@ -2706,7 +2705,6 @@ function update()
 			}
 			
 			ctx.drawImage(emptyStar, textBoxArray[0].xCoord + 390, textBoxArray[0].yCoord);
-			//TODO: Finish dis shite
 			if(tutorSheep == 1)
 			{
 				center = 231;
@@ -3143,7 +3141,7 @@ function update()
 					{
 						if(counter == 29 && regExp3.test("[^E]P") && !regExp3.test("[^E]"))
 						{
-							//suck it!
+							//!
 						}
 						else if(counter != 29)
 						{
@@ -3192,7 +3190,7 @@ function update()
 					lvlFlag = true;	
 					setPositionLvl4();
 				}
-				else if(playerObj.posX > 5890 &&currentLvl==4)//end here
+				else if(playerObj.posX > 5890 &&currentLvl&& sheepPoints>9)//end here
 				{
 					cancelRequestAnimFrame(loadHandler);
 					window.location.href=("endEngNo.html");
@@ -3561,7 +3559,7 @@ function render()
 				}
 			}
 		
-        	for(var i =0; i<3; i++)
+        	for(var i =0; i<2; i++)
         	{
             	ctx.drawImage(sign,signs[i].posX,signs[i].posY);
 			}			
@@ -3679,7 +3677,7 @@ function render()
 					}	
 				}
 			}
-			for(var i=0; i<4; i++)
+			for(var i=0; i<2; i++)
 			{
 					ctx.drawImage(smallGem,sm_obj[i].posX,sm_obj[i].posY-20);	
 			}
@@ -3932,7 +3930,6 @@ function render()
 		if (countS ==20){
 			countS = 0;	
 		}
-//draw HERE bitch
     	ctx.drawImage(restart,1534+camera.x,10);
         console.log(mouse.x+", "+mouse.y);
 		ctx.drawImage(sheepIcon,camera.x,0);
@@ -4033,7 +4030,6 @@ function writeText()
 				{
 					counter++;
 				}
-				
 			}
 			if(mouse.x >= submitButtonArray[2].posX && mouse.x <= submitButtonArray[2].posX + 254 && mouse.y >= submitButtonArray[2].posY && mouse.y <= submitButtonArray[2].posY + 70 && submitButtonArray[1].clicked)
 			{
@@ -4043,7 +4039,7 @@ function writeText()
 				submitButtonArray[2].clicked = true;
 				if(counter == 29 && regExp3.test("[^E]P") && !regExp3.test("[^E]"))
 				{
-					//suck it!
+					//!
 				}
 			}
 			if(sheepPoints > 0)
@@ -4694,7 +4690,7 @@ function writeText()
 		}
 	}
 }
-gameStart(); // ca-ca doodie bullshit
+gameStart();
 </script>
 </body>
 </html>
